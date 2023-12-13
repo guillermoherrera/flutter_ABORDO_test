@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/blocs/blocs.dart';
 import 'package:flutter_application_2/ui/input_decorations.dart';
 import 'package:flutter_application_2/widgets/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -18,7 +20,10 @@ class LoginScreen extends StatelessWidget {
                   // const SizedBox(height: 10),
                   // Text('Login', style: Theme.of(context).textTheme.headlineMedium),
                   // const SizedBox(height: 30),
-                  _LoginForm()
+                  BlocProvider(
+                    create: (context) => LoginCubit(),
+                    child: const _LoginForm(),
+                  )
                 ],
               ),
             ),
@@ -44,13 +49,16 @@ class LoginScreen extends StatelessWidget {
 }
 
 class _LoginForm extends StatelessWidget {
+  const _LoginForm();
   
   @override
   Widget build(BuildContext context) {
-    GlobalKey<FormState> formKeyLogin = GlobalKey<FormState>(); 
+    
+    final loginCubit = context.watch<LoginCubit>();
+    final loading = loginCubit.state.loading;
 
     return Form(
-      key: formKeyLogin,
+      //key: formKeyLogin,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Column(
         children: [
@@ -58,6 +66,7 @@ class _LoginForm extends StatelessWidget {
             style: const TextStyle(color: Colors.white),
             textAlign: TextAlign.center,
             decoration: InputDecorations.authInputDecoration(hintText: '', labelText: 'Usuario', prefixIcon: null/*Icons.person*/),
+            onChanged: (value) => loginCubit.usuarioChanged(value),
             validator: (value){
               // String pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
               // RegExp regExp  = new RegExp(pattern);
@@ -73,6 +82,7 @@ class _LoginForm extends StatelessWidget {
             autocorrect: false,
             obscureText: true,
             decoration: InputDecorations.authInputDecoration(hintText: '', labelText: 'Contraseña', prefixIcon: null/*Icons.lock_outline*/),
+            onChanged: (value) => loginCubit.contrasenaChanged(value),
             validator: (value){
               return (value != null && value.length >= 6) ? null : ' La contraseña debe ser de 6 caracteres minimo ' ;
             },
@@ -100,12 +110,13 @@ class _LoginForm extends StatelessWidget {
                   ],
                 ),
               ), 
-              child: const Text('Entrar', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),),
+              child: Text(!loading ? 'Entrar' : 'Espere ...', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),),
             ),
-            onPressed: (){
-              if(!(formKeyLogin.currentState?.validate() ?? false)) return;
-    
-              Navigator.pushReplacementNamed(context, 'home');
+            onPressed: ()async{
+              //Navigator.pushReplacementNamed(context, 'home');
+              loginCubit.loadingChanged();
+              await Future.delayed(const Duration(seconds: 3));
+              loginCubit.loadingChanged();
             }
           )
         ]
