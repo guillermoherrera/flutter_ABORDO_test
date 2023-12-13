@@ -55,7 +55,19 @@ class _LoginForm extends StatelessWidget {
   Widget build(BuildContext context) {
     
     final loginCubit = context.watch<LoginCubit>();
+    final usuario = loginCubit.state.usuario;
+    final contrasena = loginCubit.state.contrasena;
     final loading = loginCubit.state.loading;
+
+    submitLogin() async {
+      FocusScope.of(context).unfocus();
+      if(!loginCubit.onSubmit()) return;
+      
+      loginCubit.loadingChanged();
+      await Future.delayed(const Duration(seconds: 3));
+      loginCubit.loadingChanged();
+      if(context.mounted) Navigator.pushReplacementNamed(context, 'home');
+    }
 
     return Form(
       //key: formKeyLogin,
@@ -65,15 +77,16 @@ class _LoginForm extends StatelessWidget {
           TextFormField(
             style: const TextStyle(color: Colors.white),
             textAlign: TextAlign.center,
-            decoration: InputDecorations.authInputDecoration(hintText: '', labelText: 'Usuario', prefixIcon: null/*Icons.person*/),
+            decoration: InputDecorations.authInputDecoration(hintText: '', labelText: 'Usuario', prefixIcon: null, errorMessage: usuario.errorMessage),
             onChanged: (value) => loginCubit.usuarioChanged(value),
-            validator: (value){
+            // validator: (value){
               // String pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
               // RegExp regExp  = new RegExp(pattern);
     
               // return regExp.hasMatch(value ?? '') ? null : 'El valor ingresado no tiene formato de correo' ;
-              return (value != null && value.isNotEmpty) ? null : ' Ingresa el usuario ' ;
-            },
+            //   return (value != null && value.isNotEmpty) ? null : ' Ingresa el usuario ' ;
+            // },
+            textInputAction: TextInputAction.next,
           ),
           const SizedBox(height: 20,),
           TextFormField(
@@ -81,11 +94,12 @@ class _LoginForm extends StatelessWidget {
             textAlign: TextAlign.center,
             autocorrect: false,
             obscureText: true,
-            decoration: InputDecorations.authInputDecoration(hintText: '', labelText: 'Contraseña', prefixIcon: null/*Icons.lock_outline*/),
+            decoration: InputDecorations.authInputDecoration(hintText: '', labelText: 'Contraseña', prefixIcon: null, errorMessage: contrasena.errorMessage ),
             onChanged: (value) => loginCubit.contrasenaChanged(value),
-            validator: (value){
-              return (value != null && value.length >= 6) ? null : ' La contraseña debe ser de 6 caracteres minimo ' ;
-            },
+            // validator: (value){
+            //   return (value != null && value.length >= 6) ? null : ' La contraseña debe ser de 6 caracteres minimo ' ;
+            // },
+            onFieldSubmitted: (value) => submitLogin() ,
           ),
           const Text('Olvidé mi contraseña', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),),
           const SizedBox(height: 40,),
@@ -95,6 +109,7 @@ class _LoginForm extends StatelessWidget {
             disabledColor: Colors.grey,
             elevation: 10,
             color: const Color.fromRGBO(209, 57, 41, 1),
+            onPressed: loading ? null : () => submitLogin(),
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
               decoration: BoxDecoration(
@@ -111,13 +126,7 @@ class _LoginForm extends StatelessWidget {
                 ),
               ), 
               child: Text(!loading ? 'Entrar' : 'Espere ...', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),),
-            ),
-            onPressed: ()async{
-              //Navigator.pushReplacementNamed(context, 'home');
-              loginCubit.loadingChanged();
-              await Future.delayed(const Duration(seconds: 3));
-              loginCubit.loadingChanged();
-            }
+            )
           )
         ]
       )

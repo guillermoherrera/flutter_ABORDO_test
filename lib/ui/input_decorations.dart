@@ -4,7 +4,8 @@ class InputDecorations{
   static InputDecoration authInputDecoration({
     required String  hintText,
     required String  labelText,
-    IconData? prefixIcon
+    IconData? prefixIcon,
+    final String? errorMessage,
   }){
     return InputDecoration(
       enabledBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20)) ,borderSide: BorderSide(color: Color.fromRGBO(209, 57, 41, 1))),
@@ -18,7 +19,8 @@ class InputDecorations{
       label: Center(child: Text(labelText),),
       filled: true,
       fillColor: const Color.fromRGBO(209, 57, 41, 1),
-      errorStyle: TextStyle(color: Colors.red.shade900, backgroundColor: Colors.white, fontWeight: FontWeight.bold)
+      errorStyle: TextStyle(color: Colors.red.shade900, backgroundColor: Colors.white, fontWeight: FontWeight.bold),
+      errorText: errorMessage
     );
   }
 }
