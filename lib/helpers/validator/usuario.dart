@@ -12,7 +12,7 @@ class Usuario extends FormzInput<String, UsuarioError>{
   String? get errorMessage{
     if(isValid || isPure) return null;
 
-    if(displayError == UsuarioError.empty) return 'El campo es requerido';
+    if(displayError == UsuarioError.empty) return 'El usuario es requerido';
     if(displayError == UsuarioError.length) return 'Minimo 6 caracteres';
 
     return null;

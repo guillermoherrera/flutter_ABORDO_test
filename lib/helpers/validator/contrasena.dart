@@ -10,7 +10,7 @@ class Contrasena extends FormzInput<String, ContrasenaError>{
   String? get errorMessage{
     if(isValid || isPure) return null;
 
-    if(displayError == ContrasenaError.empty) return 'El campo es requerido';
+    if(displayError == ContrasenaError.empty) return 'La contraseña es requerida';
     if(displayError == ContrasenaError.length) return 'Minimo 6 caracteres';
 
     return null;
