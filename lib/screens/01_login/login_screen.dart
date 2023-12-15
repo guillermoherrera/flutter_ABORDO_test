@@ -33,7 +33,7 @@ class LoginScreen extends StatelessWidget {
                 minimumSize: const Size(50, 30),
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 alignment: Alignment.centerLeft),
-              child: const Text('Activar cuenta', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),),
+              child: const Text('Activar cuenta', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white, decoration: TextDecoration.underline, decorationColor: Colors.white),),
               onPressed: ()=>Navigator.pushNamed(context, 'activar')
             ),
             const SizedBox(height: 50),
@@ -117,8 +117,8 @@ class _LoginForm extends StatelessWidget {
               minimumSize: const Size(50, 30),
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               alignment: Alignment.centerLeft),
-            child: const Text('Olvidé mi contraseña', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),),
-            onPressed: (){},  
+            child: const Text('Olvidé mi contraseña', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white, decoration: TextDecoration.underline, decorationColor: Colors.white)),
+            onPressed: ()=>Navigator.pushNamed(context, 'contrasena'),  
           ),
           const SizedBox(height: 40,),
           CustomMaterialButton(

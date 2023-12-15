@@ -17,7 +17,7 @@ class ActivarScreen extends StatelessWidget {
             child: Column(
               children: [
                 const SizedBox(
-                  height: 200,
+                  height: 150,
                 ),
                 CardContainer(
                     child: Column(
@@ -37,7 +37,9 @@ class ActivarScreen extends StatelessWidget {
                           style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
-                              color: Colors.white),
+                              color: Colors.white,
+                              decoration: TextDecoration.underline, 
+                              decorationColor: Colors.white),
                         ),
                         onPressed: () => Navigator.pop(context)),
                     const SizedBox(height: 50),
