@@ -27,7 +27,15 @@ class LoginScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const Text('Activar cuenta', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),),
+            TextButton(
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.zero,
+                minimumSize: const Size(50, 30),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                alignment: Alignment.centerLeft),
+              child: const Text('Activar cuenta', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),),
+              onPressed: ()=>Navigator.pushNamed(context, 'activar')
+            ),
             const SizedBox(height: 50),
           ],),
         ),
@@ -75,9 +83,10 @@ class _LoginForm extends StatelessWidget {
       child: Column(
         children: [
           TextFormField(
+            enabled: !loading,
             style: const TextStyle(color: Colors.white),
             textAlign: TextAlign.center,
-            decoration: InputDecorations.authInputDecoration(hintText: '', labelText: 'Usuario', prefixIcon: null, errorMessage: usuario.errorMessage),
+            decoration: InputDecorations.authInputDecoration(hintText: '', labelText: 'Usuario', prefixIcon: null, errorMessage: usuario.errorMessage ),
             onChanged: (value) => loginCubit.usuarioChanged(value),
             // validator: (value){
               // String pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -90,6 +99,7 @@ class _LoginForm extends StatelessWidget {
           ),
           const SizedBox(height: 20,),
           TextFormField(
+            enabled: !loading,
             style: const TextStyle(color: Colors.white),
             textAlign: TextAlign.center,
             autocorrect: false,
@@ -101,32 +111,20 @@ class _LoginForm extends StatelessWidget {
             // },
             onFieldSubmitted: (value) => submitLogin() ,
           ),
-          const Text('Olvidé mi contraseña', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),),
+          TextButton(
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.zero,
+              minimumSize: const Size(50, 30),
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              alignment: Alignment.centerLeft),
+            child: const Text('Olvidé mi contraseña', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),),
+            onPressed: (){},  
+          ),
           const SizedBox(height: 40,),
-          MaterialButton(
-            padding: const EdgeInsets.all(0),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            disabledColor: Colors.grey,
-            elevation: 10,
-            color: const Color.fromRGBO(209, 57, 41, 1),
+          CustomMaterialButton(
+            text: !loading ? 'Entrar' : 'Ingresando ...', 
+            loading: loading,
             onPressed: loading ? null : () => submitLogin(),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.00),
-                gradient: const LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color.fromRGBO(209, 57, 41, 1),
-                    Color.fromRGBO(209, 57, 41, 1),
-                    Color.fromRGBO(159, 57, 41, 1),
-                    Color.fromRGBO(159, 57, 41, 1),
-                  ],
-                ),
-              ), 
-              child: Text(!loading ? 'Entrar' : 'Espere ...', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),),
-            )
           )
         ]
       )

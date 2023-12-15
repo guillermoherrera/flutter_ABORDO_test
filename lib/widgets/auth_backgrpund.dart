@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class AuthBackground extends StatelessWidget {
-  const AuthBackground({super.key, required this.child});
+  const AuthBackground({super.key, required this.child, this.header = true});
 
   final Widget child;
+  final bool? header;
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,7 @@ class AuthBackground extends StatelessWidget {
       child:  Stack(
         children: [
           _MainBox(),
-          _HeaderIcon(),
+          header == true ? _HeaderIcon() : Container(),
           child,
         ],
       ),
