@@ -1,45 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/blocs/blocs.dart';
+import 'package:flutter_application_2/helpers/form_validators.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application_2/widgets/widgets.dart';
 import 'package:flutter_application_2/ui/input_decorations.dart';
 
-class RecuperarContrasenaForm extends StatelessWidget {
+class RecuperarContrasenaForm extends StatefulWidget {
   const RecuperarContrasenaForm({super.key});
 
+  @override
+  State<RecuperarContrasenaForm> createState() => _RecuperarContrasenaFormState();
+}
+
+class _RecuperarContrasenaFormState extends State<RecuperarContrasenaForm> {
+  final formKey = GlobalKey<FormState>();
+  bool loading = false;
+  bool isVAlid = false;
+  bool isCodeSend = false;
+  
   @override
   Widget build(BuildContext context) {
     
     final contrasenaCubit = context.watch<ContrasenaCubit>();
-    final usuario = contrasenaCubit.state.usuario;
-    final telefono = contrasenaCubit.state.telefono;
-    final codigo = contrasenaCubit.state.codigo;
-    final loading = contrasenaCubit.state.loading;
-    final isVAlid = contrasenaCubit.state.isValid;
-    final isCodeSend = contrasenaCubit.state.isCodeSend;
+    // final usuario = contrasenaCubit.state.usuario;
+    // final telefono = contrasenaCubit.state.telefono;
+    // final codigo = contrasenaCubit.state.codigo;
 
     submitSolicitarRecuperacion() async {
       FocusScope.of(context).unfocus();
-      
-      if(contrasenaCubit.onSubmitSolicitarRecuperacion()){
-        contrasenaCubit.loadingChanged();
-        await Future.delayed(const Duration(seconds: 3));
-        contrasenaCubit.loadingChanged();
-        contrasenaCubit.codigoSend();
-        await Future.delayed(const Duration(seconds: 1));
-        if(context.mounted) await _displayBottomSheetSms(context);
-      }
+      if(!formKey.currentState!.validate()) return;
+      setState(() {
+        loading = true;
+      });
+      await Future.delayed(const Duration(seconds: 3));
+      setState(() {
+        loading = false;
+        isCodeSend = true;
+      });
+      contrasenaCubit.isCodeSendChanged(isCodeSend);
+      await Future.delayed(const Duration(seconds: 1));
+      if(context.mounted) await _displayBottomSheetSms(context);
+
     }
     
     submitContrasena() async {
       FocusScope.of(context).unfocus();
       
-      if(contrasenaCubit.onSubmitRecuperacion()){
-        contrasenaCubit.loadingChanged();
+      //if(contrasenaCubit.onSubmitRecuperacion()){
+        setState(() {
+          loading = true;
+        });
         await Future.delayed(const Duration(seconds: 3));
         //cambiar al form a contraseña
-        contrasenaCubit.loadingChanged();
-      }
+        setState(() {
+          loading = false;
+        });
+      //}
     }
 
     return Form(
@@ -54,9 +70,9 @@ class RecuperarContrasenaForm extends StatelessWidget {
             decoration: InputDecorations.authInputDecoration(
                 hintText: '',
                 labelText: 'Usuario',
-                prefixIcon: null,
-                errorMessage: usuario.errorMessage),
-            onChanged: (value) => contrasenaCubit.usuarioChanged(value),
+                prefixIcon: null),
+            //onChanged: (value) => contrasenaCubit.usuarioChanged(value),
+            validator: (value) => FormValidators.existValidator(value),
             textInputAction: TextInputAction.next,
           ),
           const SizedBox(
@@ -71,9 +87,9 @@ class RecuperarContrasenaForm extends StatelessWidget {
             decoration: InputDecorations.authInputDecoration(
                 hintText: '',
                 labelText: 'Teléfono',
-                prefixIcon: null,
-                errorMessage: telefono.errorMessage),
-            onChanged: (value) => contrasenaCubit.telefonoChanged(value),
+                prefixIcon: null),
+            //onChanged: (value) => contrasenaCubit.telefonoChanged(value),
+            validator: (value) => FormValidators.lengthValidator(value, 10),
             onFieldSubmitted: (value) => submitSolicitarRecuperacion() ,
           ),
           !isCodeSend ? Container() : TextButton(
@@ -98,9 +114,9 @@ class RecuperarContrasenaForm extends StatelessWidget {
             decoration: InputDecorations.authInputDecoration(
                 hintText: '_ _ _ _ _ _ _ _',
                 labelText: 'Código',
-                prefixIcon: null,
-                errorMessage: codigo.errorMessage),
-            onChanged: (value) => contrasenaCubit.codigoChanged(value),
+                prefixIcon: null),
+            //onChanged: (value) => contrasenaCubit.codigoChanged(value),
+            validator: (value) => FormValidators.lengthValidator(value, 8),
             onFieldSubmitted: (value) => submitContrasena() ,
           ),
           !isCodeSend ? Container() : const Text('* Ingresa aquí el código de recuperación recibido', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white), textAlign: TextAlign.justify,),
@@ -161,5 +177,4 @@ class RecuperarContrasenaForm extends StatelessWidget {
     
     if(context.mounted) await CustomBottomSheet.show(context: context, widget: widget, isDismissible: false);
   }
-
 }

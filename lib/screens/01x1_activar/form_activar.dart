@@ -1,51 +1,83 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/blocs/blocs.dart';
+import 'package:flutter_application_2/helpers/form_validators.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application_2/widgets/widgets.dart';
 import 'package:flutter_application_2/ui/input_decorations.dart';
 
-class ActivarForm extends StatelessWidget {
+class ActivarForm extends StatefulWidget {
   const ActivarForm({super.key});
 
   @override
+  State<ActivarForm> createState() => _ActivarFormState();
+}
+
+class _ActivarFormState extends State<ActivarForm> {
+  final formKey = GlobalKey<FormState>();
+  bool loading = false;
+  bool isVAlid = false;
+  bool isCodeSend = false;
+  bool focusCode = false;
+  bool focusTel = false;
+  late FocusNode focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    focusNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    
+
     final activarCubit = context.watch<ActivarCubit>();
-    final usuario = activarCubit.state.usuario;
-    final telefono = activarCubit.state.telefono;
-    final codigo = activarCubit.state.codigo;
-    final loading = activarCubit.state.loading;
-    final isVAlid = activarCubit.state.isValid;
-    final isCodeSend = activarCubit.state.isCodeSend;
-    final focusCode = activarCubit.state.focusCode;
+    // final usuario = activarCubit.state.usuario;
+    // final telefono = activarCubit.state.telefono;
+    // final codigo = activarCubit.state.codigo;
 
     submitSolicitarActivacion() async {
       FocusScope.of(context).unfocus();
       
-      if(activarCubit.onSubmitSolicitarActivacion()){
-        activarCubit.loadingChanged();
-        await Future.delayed(const Duration(seconds: 3));
-        activarCubit.loadingChanged();
-        activarCubit.codigoSend();
-        activarCubit.focusCodeChanged();
-        await Future.delayed(const Duration(milliseconds: 1000));
-        if(context.mounted) showCustomSnackBar(context);
-        // if(context.mounted) await _displayBottomSheetSms(context);
-      }
+      if(!formKey.currentState!.validate()) return;
+      setState(() {
+        loading = true;
+      });
+      await Future.delayed(const Duration(seconds: 3));
+      setState(() {
+        loading = false;
+        isVAlid = true;
+        isCodeSend = true;
+        focusCode = true;
+      });
+      activarCubit.isCodeSendChanged(isCodeSend);
+      await Future.delayed(const Duration(milliseconds: 1000));
+      if(context.mounted) showCustomSnackBar(context);
     }
     
     submitActivacion() async {
       FocusScope.of(context).unfocus();
       
-      if(activarCubit.onSubmitActivacion()){
-        activarCubit.loadingChanged();
-        await Future.delayed(const Duration(seconds: 3));
-        if(context.mounted) await _displayBottomSheetSucces(context);
-        activarCubit.deleteActivarState();
-      }
+      if(!formKey.currentState!.validate()) return;
+      setState(() {
+        loading = true;
+      });
+      await Future.delayed(const Duration(seconds: 3));
+      if(context.mounted) await _displayBottomSheetSucces(context);
+      setState(() {
+        loading = false;
+      });
+      //activarCubit.deleteActivarState();
     }
 
     return Form(
+      key: formKey,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Column(
         children: [
           const Text('Activar Cuenta', textAlign: TextAlign.center,style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),),
@@ -57,16 +89,17 @@ class ActivarForm extends StatelessWidget {
             decoration: InputDecorations.authInputDecoration(
                 hintText: '',
                 labelText: 'Usuario',
-                prefixIcon: null,
-                errorMessage: usuario.errorMessage),
-            onChanged: (value) => activarCubit.usuarioChanged(value),
+                prefixIcon: null),
+            //onChanged: (value) => activarCubit.usuarioChanged(value),
             textInputAction: TextInputAction.next,
+            validator: (value) => FormValidators.existValidator(value),
           ),
           const SizedBox(
             height: 20,
           ),
           TextFormField(
             enabled: !loading && !isVAlid,
+            focusNode: focusNode,
             style: const TextStyle(color: Colors.white),
             textAlign: TextAlign.center,
             keyboardType: TextInputType.number,
@@ -74,9 +107,9 @@ class ActivarForm extends StatelessWidget {
             decoration: InputDecorations.authInputDecoration(
                 hintText: '',
                 labelText: 'Teléfono',
-                prefixIcon: null,
-                errorMessage: telefono.errorMessage),
-            onChanged: (value) => activarCubit.telefonoChanged(value),
+                prefixIcon: null),
+            //onChanged: (value) => activarCubit.telefonoChanged(value),
+            validator: (value) => FormValidators.lengthValidator(value, 10),
             onFieldSubmitted: (value) => submitSolicitarActivacion() ,
           ),
           !isCodeSend ? Container() : TextButton(
@@ -102,9 +135,9 @@ class ActivarForm extends StatelessWidget {
             decoration: InputDecorations.authInputDecoration(
                 hintText: '_ _ _ _ _ _ _ _',
                 labelText: 'Código',
-                prefixIcon: null,
-                errorMessage: codigo.errorMessage),
-            onChanged: (value) => activarCubit.codigoChanged(value),
+                prefixIcon: null),
+            //onChanged: (value) => activarCubit.codigoChanged(value),
+            validator: (value)=>FormValidators.lengthValidator(value, 8),
             onFieldSubmitted: (value) => submitActivacion() ,
           ),
           !isCodeSend ? Container() : const Text('* Ingresa aquí el código de activación recibido', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white), textAlign: TextAlign.justify,),
@@ -140,12 +173,15 @@ class ActivarForm extends StatelessWidget {
           children: [
             CustomMaterialButton(text: 'No, volver', isNegative: true, onPressed: () => Navigator.pop(context)),
             CustomMaterialButton(text: 'Si, editar', onPressed: ()async{
-              String usuario = activarCubit.state.usuario.value; 
-              String telefono = activarCubit.state.telefono.value; 
-              activarCubit.deleteActivarState();
-              activarCubit.usuarioChanged(usuario);
-              activarCubit.telefonoChanged(telefono);
+              setState(() {
+                isVAlid = false;
+                isCodeSend = false;
+                focusTel = true;
+              });
+              activarCubit.isCodeSendChanged(isCodeSend);
               Navigator.pop(context);
+              await Future.delayed(const Duration(seconds: 1));
+              if(context.mounted) FocusScope.of(context).requestFocus(focusNode);
             }),
           ],
         )

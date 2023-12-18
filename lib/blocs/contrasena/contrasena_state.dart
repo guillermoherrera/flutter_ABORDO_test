@@ -1,35 +1,26 @@
 part of 'contrasena_cubit.dart';
 
 class ContrasenaState extends Equatable {
-  final Usuario usuario;
-  final Telefono telefono;
-  final Codigo codigo;
-  final bool loading;
-  final bool isValid;
+  final String usuario;
+  final String telefono;
+  final String codigo;
   final bool isCodeSend;
-  final bool isCodeValid;
-  const ContrasenaState({this.usuario = const Usuario.pure(), this.telefono = const Telefono.pure(), this.loading = false, this.isValid= false, this.codigo = const Codigo.pure(), this.isCodeSend = false, this.isCodeValid = false});
+  const ContrasenaState({this.usuario = "", this.telefono = "", this.codigo = "", this.isCodeSend = false});
 
   ContrasenaState copyWith({
-    Usuario? usuario,
-    Telefono? telefono,
-    Codigo? codigo,
-    bool? loading,
-    bool? isValid,
+    String? usuario,
+    String? telefono,
+    String? codigo,
     bool? isCodeSend,
-    bool? isCodeValid,
   }) => ContrasenaState(
     usuario: usuario ?? this.usuario,
     telefono: telefono ?? this.telefono,
     codigo: codigo ?? this.codigo,
-    loading: loading ?? this.loading,
-    isValid: isValid ?? this.isValid,
     isCodeSend: isCodeSend ?? this.isCodeSend,
-    isCodeValid: isCodeValid ?? this.isCodeValid,
   );
 
   @override
-  List<Object> get props => [usuario, telefono, codigo, loading, isValid, isCodeSend, isCodeValid];
+  List<Object> get props => [usuario, telefono, codigo, isCodeSend];
 }
 
 final class ContrasenaInitial extends ContrasenaState {}

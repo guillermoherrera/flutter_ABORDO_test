@@ -45,7 +45,7 @@ class ActivarScreen extends StatelessWidget {
                                 decorationColor: Colors.white),
                           ),
                           onPressed: () {
-                            activarCubit.deleteActivarState();
+                            //activarCubit.deleteActivarState();
                             Navigator.pop(context);
                           }),
                       const SizedBox(height: 50),

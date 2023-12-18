@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_2/blocs/blocs.dart';
+import 'package:flutter_application_2/helpers/form_validators.dart';
 import 'package:flutter_application_2/ui/input_decorations.dart';
 import 'package:flutter_application_2/widgets/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -53,29 +52,42 @@ class LoginScreen extends StatelessWidget {
   }
 }
 
-class _LoginForm extends StatelessWidget {
+class _LoginForm extends StatefulWidget {
   const _LoginForm();
+
+  @override
+  State<_LoginForm> createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<_LoginForm> {
+  final formKey = GlobalKey<FormState>();
+  bool loading = false;
   
   @override
   Widget build(BuildContext context) {
-    
-    final loginCubit = context.watch<LoginCubit>();
-    final usuario = loginCubit.state.usuario;
-    final contrasena = loginCubit.state.contrasena;
-    final loading = loginCubit.state.loading;
+
+    //final loginCubit = context.watch<LoginCubit>();
+    // final usuario = loginCubit.state.usuario;
+    // final contrasena = loginCubit.state.contrasena;
 
     submitLogin() async {
       FocusScope.of(context).unfocus();
-      if(!loginCubit.onSubmit()) return;
+      if(!formKey.currentState!.validate()) return;
       
-      loginCubit.loadingChanged();
+      //loginCubit.loadingChanged();
+      setState(() {
+        loading = true;
+      });
       await Future.delayed(const Duration(seconds: 3));
-      loginCubit.loadingChanged();
+      //loginCubit.loadingChanged();
+      setState(() {
+        loading = false;
+      });
       if(context.mounted) Navigator.pushReplacementNamed(context, 'home');
     }
 
     return Form(
-      //key: formKeyLogin,
+      key: formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Column(
         children: [
@@ -83,15 +95,14 @@ class _LoginForm extends StatelessWidget {
             enabled: !loading,
             style: const TextStyle(color: Colors.white),
             textAlign: TextAlign.center,
-            decoration: InputDecorations.authInputDecoration(hintText: '', labelText: 'Usuario', prefixIcon: null, errorMessage: usuario.errorMessage ),
-            onChanged: (value) => loginCubit.usuarioChanged(value),
-            // validator: (value){
-              // String pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-              // RegExp regExp  = new RegExp(pattern);
-    
-              // return regExp.hasMatch(value ?? '') ? null : 'El valor ingresado no tiene formato de correo' ;
-            //   return (value != null && value.isNotEmpty) ? null : ' Ingresa el usuario ' ;
-            // },
+            decoration: InputDecorations.authInputDecoration(hintText: '', labelText: 'Usuario', prefixIcon: null ),
+            //onChanged: (value) => loginCubit.usuarioChanged(value),
+            validator: (value){
+              String? val;
+              val = FormValidators.existValidator(value);
+              val ??= FormValidators.emailValidator(value);
+              return val;
+            },
             textInputAction: TextInputAction.next,
           ),
           const SizedBox(height: 20,),
@@ -101,11 +112,9 @@ class _LoginForm extends StatelessWidget {
             textAlign: TextAlign.center,
             autocorrect: false,
             obscureText: true,
-            decoration: InputDecorations.authInputDecoration(hintText: '', labelText: 'Contraseña', prefixIcon: null, errorMessage: contrasena.errorMessage ),
-            onChanged: (value) => loginCubit.contrasenaChanged(value),
-            // validator: (value){
-            //   return (value != null && value.length >= 6) ? null : ' La contraseña debe ser de 6 caracteres minimo ' ;
-            // },
+            decoration: InputDecorations.authInputDecoration(hintText: '', labelText: 'Contraseña', prefixIcon: null ),
+            //onChanged: (value) => loginCubit.contrasenaChanged(value),
+            validator: (value) => FormValidators.lengthValidator(value, 6),
             onFieldSubmitted: (value) => submitLogin() ,
           ),
           TextButton(

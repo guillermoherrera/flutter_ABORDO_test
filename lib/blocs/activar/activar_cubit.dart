@@ -1,61 +1,22 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_application_2/helpers/validator/validators.dart';
-import 'package:formz/formz.dart';
 
 part 'activar_state.dart';
 
 class ActivarCubit extends Cubit<ActivarState> {
   ActivarCubit() : super(const ActivarInitial());
 
-  void loadingChanged(){
-    emit(state.copyWith(loading: !state.loading));
-  }
-  void focusCodeChanged(){
-    emit(state.copyWith(focusCode: !state.focusCode));
-  }
   void usuarioChanged(String value){
-    final usuario = Usuario.dirty(value);
-    emit(state.copyWith(usuario: usuario));
+    emit(state.copyWith(usuario: value));
   }
   void telefonoChanged(String value){
-    final telefono = Telefono.dirty(value);
-    emit(state.copyWith(telefono: telefono));
+    emit(state.copyWith(telefono: value));
   }
   void codigoChanged(String value){
-    final codigo = Codigo.dirty(value);
-    emit(state.copyWith(codigo: codigo));
+    emit(state.copyWith(codigo: value));
   }
-  void codigoSend(){
-    emit(state.copyWith(isCodeSend: true));
+  void isCodeSendChanged(bool value){
+    emit(state.copyWith(isCodeSend: value));
   }
-
-  void deleteActivarState(){
-    emit(const ActivarInitial());
-  }
-
-  bool onSubmitSolicitarActivacion(){
-    emit(
-      state.copyWith(
-        usuario: Usuario.dirty(state.usuario.value),
-        telefono: Telefono.dirty(state.telefono.value),
-        isValid: Formz.validate([state.usuario, state.telefono])
-      )
-    );
-
-    return state.isValid;
-  }
-
-  bool onSubmitActivacion(){
-    emit(
-      state.copyWith(
-        usuario: Usuario.dirty(state.usuario.value),
-        telefono: Telefono.dirty(state.telefono.value),
-        codigo: Codigo.dirty(state.codigo.value),
-        isCodeValid: Formz.validate([state.usuario, state.telefono, state.codigo])
-      )
-    );
-
-    return state.isCodeValid;
-  }
+  
 }
