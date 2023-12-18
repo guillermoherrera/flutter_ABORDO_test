@@ -13,48 +13,46 @@ class ActivarScreen extends StatelessWidget {
     
     final activarCubit = context.watch<ActivarCubit>();
     final isCodeSend = activarCubit.state.isCodeSend;
+    final loading = activarCubit.state.loading;
 
-    return PopScope(
-      canPop: false,
-      child: Scaffold(
-        body: AuthBackground(
-            header: false,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 150,
-                  ),
-                  CardContainer(
-                      child: Column(
-                    children: [
-                      const ActivarForm(),
-                      isCodeSend ? Container() : TextButton(
-                          style: TextButton.styleFrom(
-                              padding: EdgeInsets.zero,
-                              minimumSize: const Size(50, 30),
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              alignment: Alignment.centerLeft),
-                          child: const Text(
-                            'Iniciar sesión',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                decoration: TextDecoration.underline, 
-                                decorationColor: Colors.white),
-                          ),
-                          onPressed: () {
-                            //activarCubit.deleteActivarState();
-                            Navigator.pop(context);
-                          }),
-                      const SizedBox(height: 50),
-                    ],
-                  ))
-                ],
-              ),
-            )),
-      ),
+    return Scaffold(
+      body: AuthBackground(
+          header: false,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 150,
+                ),
+                CardContainer(
+                    child: Column(
+                  children: [
+                    const ActivarForm(),
+                    isCodeSend || loading ? Container() : TextButton(
+                        style: TextButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            minimumSize: const Size(50, 30),
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            alignment: Alignment.centerLeft),
+                        child: const Text(
+                          'Iniciar sesión',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              decoration: TextDecoration.underline, 
+                              decorationColor: Colors.white),
+                        ),
+                        onPressed: () {
+                          //activarCubit.deleteActivarState();
+                          Navigator.pop(context);
+                        }),
+                    const SizedBox(height: 50),
+                  ],
+                ))
+              ],
+            ),
+          )),
     );
   }
 }

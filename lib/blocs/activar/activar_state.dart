@@ -5,23 +5,26 @@ class ActivarState extends Equatable {
   final String telefono;
   final String codigo;
   final bool isCodeSend;
+  final bool loading;
   
-  const ActivarState({this.usuario = "", this.telefono = "", this.codigo = "", this.isCodeSend = false});
+  const ActivarState({this.usuario = "", this.telefono = "", this.codigo = "", this.isCodeSend = false, this.loading = false});
 
   ActivarState copyWith({
     String? usuario,
     String? telefono,
     String? codigo,
     bool? isCodeSend,
+    bool? loading,
   }) => ActivarState(
     usuario: usuario ?? this.usuario,
     telefono: telefono ?? this.telefono,
     codigo: codigo ?? this.codigo,
     isCodeSend: isCodeSend ?? this.isCodeSend,
+    loading: loading ?? this.loading,
   );
 
   @override
-  List<Object> get props => [usuario, telefono, codigo, isCodeSend];
+  List<Object> get props => [usuario, telefono, codigo, isCodeSend, loading];
 }
 
 final class ActivarInitial extends ActivarState {
@@ -30,5 +33,6 @@ final class ActivarInitial extends ActivarState {
     telefono: "", 
     codigo: "",
     isCodeSend: false,
+    loading: false,
   );
 }

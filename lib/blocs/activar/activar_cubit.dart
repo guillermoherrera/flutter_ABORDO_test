@@ -18,5 +18,8 @@ class ActivarCubit extends Cubit<ActivarState> {
   void isCodeSendChanged(bool value){
     emit(state.copyWith(isCodeSend: value));
   }
+  void loadingChanged(bool value){
+    emit(state.copyWith(loading: value));
+  }
   
 }
