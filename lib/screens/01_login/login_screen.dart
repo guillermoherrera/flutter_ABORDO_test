@@ -100,7 +100,7 @@ class _LoginFormState extends State<_LoginForm> {
             validator: (value){
               String? val;
               val = FormValidators.existValidator(value);
-              val ??= FormValidators.emailValidator(value);
+              //val ??= FormValidators.emailValidator(value);
               return val;
             },
             textInputAction: TextInputAction.next,

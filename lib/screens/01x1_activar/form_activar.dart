@@ -15,6 +15,7 @@ class ActivarForm extends StatefulWidget {
 
 class _ActivarFormState extends State<ActivarForm> {
   final formKey = GlobalKey<FormState>();
+  TextEditingController codigoController = TextEditingController();
   bool loading = false;
   bool isVAlid = false;
   bool isCodeSend = false;
@@ -37,7 +38,7 @@ class _ActivarFormState extends State<ActivarForm> {
 
   @override
   Widget build(BuildContext context) {
-
+    final contrasenaCubit = context.watch<ContrasenaCubit>();
     final activarCubit = context.watch<ActivarCubit>();
     // final usuario = activarCubit.state.usuario;
     //final telefono = activarCubit.state.telefono;
@@ -74,7 +75,7 @@ class _ActivarFormState extends State<ActivarForm> {
       });
       activarCubit.loadingChanged(loading);
       await Future.delayed(const Duration(seconds: 3));
-      if(context.mounted) await _displayBottomSheetSucces(context, activarCubit);
+      if(context.mounted) await _displayBottomSheetSuccess(context, activarCubit, contrasenaCubit);
       setState(() {
         loading = false;
       });
@@ -88,7 +89,12 @@ class _ActivarFormState extends State<ActivarForm> {
       child: Column(
         children: [
           const Text('Activar Cuenta', textAlign: TextAlign.center,style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),),
-          const SizedBox(height: 50),
+          const SizedBox(height: 30),
+          const Padding(
+            padding: EdgeInsets.only(bottom: 4.0),
+            child: Text('* Recuerda que solo podrás iniciar sesión desde este dispositivo una vez termines la activación.', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white), textAlign: TextAlign.justify,),
+          ),
+          const SizedBox(height: 20),
           TextFormField(
             enabled: !loading && !isVAlid,
             style: const TextStyle(color: Colors.white),
@@ -138,6 +144,7 @@ class _ActivarFormState extends State<ActivarForm> {
             child: Text('* Ingresa aquí el Código de Activación', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white), textAlign: TextAlign.justify,),
           ),
           !isCodeSend ? Container() : PinCodeTextField(
+            controller: codigoController,
             appContext: context,
             enabled: !loading,
             focusNode: focusCode,
@@ -201,6 +208,7 @@ class _ActivarFormState extends State<ActivarForm> {
   }
 
   Future _displayBottomSheetCode(BuildContext context, ActivarCubit activarCubit, Function() submitSolicitarActivacion)async{
+    if(!formKey.currentState!.validate()) return;
     Widget widget = Column(
       children: [
         const SizedBox(height: 10),
@@ -261,7 +269,7 @@ class _ActivarFormState extends State<ActivarForm> {
     if(context.mounted) await CustomBottomSheet.show(context: context, widget: widget);
   }
 
-  Future _displayBottomSheetSucces(BuildContext context, ActivarCubit activarCubit)async{
+  Future _displayBottomSheetSuccess(BuildContext context, ActivarCubit activarCubit, ContrasenaCubit contrasenaCubit)async{
     Widget widget = Column(
       children: [
         const SizedBox(height: 10),
@@ -269,15 +277,18 @@ class _ActivarFormState extends State<ActivarForm> {
         const SizedBox(height: 10),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 10), 
-          child: Text('Enhorabuena! Se ha activado el usuario, ahora puedes iniciar sesión.', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), textAlign: TextAlign.justify)
+          child: Text('Enhorabuena! Se ha activado tu usuario, ahora crea una contraseña y podrás iniciar sesión.', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), textAlign: TextAlign.justify)
         ),
         const SizedBox(height: 20),
-        Center(child: CustomMaterialButton(text: 'Continuar', onPressed: () {
+        Center(child: CustomMaterialButton(text: 'Crear Contraseña', onPressed: () {
           setState(() {
             isCodeSend = false;
           });
           activarCubit.isCodeSendChanged(isCodeSend);
-          Navigator.pushReplacementNamed(context, 'login');
+          contrasenaCubit.isCodeSendChanged(isCodeSend);
+          contrasenaCubit.codigoChanged(codigoController.text);
+          Navigator.pop(context);
+          Navigator.pushReplacementNamed(context, 'contrasena');
         }))
       ],
     );

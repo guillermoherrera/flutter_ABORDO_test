@@ -18,4 +18,13 @@ class ContrasenaCubit extends Cubit<ContrasenaState> {
   void isCodeSendChanged(bool value){
     emit(state.copyWith(isCodeSend: value));
   }
+  void loadingChanged(bool value){
+    emit(state.copyWith(loading: value));
+  }
+  void contrasenaChanged(String value){
+    emit(state.copyWith(contrasena: value));
+  }
+  void contrasenaInitial(){
+    emit(const ContrasenaInitial());
+  }
 }

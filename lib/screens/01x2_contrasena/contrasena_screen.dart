@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-//import 'package:flutter_application_2/screens/01x2_contrasena/form_contrasena.dart';
+import 'package:flutter_application_2/screens/01x2_contrasena/form_contrasena.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_application_2/blocs/blocs.dart';
 import 'package:flutter_application_2/screens/01x2_contrasena/form_recuperar.dart';
+//import 'package:flutter_application_2/screens/01x2_contrasena/form_contrasena.dart';
 
 import '../../widgets/widgets.dart';
 
@@ -9,6 +12,12 @@ class ContrasenaScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final activarCubit = context.watch<ContrasenaCubit>();
+    final isCodeSend = activarCubit.state.isCodeSend;
+    final codigo = activarCubit.state.codigo;
+    final loading = activarCubit.state.loading;
+    
     return Scaffold(
       body: AuthBackground(
           header: false,
@@ -21,14 +30,14 @@ class ContrasenaScreen extends StatelessWidget {
                 CardContainer(
                     child: Column(
                   children: [
-                    const RecuperarContrasenaForm(),
-                    TextButton(
+                    codigo.length == 6 ? const ContrasenaForm() :  const RecuperarContrasenaForm(),
+                    isCodeSend || loading ? Container() : TextButton(
                         style: TextButton.styleFrom(
                             padding: EdgeInsets.zero,
                             minimumSize: const Size(50, 30),
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                             alignment: Alignment.centerLeft),
-                        child: const Text.rich(
+                        child: codigo.length == 6 ? Container() :const Text.rich(
                           TextSpan(
                             text: 'Ya sé mi contraseña. ',
                             style: TextStyle(
@@ -47,7 +56,10 @@ class ContrasenaScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                        onPressed: () => Navigator.pop(context)),
+                        onPressed: () {
+                          //activarCubit.deleteActivarState();
+                          Navigator.pop(context);
+                        }),
                     const SizedBox(height: 50),
                   ],
                 ))
