@@ -6,10 +6,13 @@ import 'package:formz/formz.dart';
 part 'activar_state.dart';
 
 class ActivarCubit extends Cubit<ActivarState> {
-  ActivarCubit() : super(ActivarInitial());
+  ActivarCubit() : super(const ActivarInitial());
 
   void loadingChanged(){
     emit(state.copyWith(loading: !state.loading));
+  }
+  void focusCodeChanged(){
+    emit(state.copyWith(focusCode: !state.focusCode));
   }
   void usuarioChanged(String value){
     final usuario = Usuario.dirty(value);
@@ -25,6 +28,10 @@ class ActivarCubit extends Cubit<ActivarState> {
   }
   void codigoSend(){
     emit(state.copyWith(isCodeSend: true));
+  }
+
+  void deleteActivarState(){
+    emit(const ActivarInitial());
   }
 
   bool onSubmitSolicitarActivacion(){

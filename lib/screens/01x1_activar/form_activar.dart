@@ -17,6 +17,7 @@ class ActivarForm extends StatelessWidget {
     final loading = activarCubit.state.loading;
     final isVAlid = activarCubit.state.isValid;
     final isCodeSend = activarCubit.state.isCodeSend;
+    final focusCode = activarCubit.state.focusCode;
 
     submitSolicitarActivacion() async {
       FocusScope.of(context).unfocus();
@@ -26,8 +27,10 @@ class ActivarForm extends StatelessWidget {
         await Future.delayed(const Duration(seconds: 3));
         activarCubit.loadingChanged();
         activarCubit.codigoSend();
-        await Future.delayed(const Duration(seconds: 1));
-        if(context.mounted) await _displayBottomSheetSms(context);
+        activarCubit.focusCodeChanged();
+        await Future.delayed(const Duration(milliseconds: 1000));
+        if(context.mounted) showCustomSnackBar(context);
+        // if(context.mounted) await _displayBottomSheetSms(context);
       }
     }
     
@@ -38,7 +41,7 @@ class ActivarForm extends StatelessWidget {
         activarCubit.loadingChanged();
         await Future.delayed(const Duration(seconds: 3));
         if(context.mounted) await _displayBottomSheetSucces(context);
-        activarCubit.loadingChanged();
+        activarCubit.deleteActivarState();
       }
     }
 
@@ -84,12 +87,13 @@ class ActivarForm extends StatelessWidget {
               alignment: Alignment.centerRight
               ),
             child: const Align(alignment: Alignment.topRight ,child: Text('Corregir Datos', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),)),
-            onPressed: () => _displayBottomSheet(context),  
+            onPressed: () => _displayBottomSheet(context, activarCubit),  
           ),
           const SizedBox(
             height: 40,
           ),
           !isCodeSend ? Container() : TextFormField(
+            autofocus: focusCode,
             enabled: !loading,
             style: const TextStyle(color: Colors.white),
             textAlign: TextAlign.center,
@@ -120,7 +124,7 @@ class ActivarForm extends StatelessWidget {
     );
   }
 
-  Future _displayBottomSheet(BuildContext context)async{
+  Future _displayBottomSheet(BuildContext context, ActivarCubit activarCubit)async{
     Widget widget = Column(
       children: [
         const SizedBox(height: 10),
@@ -128,38 +132,27 @@ class ActivarForm extends StatelessWidget {
         const SizedBox(height: 10),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 10), 
-          child: Text('¿Desea borrar los datos capturados para volver a solicitar el código?.', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), textAlign: TextAlign.justify)
+          child: Text('¿Desea editar los datos capturados para volver a solicitar el código?.', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), textAlign: TextAlign.justify)
         ),
         const SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             CustomMaterialButton(text: 'No, volver', isNegative: true, onPressed: () => Navigator.pop(context)),
-            CustomMaterialButton(text: 'Si, borrar', onPressed: () => Navigator.pushReplacementNamed(context, 'activar')),
+            CustomMaterialButton(text: 'Si, editar', onPressed: ()async{
+              String usuario = activarCubit.state.usuario.value; 
+              String telefono = activarCubit.state.telefono.value; 
+              activarCubit.deleteActivarState();
+              activarCubit.usuarioChanged(usuario);
+              activarCubit.telefonoChanged(telefono);
+              Navigator.pop(context);
+            }),
           ],
         )
       ],
     );
 
     if(context.mounted) await CustomBottomSheet.show(context: context, widget: widget);
-  }
-
-  Future _displayBottomSheetSms(BuildContext context)async{
-    Widget widget = Column(
-      children: [
-        const SizedBox(height: 10),
-        const Center(child: Icon(Icons.sms, size: 70, color: Color.fromRGBO(9, 85, 179, 1))),
-        const SizedBox(height: 10),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10), 
-          child: Text('Se ha enviado un código de activación al teléfono captaurado.', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), textAlign: TextAlign.justify)
-        ),
-        const SizedBox(height: 20),
-        Center(child: CustomMaterialButton(text: 'Enterado', onPressed: () => Navigator.pop(context)))
-      ],
-    );
-    
-    if(context.mounted) await CustomBottomSheet.show(context: context, widget: widget, isDismissible: false);
   }
 
   Future _displayBottomSheetSucces(BuildContext context)async{
@@ -178,5 +171,20 @@ class ActivarForm extends StatelessWidget {
     );
     
     if(context.mounted) await CustomBottomSheet.show(context: context, widget: widget, isDismissible: false);
+  }
+
+  showCustomSnackBar(context) {
+    SnackBar snackBar =  SnackBar(
+      content: Text('Se ha enviado un código de activación al teléfono captaurado.'.toUpperCase(),
+          style: const TextStyle(color: Color.fromRGBO(50, 73, 137, 1), fontWeight: FontWeight.w900, fontStyle: FontStyle.italic)),
+      backgroundColor: const Color.fromRGBO(230, 230, 230, 1),
+      //dismissDirection: DismissDirection.up,
+      behavior: SnackBarBehavior.floating,
+      margin: const EdgeInsets.only(
+        left: 10,
+        right: 10)   
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

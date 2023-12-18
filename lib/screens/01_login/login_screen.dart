@@ -14,16 +14,13 @@ class LoginScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(children: [
             const SizedBox(height: 320,),
-            CardContainer(
+            const CardContainer(
               child: Column(
                 children: [
                   // const SizedBox(height: 10),
                   // Text('Login', style: Theme.of(context).textTheme.headlineMedium),
                   // const SizedBox(height: 30),
-                  BlocProvider(
-                    create: (context) => LoginCubit(),
-                    child: const _LoginForm(),
-                  )
+                  _LoginForm()
                 ],
               ),
             ),

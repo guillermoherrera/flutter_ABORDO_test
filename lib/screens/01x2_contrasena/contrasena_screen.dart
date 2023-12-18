@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_2/blocs/contrasena/contrasena_cubit.dart';
 //import 'package:flutter_application_2/screens/01x2_contrasena/form_contrasena.dart';
 import 'package:flutter_application_2/screens/01x2_contrasena/form_recuperar.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../widgets/widgets.dart';
 
@@ -23,10 +21,7 @@ class ContrasenaScreen extends StatelessWidget {
                 CardContainer(
                     child: Column(
                   children: [
-                    BlocProvider(
-                      create: (context) => ContrasenaCubit(),
-                      child: const RecuperarContrasenaForm(),
-                    ),
+                    const RecuperarContrasenaForm(),
                     TextButton(
                         style: TextButton.styleFrom(
                             padding: EdgeInsets.zero,
