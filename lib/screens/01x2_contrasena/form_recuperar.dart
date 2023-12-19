@@ -97,6 +97,7 @@ class _RecuperarContrasenaFormState extends State<RecuperarContrasenaForm> {
                 prefixIcon: null),
             //onChanged: (value) => contrasenaCubit.usuarioChanged(value),
             textInputAction: TextInputAction.next,
+            onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
             validator: (value) => FormValidators.existValidator(value),
           ),
           const SizedBox(
@@ -111,7 +112,7 @@ class _RecuperarContrasenaFormState extends State<RecuperarContrasenaForm> {
             maxLength: 15,
             decoration: InputDecorations.authInputDecoration(
                 labelText: 'Teléfono',
-                prefixIcon: null),
+                prefixIcon: null, iconField: Icons.phone_iphone_outlined),
             onChanged: (value) => contrasenaCubit.telefonoChanged(value),
             validator: (value){
               return FormValidators.telValidator(value?.replaceAll(RegExp('[^0-9]'), ''));

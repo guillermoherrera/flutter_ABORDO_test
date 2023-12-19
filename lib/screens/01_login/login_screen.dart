@@ -62,6 +62,7 @@ class _LoginForm extends StatefulWidget {
 class _LoginFormState extends State<_LoginForm> {
   final formKey = GlobalKey<FormState>();
   bool loading = false;
+  bool obscureText = true;
   
   @override
   Widget build(BuildContext context) {
@@ -86,6 +87,8 @@ class _LoginFormState extends State<_LoginForm> {
       if(context.mounted) Navigator.pushReplacementNamed(context, 'home');
     }
 
+    chanceObscureText() => setState(()=>obscureText = !obscureText);
+
     return Form(
       key: formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -104,6 +107,7 @@ class _LoginFormState extends State<_LoginForm> {
               return val;
             },
             textInputAction: TextInputAction.next,
+            onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
           ),
           const SizedBox(height: 20,),
           TextFormField(
@@ -111,8 +115,9 @@ class _LoginFormState extends State<_LoginForm> {
             style: const TextStyle(color: Colors.white),
             textAlign: TextAlign.center,
             autocorrect: false,
-            obscureText: true,
-            decoration: InputDecorations.authInputDecoration(hintText: '', labelText: 'Contraseña', prefixIcon: null ),
+            obscureText: obscureText,
+            keyboardType: TextInputType.visiblePassword,
+            decoration: InputDecorations.authInputDecoration(hintText: '', labelText: 'Contraseña', prefixIcon: null, suffixIconOnPressed: chanceObscureText, visibility: obscureText ),
             //onChanged: (value) => loginCubit.contrasenaChanged(value),
             validator: (value) => FormValidators.lengthValidator(value, 6),
             onFieldSubmitted: (value) => submitLogin() ,

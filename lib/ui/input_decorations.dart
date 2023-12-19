@@ -7,6 +7,9 @@ class InputDecorations{
     IconData? prefixIcon,
     final String? errorMessage,
     final Color? fillCollor = const Color.fromRGBO(209, 57, 41, 1),
+    final Function()? suffixIconOnPressed,
+    final bool? visibility,
+    final IconData iconField = Icons.person,
   }){
     return InputDecoration(
       isDense: true,
@@ -26,6 +29,9 @@ class InputDecorations{
       errorStyle: TextStyle(color: Colors.red.shade900, backgroundColor: Colors.white, fontWeight: FontWeight.bold),
       errorText: errorMessage,
       counterText: "",
+      suffixIcon: suffixIconOnPressed != null 
+      ? IconButton(onPressed: suffixIconOnPressed, icon: Icon(visibility == true ? Icons.visibility_off : Icons.visibility), color: Colors.white,) 
+      : IconButton(onPressed: (){}, icon: Icon(iconField), color: Colors.white,)
     );
   }
 }

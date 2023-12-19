@@ -16,6 +16,7 @@ class ContrasenaForm extends StatefulWidget {
 class _ContrasenaFormState extends State<ContrasenaForm> {
   final formKey = GlobalKey<FormState>();
   bool loading = false;
+  bool obscureText = false;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +38,8 @@ class _ContrasenaFormState extends State<ContrasenaForm> {
       contrasenaCubit.loadingChanged(loading);
     }
 
+    chanceObscureText() => setState(()=>obscureText = !obscureText);
+
     return Form(
       key: formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -51,12 +54,14 @@ class _ContrasenaFormState extends State<ContrasenaForm> {
             style: const TextStyle(color: Colors.white),
             textAlign: TextAlign.center,
             keyboardType: TextInputType.visiblePassword,
+            obscureText: obscureText,
             decoration: InputDecorations.authInputDecoration(
                 labelText: 'Contraseña',
-                prefixIcon: null),
+                prefixIcon: null, suffixIconOnPressed: chanceObscureText, visibility: obscureText),
             onChanged: (value) => contrasenaCubit.contrasenaChanged(value),
             validator: (value)=> FormValidators.lengthValidator(value, 6),
             textInputAction: TextInputAction.next,
+            onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
           ),
           const SizedBox(
             height: 20,
@@ -66,9 +71,10 @@ class _ContrasenaFormState extends State<ContrasenaForm> {
             style: const TextStyle(color: Colors.white),
             textAlign: TextAlign.center,
             keyboardType: TextInputType.visiblePassword,
+            obscureText: obscureText,
             decoration: InputDecorations.authInputDecoration(
                 labelText: 'Confirmar Contraseña',
-                prefixIcon: null),
+                prefixIcon: null, suffixIconOnPressed: chanceObscureText, visibility: obscureText),
             validator: (value){
               String? val;
               val = FormValidators.lengthValidator(value, 6);
