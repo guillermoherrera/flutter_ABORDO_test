@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 
 class CardContainer extends StatelessWidget {
-  const CardContainer({super.key, required this.child});
+  const CardContainer({super.key, required this.child, this.backgroundColor = Colors.transparent, this.paddingHorizontal = 20});
 
   final Widget child;
+  final Color? backgroundColor;
+  final double? paddingHorizontal;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.symmetric(horizontal: 30),
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.symmetric(vertical: 20, horizontal: paddingHorizontal!),
         decoration: _createCardShape(),
         child: child,
       ),
@@ -19,7 +21,7 @@ class CardContainer extends StatelessWidget {
   }
 
   BoxDecoration _createCardShape() => BoxDecoration(
-    //color: Colors.white,
+    color: backgroundColor!,
     borderRadius: BorderRadius.circular(25),
     boxShadow: const [
       BoxShadow(color: Colors.transparent, blurRadius: 15, offset: Offset(0, 5))

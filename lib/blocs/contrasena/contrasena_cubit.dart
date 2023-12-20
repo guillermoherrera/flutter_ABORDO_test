@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 part 'contrasena_state.dart';
 
 class ContrasenaCubit extends Cubit<ContrasenaState> {
-  ContrasenaCubit() : super(ContrasenaInitial());
+  ContrasenaCubit() : super(const ContrasenaInitial());
 
   void usuarioChanged(String value){
     emit(state.copyWith(usuario: value));
