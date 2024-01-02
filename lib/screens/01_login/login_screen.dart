@@ -96,7 +96,7 @@ class _LoginFormState extends State<_LoginForm> {
         children: [
           TextFormField(
             enabled: !loading,
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: Color.fromRGBO(4, 68, 155, 1), fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
             decoration: InputDecorations.authInputDecoration(hintText: '', labelText: 'Usuario', prefixIcon: null ),
             //onChanged: (value) => loginCubit.usuarioChanged(value),
@@ -112,7 +112,7 @@ class _LoginFormState extends State<_LoginForm> {
           const SizedBox(height: 20,),
           TextFormField(
             enabled: !loading,
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: Color.fromRGBO(4, 68, 155, 1), fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
             autocorrect: false,
             obscureText: obscureText,

@@ -30,12 +30,12 @@ class _HeaderIcon extends StatelessWidget {
       child: Container(
         width: double.infinity,
         margin: EdgeInsets.only(top: size.width * 0.25),
-        child:  Column(
+        child: const Column(
           children: [
              //Icon(Icons.person_pin_outlined, color: Colors.white, size: size.width * 0.40,),
-             const Text('Hola !', textAlign: TextAlign.center,style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),),
-             const SizedBox(height: 10),
-             Image(image: const AssetImage('assets/ICONO_RECONOCIMIENTO_FACIAL.png'), width: size.width * 0.35,),
+             Text('Hola !', textAlign: TextAlign.center,style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),),
+             SizedBox(height: 10),
+             //Image(image: const AssetImage('assets/ICONO_RECONOCIMIENTO_FACIAL.png'), width: size.width * 0.35,),
           ],
         ),
       ),
