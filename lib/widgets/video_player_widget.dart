@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+import 'package:flutter_application_2/widgets/auth_backgrpund.dart';
 
 class VideoPlayerWidget extends StatelessWidget {
   final VideoPlayerController controller;
@@ -10,10 +11,7 @@ class VideoPlayerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return controller.value.isInitialized
     ? Container(alignment: Alignment.topCenter, child: buildVideo(),)
-    : const SizedBox(
-      height: 200,
-      child: Center(
-        child: CircularProgressIndicator()));
+    : AuthBackground(header: false, mainBox: false, child: Container());
   }
 
   Widget buildVideo() => buildVideoPlayer();

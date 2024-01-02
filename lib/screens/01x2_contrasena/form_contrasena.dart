@@ -51,7 +51,7 @@ class _ContrasenaFormState extends State<ContrasenaForm> {
           const SizedBox(height: 30),
           TextFormField(
             enabled: !loading,
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: Color.fromRGBO(4, 68, 155, 1), fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
             keyboardType: TextInputType.visiblePassword,
             obscureText: obscureText,
@@ -68,7 +68,7 @@ class _ContrasenaFormState extends State<ContrasenaForm> {
           ),
           TextFormField(
             enabled: !loading,
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: Color.fromRGBO(4, 68, 155, 1), fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
             keyboardType: TextInputType.visiblePassword,
             obscureText: obscureText,

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 class AuthBackground extends StatelessWidget {
-  const AuthBackground({super.key, required this.child, this.header = true});
+  const AuthBackground({super.key, required this.child, this.header = true, this.mainBox = true});
 
   final Widget child;
   final bool? header;
+  final bool? mainBox;
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,7 @@ class AuthBackground extends StatelessWidget {
       height: double.infinity,
       child:  Stack(
         children: [
-          _MainBox(),
+          _MainBox(mainBox: mainBox),
           header == true ? _HeaderIcon() : Container(),
           child,
         ],
@@ -44,7 +45,8 @@ class _HeaderIcon extends StatelessWidget {
 }
 
 class _MainBox extends StatelessWidget {
-  //const _MainBox({super.key});
+  const _MainBox({required this.mainBox});
+  final bool? mainBox;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +56,7 @@ class _MainBox extends StatelessWidget {
       height: size.height * 1,
       decoration: _mainBackground(),
       child:  Stack(children: [
-        SafeArea(child: Padding(padding: const EdgeInsets.only(top: 10, left: 10), child: Image(image: const AssetImage('assets/ICONO_APLICACION_SOLUCIONES_AB.png'), width: size.width * 0.20,))),
+        SafeArea(child: Padding(padding: const EdgeInsets.only(top: 10, left: 10), child: Image(image: AssetImage(mainBox == true ? 'assets/ICONO_APLICACION_SOLUCIONES_AB.png' : 'assets/empty.png'), width: size.width * 0.20,))),
         // Positioned(top: 90, left: 30,child: _Bubble()),
         // Positioned(top: -40, left: -30,child: _Bubble()),
         // Positioned(top: -50, right: -20,child: _Bubble()),

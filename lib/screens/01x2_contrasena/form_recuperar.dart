@@ -90,7 +90,7 @@ class _RecuperarContrasenaFormState extends State<RecuperarContrasenaForm> {
           const SizedBox(height: 50),
           TextFormField(
             enabled: !loading && !isVAlid,
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: Color.fromRGBO(4, 68, 155, 1), fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
             decoration: InputDecorations.authInputDecoration(
                 labelText: 'Usuario',
@@ -106,7 +106,7 @@ class _RecuperarContrasenaFormState extends State<RecuperarContrasenaForm> {
           TextFormField(
             enabled: !loading && !isVAlid,
             focusNode: focusNode,
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: Color.fromRGBO(4, 68, 155, 1), fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
             keyboardType: TextInputType.number,
             maxLength: 15,

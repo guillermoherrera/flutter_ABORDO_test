@@ -22,7 +22,7 @@ class _PresentationScreenState extends State<PresentationScreen> {
     ..setLooping(false)
     ..initialize().then((_) => controller.play());
     Timer(const Duration(milliseconds: 6550), () {
-      Navigator.pushReplacementNamed(context, 'login');;
+      Navigator.pushReplacementNamed(context, 'login');
     });
   }
 

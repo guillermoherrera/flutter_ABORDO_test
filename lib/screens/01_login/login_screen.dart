@@ -12,7 +12,7 @@ class LoginScreen extends StatelessWidget {
       body: AuthBackground(
         child: SingleChildScrollView(
           child: Column(children: [
-            const SizedBox(height: 320,),
+            const SizedBox(height: 150,),
             const CardContainer(
               child: Column(
                 children: [
@@ -94,6 +94,8 @@ class _LoginFormState extends State<_LoginForm> {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Column(
         children: [
+          const Text('Iniciar Sesión', textAlign: TextAlign.center,style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),),
+          const SizedBox(height: 50),
           TextFormField(
             enabled: !loading,
             style: const TextStyle(color: Color.fromRGBO(4, 68, 155, 1), fontWeight: FontWeight.bold),
