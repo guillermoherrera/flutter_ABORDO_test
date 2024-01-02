@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/ui/text_styles.dart';
-import 'package:flutter_application_2/widgets/home_background.dart';
 import 'package:flutter_application_2/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -19,7 +18,7 @@ class HomeScreen extends StatelessWidget {
           //Navigator.pushNamed(context, 'home', arguments: 0);
           break;
         case 2:
-          //Navigator.pushNamed(context, 'home', arguments: 0);
+          Navigator.pushNamed(context, 'notificaciones', arguments: 0);
           break;
         case 3:
           Navigator.pushReplacementNamed(context, 'login', arguments: 0);
@@ -46,16 +45,16 @@ class HomeScreen extends StatelessWidget {
                 ],
             ),),
             const SizedBox(height: 20),
-            Wrap(
+            const Wrap(
               direction: Axis.horizontal,
               alignment: WrapAlignment.center,
               spacing: 10,
               runSpacing: 20,
               children: [
-                buttonCircle(Icons.note_alt_outlined, 'Prospección', true),
-                buttonCircle(Icons.motorcycle_outlined, 'Cobranza', false),
-                buttonCircle(Icons.monetization_on_outlined, 'Claridad\nde Pago', false),
-                buttonCircle(Icons.school_outlined, 'Capacitación', false),
+                ButtonCircle(icono: Icons.note_alt_outlined, texto: 'Prospección', enable: true),
+                ButtonCircle(icono: Icons.motorcycle_outlined, texto: 'Cobranza', enable: false),
+                ButtonCircle(icono: Icons.monetization_on_outlined, texto: 'Claridad\nde Pago', enable: false),
+                ButtonCircle(icono: Icons.school_outlined, texto: 'Capacitación', enable: false),
               ],
             ),
             const SizedBox(height: 20),
@@ -122,33 +121,6 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: const Color.fromRGBO(209, 57, 41, 1),
         onTap: onItemTapped,
       ),
-    );
-  }
-
-  Widget buttonCircle(IconData icono, String texto, bool enable){
-    return Column(
-      children: [
-        SizedBox.fromSize(
-          size: const Size(80, 80),
-          child: ClipOval(
-            child: Material(
-              color: !enable ? Colors.grey : const Color.fromRGBO(9, 85, 179, 1),
-              child: InkWell(
-                splashColor: const Color.fromRGBO(209, 57, 41, 1), 
-                onTap: !enable ? null : () {}, 
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(icono, size: 40, color: Colors.white.withOpacity(enable ? 1.0 : 0.3),), // <-- Icon
-                    //Text(texto), // <-- Text
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-        Text(texto, style: enable ? TextStyles.tStyleNegrita12 : TextStyles.tStyleGrey12, textAlign: TextAlign.center,)
-      ],
     );
   }
 

@@ -37,6 +37,7 @@ class MyApp extends StatelessWidget {
         'activar': (_)=> const ActivarScreen(),
         'contrasena': (_)=> const ContrasenaScreen(),
         'home': (_)=> const HomeScreen(),
+        'notificaciones': (_)=> const NotificationsScreen(),
       },
       theme: ThemeData.light().copyWith(scaffoldBackgroundColor:  const Color.fromRGBO(230, 230, 230, 1)),
     );
