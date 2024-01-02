@@ -31,8 +31,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Abordo App',
       debugShowCheckedModeBanner: false,
-      initialRoute: 'login',
+      initialRoute: 'presentation',
       routes: {
+        'presentation': (_)=> const PresentationScreen(),
         'login': (_)=> const LoginScreen(),
         'activar': (_)=> const ActivarScreen(),
         'contrasena': (_)=> const ContrasenaScreen(),
