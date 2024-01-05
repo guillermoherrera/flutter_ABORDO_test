@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_2/ui/ui_files.dart';
 
 class ButtonCircle extends StatelessWidget {
-  const ButtonCircle({super.key, required this.enable, required this.texto, required this.icono});
+  const ButtonCircle({super.key, required this.enable, required this.texto, required this.icono, this.onTap});
   final bool enable;
   final String texto;
   final IconData icono;
+  final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class ButtonCircle extends StatelessWidget {
               color: !enable ? Colors.grey : const Color.fromRGBO(9, 85, 179, 1),
               child: InkWell(
                 splashColor: const Color.fromRGBO(209, 57, 41, 1), 
-                onTap: !enable ? null : () {}, 
+                onTap: onTap, 
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[

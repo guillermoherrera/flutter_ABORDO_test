@@ -32,7 +32,7 @@ class InputDecorations{
       suffixIcon: suffixIconOnPressed != null 
       ? IconButton(onPressed: suffixIconOnPressed, icon: Icon(visibility == true ? Icons.visibility_off : Icons.visibility), color: const Color.fromRGBO(4, 68, 155, 1),) 
       : IconButton(onPressed: (){}, icon: Icon(iconField), color: const Color.fromRGBO(4, 68, 155, 1),),
-      floatingLabelStyle: const TextStyle(color: Color.fromRGBO(209, 57, 41, 1), fontWeight: FontWeight.bold, fontSize: 20)
+      floatingLabelStyle: const TextStyle(color: Color.fromRGBO(4, 68, 155, 1), fontWeight: FontWeight.bold, fontSize: 20, backgroundColor: Color.fromRGBO(230, 230, 230, 1))
     );
   }
 }

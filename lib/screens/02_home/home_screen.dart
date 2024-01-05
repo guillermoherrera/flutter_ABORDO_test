@@ -45,17 +45,25 @@ class HomeScreen extends StatelessWidget {
                 ],
             ),),
             const SizedBox(height: 20),
-            const Wrap(
-              direction: Axis.horizontal,
-              alignment: WrapAlignment.center,
-              spacing: 10,
-              runSpacing: 20,
-              children: [
-                ButtonCircle(icono: Icons.note_alt_outlined, texto: 'Prospección', enable: true),
-                ButtonCircle(icono: Icons.motorcycle_outlined, texto: 'Cobranza', enable: false),
-                ButtonCircle(icono: Icons.monetization_on_outlined, texto: 'Claridad\nde Pago', enable: false),
-                ButtonCircle(icono: Icons.school_outlined, texto: 'Capacitación', enable: false),
-              ],
+            
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Wrap(
+                  direction: Axis.horizontal,
+                  alignment: WrapAlignment.center,
+                  spacing: 10,
+                  runSpacing: 20,
+                  children: [
+                    ButtonCircle(icono: Icons.note_alt_outlined, texto: 'Prospección', enable: true, onTap: () => Navigator.pushNamed(context, 'dashProspeccion'),),
+                    ButtonCircle(icono: Icons.fact_check_outlined, texto: 'Verificación', enable: true, onTap: () => Navigator.pushNamed(context, 'dashVerificacion')),
+                    const ButtonCircle(icono: Icons.motorcycle_outlined, texto: 'Cobranza', enable: false),
+                    const ButtonCircle(icono: Icons.monetization_on_outlined, texto: 'Claridad\nde Pago', enable: false),
+                    const ButtonCircle(icono: Icons.school_outlined, texto: 'Capacitación', enable: false),
+                  ],
+                ),
+              ),
             ),
             const SizedBox(height: 20),
             const Text('Últimos Registros', style: TextStyles.tStyleNegrita12,),
@@ -83,7 +91,7 @@ class HomeScreen extends StatelessWidget {
                                 shape: BoxShape.circle
                               ),
                               child: const Icon(Icons.note_alt_outlined, color: Color.fromRGBO(9, 85, 179, 1),)),
-                            title: const Text('Nombre prospecto', style: TextStyles.tStyleTileTitle2,),
+                            title: const Text('Evento descripción', style: TextStyles.tStyleTileTitle2,),
                             subtitle: const Text('01/01/2000', style: TextStyles.tStyleTileSubtitle),
                             trailing: const IconButton(onPressed: null, icon: Icon(Icons.arrow_forward_ios_outlined, color: Color.fromRGBO(9, 85, 179, 1))),
                           ),

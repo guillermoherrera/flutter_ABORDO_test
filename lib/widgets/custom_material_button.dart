@@ -5,8 +5,9 @@ class CustomMaterialButton extends StatelessWidget {
   final Function()? onPressed;
   final bool? loading;
   final bool? isNegative;
+  final double? widthContainer;
 
-  const CustomMaterialButton({super.key, required this.text, required this.onPressed, this.loading = false, this.isNegative});
+  const CustomMaterialButton({super.key, required this.text, required this.onPressed, this.loading = false, this.isNegative, this.widthContainer});
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +19,7 @@ class CustomMaterialButton extends StatelessWidget {
       color: isNegative == true ? Colors.white : const Color.fromRGBO(209, 57, 41, 1),
       onPressed: onPressed,
       child: Container(
+        width: widthContainer,
         padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.00),

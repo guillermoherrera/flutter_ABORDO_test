@@ -12,6 +12,11 @@ abstract class TextStyles{
   static const TextStyle tStyleGrey12 = TextStyle(fontSize: 12, color: Colors.grey);
   static const TextStyle tStyleGrey14 = TextStyle(fontSize: 14, color: Colors.grey);
   static const TextStyle tStyleGrey16 = TextStyle(fontSize: 16, color: Colors.grey);
+  
+  static const TextStyle tStyleGreyBase12 = TextStyle(fontSize: 12, color: Color.fromRGBO(230, 230, 230, 1), fontWeight: FontWeight.bold);
+  static const TextStyle tStyleGreyBase14 = TextStyle(fontSize: 14, color: Color.fromRGBO(230, 230, 230, 1), fontWeight: FontWeight.bold);
+  static const TextStyle tStyleGreyBase16 = TextStyle(fontSize: 16, color: Color.fromRGBO(230, 230, 230, 1), fontWeight: FontWeight.bold);
+  static const TextStyle tStyleGreyBase18 = TextStyle(fontSize: 18, color: Color.fromRGBO(230, 230, 230, 1), fontWeight: FontWeight.bold);
 
   static const TextStyle tStyleNegrita12 = TextStyle(fontSize: 12, fontWeight: FontWeight.bold);
   static const TextStyle tStyleNegrita14 = TextStyle(fontSize: 14, fontWeight: FontWeight.bold);
