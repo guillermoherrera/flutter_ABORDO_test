@@ -7,6 +7,7 @@ class CustomBottomSheet{
       backgroundColor: const Color.fromRGBO(230, 230, 230, 1),
       barrierColor: Colors.black.withOpacity(0.5),
       isDismissible: isDismissible,
+      enableDrag: isDismissible,
       builder: (context) => SizedBox(
         height: height,
         width: double.infinity,

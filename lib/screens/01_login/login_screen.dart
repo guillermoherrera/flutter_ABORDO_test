@@ -8,6 +8,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return  Scaffold(
       body: AuthBackground(
         child: SingleChildScrollView(
@@ -36,17 +37,28 @@ class LoginScreen extends StatelessWidget {
           ],),
         ),
       ),
-      bottomNavigationBar: MaterialButton(
-        disabledColor: Colors.grey,
-        elevation: 0,
-        color: const Color.fromRGBO(209, 57, 41, 1),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-          child: const Text('Términos y Aviso Legal', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),), 
+      bottomNavigationBar: Container(
+        color: Colors.amber,
+        width: double.infinity,
+        child: Wrap(
+          direction: Axis.vertical,
+          children: [
+            Image(image: const AssetImage('assets/BANNER_INICIAL.jpg'), width: size.width * 1),
+            MaterialButton(
+              minWidth: size.width * 1,
+              disabledColor: Colors.grey,
+              elevation: 0,
+              color: const Color.fromRGBO(209, 57, 41, 1),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                child: const Text('Términos y Aviso Legal', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),), 
+              ),
+              onPressed: (){
+            
+              }
+            ),
+          ],
         ),
-        onPressed: (){
-      
-        }
       ),
     );
   }
