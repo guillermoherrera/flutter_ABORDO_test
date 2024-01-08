@@ -14,155 +14,122 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Stack(
-        children: [
+      body: CustomBackground(
+        appBarTitle: 'Prospección',
+        content: Column(children: [
+          _header(),
+          _actions(size),
           Container(
-            color: const Color.fromRGBO(9, 85, 179, 1),
-            height: double.infinity,
-            width: double.infinity,
-          ),
-          Column(
-            children: [
-              Expanded(child: Container()),
-              Container(
-                color: Colors.white,
-                width: double.infinity,
-                height: size.height * 0.5,
+            padding: const EdgeInsets.only(top: 15),
+            child: CardContainer(
+              backgroundColor: Colors.white,
+              boxShadowColor: Colors.black45,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('Últimos Registros', style: TextStyles.tStyleNegrita16,),
+                      _verTodo()
+                    ],
+                  ),
+                  SizedBox(
+                    height: size.height * 0.3,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: 5,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 0),
+                          child: Material(
+                            child: InkWell(
+                              splashColor: const Color.fromRGBO(209, 57, 41, 1),
+                              onTap: (){},
+                              child: ListTile(
+                                dense: true,
+                                leading:  Container(
+                                  padding: const EdgeInsets.all(0),
+                                  decoration: const BoxDecoration(
+                                    //color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
+                                    color: Color.fromRGBO(230, 230, 230, 1),
+                                    shape: BoxShape.circle
+                                  ),
+                                  child: const Icon(Icons.person, color: Color.fromRGBO(9, 85, 179, 1),)),
+                                title: const Text('Nombre Prospecto', style: TextStyles.tStyleTileTitle2,),
+                                subtitle: const Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Estatus: prospecto', style: TextStyles.tStyleTileSubtitle),
+                                    Text('01/01/2000', style: TextStyles.tStyleTileSubtitle),
+                                  ],
+                                ),
+                                trailing: const IconButton(onPressed: null, icon: Icon(Icons.arrow_forward_ios_outlined, color: Color.fromRGBO(9, 85, 179, 1))),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                ],
               )
-            ],
+            ),
           ),
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                AppBar(
-                  toolbarHeight: kToolbarHeight + 1,
-                  iconTheme: const IconThemeData(
-                    color: Color.fromRGBO(230, 230, 230, 1)
-                  ),
-                  backgroundColor: const Color.fromRGBO(9, 85, 179, 1),
-                  title: const Text('Prospección', style: TextStyles.tStyleAppBar,),
-                  elevation: 0,
-                  actions: [
-                    Image(image: const AssetImage('assets/ICONO_APLICACION_SOLUCIONES_AB.png'), width: size.width * 0.10,),
-                    const SizedBox(width: 10,),
-                  ],
-                ),
-                _header(),
-                _actions(size),
-                Container(
-                  padding: const EdgeInsets.only(top: 15),
-                  child: CardContainer(
-                    backgroundColor: Colors.white,
-                    boxShadowColor: Colors.black45,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('Últimos Registros', style: TextStyles.tStyleNegrita16,),
-                            _verTodo()
-                          ],
-                        ),
-                        SizedBox(
-                          height: size.height * 0.3,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: 5,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 0),
-                                child: Material(
-                                  child: InkWell(
-                                    splashColor: const Color.fromRGBO(209, 57, 41, 1),
-                                    onTap: (){},
-                                    child: ListTile(
-                                      dense: true,
-                                      leading:  Container(
-                                        padding: const EdgeInsets.all(0),
-                                        decoration: const BoxDecoration(
-                                          //color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
-                                          color: Color.fromRGBO(230, 230, 230, 1),
-                                          shape: BoxShape.circle
-                                        ),
-                                        child: const Icon(Icons.person, color: Color.fromRGBO(9, 85, 179, 1),)),
-                                      title: const Text('Nombre Prospecto', style: TextStyles.tStyleTileTitle2,),
-                                      subtitle: const Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text('Estatus: prospecto', style: TextStyles.tStyleTileSubtitle),
-                                          Text('01/01/2000', style: TextStyles.tStyleTileSubtitle),
-                                        ],
-                                      ),
-                                      trailing: const IconButton(onPressed: null, icon: Icon(Icons.arrow_forward_ios_outlined, color: Color.fromRGBO(9, 85, 179, 1))),
-                                    ),
+          Container(
+            padding: const EdgeInsets.only(top: 15),
+            margin: const EdgeInsets.only(bottom: 15),
+            child: CardContainer(
+              backgroundColor: Colors.white,
+              boxShadowColor: Colors.black45,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Visitas', style: TextStyles.tStyleNegrita16,),                      
+                  SizedBox(
+                    height: size.height * 0.3,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: 2,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 0),
+                          child: Material(
+                            child: InkWell(
+                              splashColor: const Color.fromRGBO(209, 57, 41, 1),
+                              onTap: (){},
+                              child: ListTile(
+                                dense: true,
+                                leading:  Container(
+                                  padding: const EdgeInsets.all(0),
+                                  decoration:  BoxDecoration(
+                                    //color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
+                                    color: index % 2 == 0 ? const Color.fromRGBO(230, 230, 230, 1) : const Color.fromRGBO(9, 85, 179, 1),
+                                    shape: BoxShape.circle
                                   ),
+                                  child: const Icon(Icons.house, color: Color.fromRGBO(9, 85, 179, 1),)),
+                                title: const Text('Nombre Prospecto', style: TextStyles.tStyleTileTitle2,),
+                                subtitle:  Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text('Estatus: por verificar', style: TextStyles.tStyleTileSubtitle),
+                                    Text(index % 2 == 0 ? 'por visitar' : 'visitado', style: TextStyles.tStyleTileSubtitle),
+                                  ],
                                 ),
-                              );
-                            },
+                                trailing: const IconButton(onPressed: null, icon: Icon(Icons.arrow_forward_ios_outlined, color: Color.fromRGBO(9, 85, 179, 1))),
+                              ),
+                            ),
                           ),
-                        )
-                      ],
-                    )
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(top: 15),
-                  margin: const EdgeInsets.only(bottom: 15),
-                  child: CardContainer(
-                    backgroundColor: Colors.white,
-                    boxShadowColor: Colors.black45,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Visitas', style: TextStyles.tStyleNegrita16,),                      
-                        SizedBox(
-                          height: size.height * 0.3,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: 2,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 0),
-                                child: Material(
-                                  child: InkWell(
-                                    splashColor: const Color.fromRGBO(209, 57, 41, 1),
-                                    onTap: (){},
-                                    child: ListTile(
-                                      dense: true,
-                                      leading:  Container(
-                                        padding: const EdgeInsets.all(0),
-                                        decoration:  BoxDecoration(
-                                          //color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
-                                          color: index % 2 == 0 ? const Color.fromRGBO(230, 230, 230, 1) : const Color.fromRGBO(9, 85, 179, 1),
-                                          shape: BoxShape.circle
-                                        ),
-                                        child: const Icon(Icons.house, color: Color.fromRGBO(9, 85, 179, 1),)),
-                                      title: const Text('Nombre Prospecto', style: TextStyles.tStyleTileTitle2,),
-                                      subtitle:  Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          const Text('Estatus: por verificar', style: TextStyles.tStyleTileSubtitle),
-                                          Text(index % 2 == 0 ? 'por visitar' : 'visitado', style: TextStyles.tStyleTileSubtitle),
-                                        ],
-                                      ),
-                                      trailing: const IconButton(onPressed: null, icon: Icon(Icons.arrow_forward_ios_outlined, color: Color.fromRGBO(9, 85, 179, 1))),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        )
-                      ],
-                    )
-                  ),
-                )
-              ],
+                        );
+                      },
+                    ),
+                  )
+                ],
+              )
             ),
           )
-        ]
-      ),
+        ]),
+      )
     );
   }
   
@@ -230,7 +197,10 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
           children: [
             CustomMaterialButton(text: 'Escanear INE', isNegative: true, widthContainer: size.width * .5, onPressed: (){}),
             const SizedBox(height: 2),
-            CustomMaterialButton(text: 'Captura Manual', isNegative: true, widthContainer: size.width * .5, onPressed: ()async{}),
+            CustomMaterialButton(text: 'Captura Manual', isNegative: true, widthContainer: size.width * .5, onPressed: (){
+              Navigator.pop(context);
+              Navigator.pushNamed(context, 'formSolicitudProspecto');
+            }),
           ],
         )
       ],

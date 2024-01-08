@@ -66,42 +66,57 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            const Text('Últimos Registros', style: TextStyles.tStyleNegrita12,),
-            Expanded(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: CardContainer(
-                      backgroundColor: Colors.white,
-                      paddingHorizontal: 0,
-                      child: Material(
-                        child: InkWell(
-                          splashColor: const Color.fromRGBO(209, 57, 41, 1),
-                          onTap: (){},
-                          child: ListTile(
-                            dense: true,
-                            leading:  Container(
-                              padding: const EdgeInsets.all(5),
-                              decoration: const BoxDecoration(
-                                //color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
-                                color: Color.fromRGBO(9, 85, 179, 0.1),
-                                shape: BoxShape.circle
+            CardContainer(
+              backgroundColor: Colors.white,
+              boxShadowColor: Colors.black45,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Últimas acciones', style: TextStyles.tStyleNegrita16,),
+                    ],
+                  ),
+                  SizedBox(
+                    height: size.height * 0.45,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: 10,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 0),
+                          child: Material(
+                            child: InkWell(
+                              splashColor: const Color.fromRGBO(209, 57, 41, 1),
+                              onTap: (){},
+                              child: ListTile(
+                                dense: true,
+                                leading:  Container(
+                                  padding: const EdgeInsets.all(0),
+                                  decoration: const BoxDecoration(
+                                    color: Color.fromRGBO(230, 230, 230, 1),
+                                    shape: BoxShape.circle
+                                  ),
+                                  child: const Icon(Icons.note_alt_outlined, color: Color.fromRGBO(9, 85, 179, 1),)),
+                                title: const Text('Evento descripción', style: TextStyles.tStyleTileTitle2,),
+                                subtitle: const Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('01/01/2000', style: TextStyles.tStyleTileSubtitle),
+                                  ],
+                                ),
+                                trailing: const IconButton(onPressed: null, icon: Icon(Icons.arrow_forward_ios_outlined, color: Color.fromRGBO(9, 85, 179, 1))),
                               ),
-                              child: const Icon(Icons.note_alt_outlined, color: Color.fromRGBO(9, 85, 179, 1),)),
-                            title: const Text('Evento descripción', style: TextStyles.tStyleTileTitle2,),
-                            subtitle: const Text('01/01/2000', style: TextStyles.tStyleTileSubtitle),
-                            trailing: const IconButton(onPressed: null, icon: Icon(Icons.arrow_forward_ios_outlined, color: Color.fromRGBO(9, 85, 179, 1))),
+                            ),
                           ),
-                        ),
-                      ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
-            )
+                  )
+                ],
+              )
+            ),
           ],
         )),
       bottomNavigationBar: BottomNavigationBar(
