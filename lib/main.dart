@@ -43,6 +43,7 @@ class MyApp extends StatelessWidget {
         'notificaciones': (_)=> const NotificationsScreen(),
         'dashProspeccion': (_)=> const DashProspeccionScreen(),
         'formSolicitudProspecto': (_)=> const FormSolicitudProspectoScreen(),
+        'formEvaluacionProspecto': (_)=> const FormEvaluacionProspectoScreen(),
         'dashVerificacion': (_)=> const DashVerificacionScreen(),
       },
       theme: ThemeData.light().copyWith(scaffoldBackgroundColor:  const Color.fromRGBO(230, 230, 230, 1)),

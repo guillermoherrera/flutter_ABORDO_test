@@ -78,7 +78,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Container(padding: const EdgeInsets.only(left: 0), width: double.infinity, child: Text('INFORMACIÓN DEL PROSPECTO', style: TextStyles.tStyleNegritaStrngGrey12,textAlign: TextAlign.start,)) ,
+                  Container(padding: const EdgeInsets.only(left: 0), width: double.infinity, child: Text('INFORMACIÓN DEL PROSPECTO', style: TextStyles.tStyleNegritaStrongGrey12,textAlign: TextAlign.start,)) ,
                   const Divider(),
                   const SizedBox(height: 10),
                   TextFormField(
@@ -132,7 +132,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     onTap: () => pickerFechaNacimiento(),
                   ),
                   const SizedBox(height: 50),
-                  Container(padding: const EdgeInsets.only(left: 0), width: double.infinity, child: Text('DOMICILIO', style: TextStyles.tStyleNegritaStrngGrey12,textAlign: TextAlign.start,)) ,
+                  Container(padding: const EdgeInsets.only(left: 0), width: double.infinity, child: Text('DOMICILIO', style: TextStyles.tStyleNegritaStrongGrey12,textAlign: TextAlign.start,)) ,
                   const Divider(),
                   const SizedBox(height: 10),
                   TextFormField(
@@ -234,7 +234,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     textInputAction: TextInputAction.next,
                   ),
                   const SizedBox(height: 50),
-                  Container(padding: const EdgeInsets.only(left: 0), width: double.infinity, child: Text('INFORMACIÓN ADICIONAL', style: TextStyles.tStyleNegritaStrngGrey12,textAlign: TextAlign.start,)) ,
+                  Container(padding: const EdgeInsets.only(left: 0), width: double.infinity, child: Text('INFORMACIÓN ADICIONAL', style: TextStyles.tStyleNegritaStrongGrey12,textAlign: TextAlign.start,)) ,
                   const Divider(),
                   const SizedBox(height: 10),
                   TextFormField(
@@ -268,7 +268,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
           ), 
         ),
         onPressed: (){
-      
+          Navigator.pushNamed(context, 'formEvaluacionProspecto');
         }
       ),
     );

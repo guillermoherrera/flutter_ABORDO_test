@@ -40,8 +40,12 @@ class InputDecorations{
   static InputDecoration formInputDecoration({
     required String  labelText,
     final bool? isLabel,
+    final bool? isDense,
+    final String? hintText,
+    final String? prefixText,
   }){
     return InputDecoration(
+      isDense: isDense,
       border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(0)) ,borderSide: BorderSide(width: 2.0, color:Color.fromRGBO(230, 230, 230, 1))),
       enabledBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(0)) ,borderSide: BorderSide(color: Color.fromRGBO(230, 230, 230, 1))),
       disabledBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(0)) ,borderSide: BorderSide(color: Color.fromRGBO(4, 68, 155, 1), width: 1)),
@@ -53,7 +57,10 @@ class InputDecorations{
       ),
       prefixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
       counterText: "",
-      label: isLabel == true ? Text(labelText, style: TextStyles.tStyleNegritaGrey16) : null
+      label: isLabel == true ? Text(labelText, style: TextStyles.tStyleNegritaGrey16) : null,
+      hintText: hintText,
+      hintStyle: TextStyle(fontSize: 16, color: Colors.grey.withOpacity(0.5), fontWeight: FontWeight.bold),
+      prefixText: prefixText
     );
   }
 }

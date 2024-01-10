@@ -28,5 +28,6 @@ abstract class TextStyles{
   static const TextStyle tStyleNegritaGrey14 = TextStyle(fontSize: 14, color: Colors.grey, fontWeight: FontWeight.bold);
   static const TextStyle tStyleNegritaGrey16 = TextStyle(fontSize: 16, color: Colors.grey, fontWeight: FontWeight.bold);
   
-  static TextStyle tStyleNegritaStrngGrey12 = TextStyle(fontSize: 12, color: Colors.grey[700], fontWeight: FontWeight.bold);
+  static TextStyle tStyleNegritaStrongGrey12 = TextStyle(fontSize: 12, color: Colors.grey[700], fontWeight: FontWeight.bold);
+  static TextStyle tStyleNegritaStrongGrey16 = TextStyle(fontSize: 14, color: Colors.grey[700], fontWeight: FontWeight.bold);
 }
