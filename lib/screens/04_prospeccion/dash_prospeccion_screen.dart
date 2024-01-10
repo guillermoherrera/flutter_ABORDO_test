@@ -195,7 +195,10 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            CustomMaterialButton(text: 'Escanear INE', isNegative: true, widthContainer: size.width * .5, onPressed: (){}),
+            CustomMaterialButton(text: 'Escanear INE', isNegative: true, widthContainer: size.width * .5, onPressed: (){
+              Navigator.pop(context);
+              Navigator.pushNamed(context, 'ocrSolicitudProspecto');
+            }),
             const SizedBox(height: 2),
             CustomMaterialButton(text: 'Captura Manual', isNegative: true, widthContainer: size.width * .5, onPressed: (){
               Navigator.pop(context);
