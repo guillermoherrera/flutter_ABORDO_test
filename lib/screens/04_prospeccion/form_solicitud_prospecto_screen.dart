@@ -20,6 +20,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
   DateTime fechaAux = DateTime.now();
   final formKey = GlobalKey<FormState>();
   TextEditingController dateInputController = TextEditingController();
+  bool loading = false;
 
   @override
   void initState() {
@@ -97,7 +98,11 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
         return;
       }
 
-      Navigator.pushNamed(context, 'formEvaluacionProspecto');
+      setState(() => loading = true);
+      await Future.delayed(const Duration(seconds: 3));
+      if(mounted) Navigator.pushNamed(context, 'formEvaluacionProspecto');
+      setState(() => loading = false);
+        
     }
 
     return Scaffold(
@@ -340,9 +345,10 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
         disabledColor: Colors.grey,
         elevation: 0,
         color: const Color.fromRGBO(9, 85, 179, 1),
+        onPressed: loading ? null : () => submit(),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-          child: const Row(
+          child: loading ? const CircularProgressIndicator(color: Color.fromRGBO(230, 230, 230, 1),) : const Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -350,8 +356,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
               Icon(Icons.arrow_forward_outlined, color: Color.fromRGBO(230, 230, 230, 1),)
             ],
           ), 
-        ),
-        onPressed: () => submit()
+        )
       ),
     );
   }

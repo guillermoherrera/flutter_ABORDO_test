@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_application_2/helpers/helpers.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_application_2/ui/ui_files.dart';
 import 'package:flutter_application_2/widgets/widgets.dart';
@@ -11,17 +13,19 @@ class FormEvaluacionProspectoScreen extends StatefulWidget {
 }
 
 class _FormEvaluacionProspectoScreenState extends State<FormEvaluacionProspectoScreen> {
-  int selectedPayment = 0;
-  int selectedRequisitos = 0;
-  int selectedEdad = 0;
-  int selectedInteres = 0;
-  int selectedAfiliado = 0;
+  int selectedPayment = -1;
+  int selectedRequisitos = -1;
+  int selectedEdad = -1;
+  int selectedInteres = -1;
+  int selectedAfiliado = -1;
+  final formKey = GlobalKey<FormState>();
   final _limiteController = TextEditingController();
   final _saldoController = TextEditingController();
   static const _locale = 'en';
-  String _formatNumber(String s) => NumberFormat.decimalPattern(_locale).format(int.parse(s));
+  String _formatNumber(String s) => NumberFormat.decimalPattern(_locale).format(int.parse(s == '' ? '0' : s));
   final String _currency = NumberFormat.compactSimpleCurrency(locale: _locale).currencySymbol;
-  
+  bool loading = false;
+
   changeRadio(int index) => setState(() => selectedPayment = index);
   changeRequisitos(int index) => setState(() => selectedRequisitos = index);
   changeEdad(int index) => setState(() => selectedEdad = index);
@@ -32,10 +36,54 @@ class _FormEvaluacionProspectoScreenState extends State<FormEvaluacionProspectoS
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     const double seperacion = 40;
+
+    submit() async {
+      FocusScope.of(context).unfocus();
+
+      if(!formKey.currentState!.validate()){
+        SnackBar snackBar =  SnackBar(
+          content: Text('Por favor revisa el formulario, hay campos que no se han completado correctamente.'.toUpperCase(),
+              style: const TextStyle(color: Color.fromRGBO(209, 57, 41, 1), fontWeight: FontWeight.w900, fontStyle: FontStyle.italic)),
+          backgroundColor: const Color.fromRGBO(230, 230, 230, 1),
+          behavior: SnackBarBehavior.floating,
+          margin: const EdgeInsets.only(
+            left: 10,
+            right: 10)   
+        );
+
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        return;
+      }
+
+      if(selectedPayment == -1 || selectedRequisitos == -1 || selectedEdad == -1 || selectedInteres == -1 || selectedAfiliado == -1){
+        
+        String mensaje = selectedPayment == -1 ? 'Indica si esta ¿Vencido de alguna Relacion?' : selectedRequisitos == -1 ? 'Indica si ¿Reunue los REquisitos?' : selectedEdad == -1 ? 'Indica si ¿Cumple la Edad?' : selectedInteres == -1 ? 'Indica si ¿Mostro Interes?' : selectedAfiliado == -1  ? 'Indica si ¿Esta Afiliado?' : 'Contacta a soporte';
+        
+        SnackBar snackBar =  SnackBar(
+          content: Text('$mensaje.'.toUpperCase(),
+              style: const TextStyle(color: Color.fromRGBO(209, 57, 41, 1), fontWeight: FontWeight.w900, fontStyle: FontStyle.italic)),
+          backgroundColor: const Color.fromRGBO(230, 230, 230, 1),
+          behavior: SnackBarBehavior.floating,
+          margin: const EdgeInsets.only(
+            left: 10,
+            right: 10)   
+        );
+
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        return;
+      }
+
+      setState(() => loading = true);
+      await Future.delayed(const Duration(seconds: 3));
+      //if(mounted) Navigator.pushNamed(context, 'dashProspeccion');
+      if(mounted) Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SuccessEvalScreen() ));
+      setState(() => loading = false);
+    }
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
-          color: Color.fromRGBO(9, 85, 179, 1)
+          color: Color.fromRGBO(249, 251, 253, 1)
         ),
         backgroundColor: const Color.fromRGBO(230, 230, 230, 1),
         title: const Center(child: Text('Solicitud - Evaluación', style: TextStyles.tStyleAppBar2,)),
@@ -54,6 +102,8 @@ class _FormEvaluacionProspectoScreenState extends State<FormEvaluacionProspectoS
       body: Container(
         color: Colors.white,
         child: Form(
+          key: formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: SingleChildScrollView(
@@ -67,8 +117,11 @@ class _FormEvaluacionProspectoScreenState extends State<FormEvaluacionProspectoS
                     style: const TextStyle(fontWeight: FontWeight.bold),
                     textAlign: TextAlign.end,
                     textCapitalization: TextCapitalization.words,
-                    decoration: InputDecorations.formInputDecoration(labelText: 'Antigüedad', isDense: true),
+                    decoration: InputDecorations.formInputDecoration(labelText: 'Antigüedad', isDense: true, suffixText: 'Año(s)'),
                     textInputAction: TextInputAction.next,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly], 
+                    validator: (value) => FormValidators.existValidator(value),
                   ),
                   const SizedBox(height: seperacion/10),
                   TextFormField(
@@ -88,6 +141,7 @@ class _FormEvaluacionProspectoScreenState extends State<FormEvaluacionProspectoS
                     decoration: InputDecorations.formInputDecoration(labelText: 'Límite', isDense: true, prefixText: _currency),
                     textInputAction: TextInputAction.next,
                     keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly], 
                     onChanged: (string) {
                       string = _formatNumber(string.replaceAll(',', ''));
                       _limiteController.value = TextEditingValue(
@@ -95,6 +149,7 @@ class _FormEvaluacionProspectoScreenState extends State<FormEvaluacionProspectoS
                         selection: TextSelection.collapsed(offset: string.length),
                       );
                     },
+                    validator: (value) => FormValidators.existValidator(value),
                   ),
                   const SizedBox(height: seperacion/10),
                   TextFormField(
@@ -113,6 +168,7 @@ class _FormEvaluacionProspectoScreenState extends State<FormEvaluacionProspectoS
                     textCapitalization: TextCapitalization.words,
                     decoration: InputDecorations.formInputDecoration(labelText: 'Saldo', isDense: true, prefixText: _currency),
                     keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly], 
                     onChanged: (string) {
                       string = _formatNumber(string.replaceAll(',', ''));
                       _saldoController.value = TextEditingValue(
@@ -120,6 +176,7 @@ class _FormEvaluacionProspectoScreenState extends State<FormEvaluacionProspectoS
                         selection: TextSelection.collapsed(offset: string.length),
                       );
                     },
+                    validator: (value) => FormValidators.existValidator(value),
                     textInputAction: TextInputAction.next,
                   ),
                   const SizedBox(height: seperacion/10),
@@ -162,6 +219,8 @@ class _FormEvaluacionProspectoScreenState extends State<FormEvaluacionProspectoS
                     textCapitalization: TextCapitalization.words,
                     decoration: InputDecorations.formInputDecoration(labelText: 'Clientes', isDense: true),
                     keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly], 
+                    validator: (value) => FormValidators.existValidator(value),
                     textInputAction: TextInputAction.next,
                   ),
                   const SizedBox(height: seperacion/10),
@@ -278,21 +337,53 @@ class _FormEvaluacionProspectoScreenState extends State<FormEvaluacionProspectoS
         minWidth: size.width * 1,
         disabledColor: Colors.grey,
         elevation: 0,
-        color: const Color.fromRGBO(9, 85, 179, 1),
+        color: const Color.fromRGBO(9, 179, 85, 1),
+        onPressed: loading ? null : () => submit(),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-          child: const Row(
+          child: loading ? const CircularProgressIndicator(color: Color.fromRGBO(230, 230, 230, 1),) : const Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Guardar Evaluación ', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color.fromRGBO(230, 230, 230, 1)),),
-              Icon(Icons.check_outlined, color: Color.fromRGBO(230, 230, 230, 1),)
+              Text('Guardar Evaluación ', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color.fromRGBO(250, 250, 250, 1)),),
+              Icon(Icons.check_outlined, color: Color.fromRGBO(250, 250, 250, 1),)
             ],
           ), 
+        )
+      ),
+    );
+  }
+}
+
+class SuccessEvalScreen extends StatelessWidget {
+  const SuccessEvalScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: const Color.fromRGBO(230, 230, 230, 1),
+          title: const Center(child: Text('Éxito', style: TextStyles.tStyleNegritaGrey16,))),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 50),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.fact_check_outlined, size: 150, color: Color.fromRGBO(9, 85, 179, .8),),
+                const Text('Bien hecho.', style: TextStyles.tStyleNegrita24),
+                const Text('El prospecto y su evaluación se han registrado correctamente.', style: TextStyles.tStyleNegrita16, textAlign: TextAlign.center,),
+                const SizedBox(height: 20),
+                const Text('Ahora continua el proceso de alta desde la pantalla principal de prospectos.', style: TextStyles.tStyleNegritaGrey16, textAlign: TextAlign.center),
+                const SizedBox(height: 30),
+                CustomElevatedButton(text: 'Continuar con el alta',onPressed: () => Navigator.pushNamed(context, 'dashProspeccion'))
+              ],
+            ),
+          ),
         ),
-        onPressed: (){
-      
-        }
       ),
     );
   }

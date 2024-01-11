@@ -21,8 +21,20 @@ class OcrSolicitudProspectoScreen extends StatefulWidget {
   State<OcrSolicitudProspectoScreen> createState() => _OcrSolicitudProspectoScreenState();
 }
 
-class _OcrSolicitudProspectoScreenState extends State<OcrSolicitudProspectoScreen> {
+class _OcrSolicitudProspectoScreenState extends State<OcrSolicitudProspectoScreen> with WidgetsBindingObserver {
   final _textRecognizaer = TextRecognizer();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -131,7 +143,7 @@ class _OcrSolicitudProspectoScreenState extends State<OcrSolicitudProspectoScree
           estado: domicilio[5]);
 
         prospectoBloc.add(NewProspectoOcr(prospecto));
-        navigator.pushNamed('formSolicitudProspecto');
+        navigator.pushReplacementNamed('formSolicitudProspecto');
       } catch (e) {
         if(context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Asegurate que la INE este dento del cuadro punteado u Vulve a Intentarlo. \nError:${e.toString()}')));
       }

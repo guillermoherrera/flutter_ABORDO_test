@@ -43,6 +43,7 @@ class InputDecorations{
     final bool? isDense,
     final String? hintText,
     final String? prefixText,
+    final String? suffixText
   }){
     return InputDecoration(
       isDense: isDense,
@@ -60,7 +61,8 @@ class InputDecorations{
       label: isLabel == true ? Text(labelText, style: TextStyles.tStyleNegritaGrey16) : null,
       hintText: hintText,
       hintStyle: TextStyle(fontSize: 16, color: Colors.grey.withOpacity(0.5), fontWeight: FontWeight.bold),
-      prefixText: prefixText
+      prefixText: prefixText,
+      suffix: Text(suffixText ?? '')
     );
   }
 }
