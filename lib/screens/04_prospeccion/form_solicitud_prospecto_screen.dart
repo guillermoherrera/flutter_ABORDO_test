@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/blocs/blocs.dart';
 import 'package:flutter_application_2/helpers/helpers.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_holo_date_picker/date_picker.dart';
 import 'package:flutter_holo_date_picker/i18n/date_picker_i18n.dart';
 import 'package:intl/intl.dart';
@@ -18,7 +20,14 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
   DateTime fechaAux = DateTime.now();
   TextEditingController dateInputController = TextEditingController();
 
-  changeRadio(int index) => setState(() => selectedPayment = index);
+  @override
+  void initState() {
+    super.initState();
+    final prospectoEBloc = BlocProvider.of<ProspectoBloc>(context, listen: false);
+    String lol = prospectoEBloc.state.prospecto?.fechaNacimiento ?? '';
+    print('object');
+    dateInputController.text = lol;
+  }
 
   pickerFechaNacimiento() async {
     var datePicked = await DatePicker.showSimpleDatePicker(
@@ -26,7 +35,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
       initialDate: DateTime(2000, 1, 1),
       firstDate: DateTime(fechaAux.year - 70, fechaAux.month, fechaAux.day),
       lastDate: DateTime(fechaAux.year - 20, fechaAux.month, fechaAux.day),
-      dateFormat: "dd-MMMM-yyyy",
+      dateFormat: "dd-MM-yyyy",
       locale: DateTimePickerLocale.es,
       titleText: '',
       confirmText: 'Seleccionar',
@@ -39,7 +48,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
 
     if (datePicked != null) {
       Intl.defaultLocale = 'es';
-      var inputFormat = DateFormat('dd/MMMM/yyyy');
+      var inputFormat = DateFormat('dd/MM/yyyy');
       dateInputController.text = inputFormat.format(datePicked);
     }else{
       final snackBar = SnackBar(content: Text("No se seleccionó fecha $datePicked"));
@@ -51,6 +60,10 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     const double seperacion = 10;
+    final prospectoBloc = context.watch<ProspectoBloc>();
+    
+    changeRadio(String sexo) => prospectoBloc.add(ChangeProspectoSexo(sexo));
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
@@ -87,6 +100,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     textCapitalization: TextCapitalization.words,
                     decoration: InputDecorations.formInputDecoration(labelText: 'Nombre'),
                     textInputAction: TextInputAction.next,
+                    initialValue: prospectoBloc.state.prospecto?.nombre,
                   ),
                   const SizedBox(height: seperacion), 
                   TextFormField(
@@ -95,6 +109,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     textCapitalization: TextCapitalization.words,
                     decoration: InputDecorations.formInputDecoration(labelText: 'Primer Apellido'),
                     textInputAction: TextInputAction.next,
+                    initialValue: prospectoBloc.state.prospecto?.primerApellido,
                   ),
                   const SizedBox(height: seperacion), 
                   TextFormField(
@@ -103,6 +118,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     textCapitalization: TextCapitalization.words,
                     decoration: InputDecorations.formInputDecoration(labelText: 'Segundo Apellido'),
                     textInputAction: TextInputAction.next,
+                    initialValue: prospectoBloc.state.prospecto?.segundoApellido,
                   ),
                   const SizedBox(height: seperacion),
                   Container(padding: const EdgeInsets.only(left: 10), width: double.infinity, child: const Text('Sexo', style: TextStyles.tStyleNegritaGrey16,textAlign: TextAlign.start,)) ,
@@ -110,13 +126,13 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
-                        child: CustomRadioButton(radioName: 'Masculino', index: 0, selectedPayment: selectedPayment, onPressed: changeRadio,)
+                        child: CustomRadioSexoButton(radioName: 'Masculino', index: 'H', selectedPayment: prospectoBloc.state.prospecto?.sexo ?? '', onPressed: changeRadio,)
                       ),
                       const SizedBox(
                         width: 20,
                       ),
                       Expanded(
-                        child: CustomRadioButton(radioName: 'Femenino', index: 1, selectedPayment: selectedPayment, onPressed: changeRadio,)
+                        child: CustomRadioSexoButton(radioName: 'Femenino', index: 'M', selectedPayment: prospectoBloc.state.prospecto?.sexo ?? '', onPressed: changeRadio,)
                       )
                     ],
                   ),
@@ -141,6 +157,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     textCapitalization: TextCapitalization.words,
                     decoration: InputDecorations.formInputDecoration(labelText: 'Calle'),
                     textInputAction: TextInputAction.next,
+                    initialValue: prospectoBloc.state.prospecto?.calle,
                   ),
                   const SizedBox(height: seperacion),
                   Row(
@@ -153,6 +170,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                           textCapitalization: TextCapitalization.words,
                           decoration: InputDecorations.formInputDecoration(labelText: 'No Ext.'),
                           textInputAction: TextInputAction.next,
+                          initialValue: prospectoBloc.state.prospecto?.noExterior,
                         ),
                       ),
                       const SizedBox(
@@ -178,6 +196,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     keyboardType: TextInputType.number,
                     maxLength: 5,
                     textInputAction: TextInputAction.next,
+                    initialValue: prospectoBloc.state.prospecto?.cp,
                   ),
                   const SizedBox(height: seperacion),
                   TextFormField(
@@ -186,6 +205,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     textCapitalization: TextCapitalization.words,
                     decoration: InputDecorations.formInputDecoration(labelText: 'Colonia'),
                     textInputAction: TextInputAction.next,
+                    initialValue: prospectoBloc.state.prospecto?.colonia,
                   ),
                   const SizedBox(height: seperacion),
                   TextFormField(
@@ -202,6 +222,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     textCapitalization: TextCapitalization.words,
                     decoration: InputDecorations.formInputDecoration(labelText: 'Ciudad'),
                     textInputAction: TextInputAction.next,
+                    initialValue: prospectoBloc.state.prospecto?.ciudad,
                   ),
                   const SizedBox(height: seperacion),
                   TextFormField(
@@ -210,6 +231,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     textCapitalization: TextCapitalization.words,
                     decoration: InputDecorations.formInputDecoration(labelText: 'Estado'),
                     textInputAction: TextInputAction.next,
+                    initialValue: prospectoBloc.state.prospecto?.estado,
                   ),
                   const SizedBox(height: seperacion),
                   TextFormField(
