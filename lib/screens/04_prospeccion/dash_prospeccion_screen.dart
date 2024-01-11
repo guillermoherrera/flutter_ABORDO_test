@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/blocs/prospecto/prospecto_bloc.dart';
+import 'package:flutter_application_2/models/models.dart';
 import 'package:flutter_application_2/ui/ui_files.dart';
 import 'package:flutter_application_2/widgets/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DashProspeccionScreen extends StatefulWidget {
   const DashProspeccionScreen({super.key});
@@ -13,12 +16,14 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final prospectoBloc = context.watch<ProspectoBloc>();
+    
     return Scaffold(
       body: CustomBackground(
         appBarTitle: 'Prospección',
         content: Column(children: [
           _header(),
-          _actions(size),
+          _actions(size, prospectoBloc),
           Container(
             padding: const EdgeInsets.only(top: 15),
             child: CardContainer(
@@ -158,12 +163,12 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
     );
   }
 
-  Widget _actions(Size size){
+  Widget _actions(Size size, ProspectoBloc prospectoBloc){
     return Padding(
       padding: const EdgeInsets.only(top: 25,left: 20, right: 20),
       child: Row(
         children: [
-          CustomElevatedButton(text: 'Nuevo Prospecto',onPressed: ()=>_displayBottomSheet(context, size),)
+          CustomElevatedButton(text: 'Nuevo Prospecto',onPressed: ()=>_displayBottomSheet(context, size, prospectoBloc),)
         ],
       ),
     );
@@ -180,7 +185,7 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
     );
   }
 
-  Future _displayBottomSheet(BuildContext context, Size size)async{
+  Future _displayBottomSheet(BuildContext context, Size size, ProspectoBloc prospectoBloc)async{
     Widget widget = Column(
       children: [
         const SizedBox(height: 10),
@@ -201,6 +206,7 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
             }),
             const SizedBox(height: 2),
             CustomMaterialButton(text: 'Captura Manual', isNegative: true, widthContainer: size.width * .5, onPressed: (){
+              prospectoBloc.add(NewProspecto(Prospecto()));
               Navigator.pop(context);
               Navigator.pushNamed(context, 'formSolicitudProspecto');
             }),

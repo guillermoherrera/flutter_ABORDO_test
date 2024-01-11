@@ -18,6 +18,7 @@ class FormSolicitudProspectoScreen extends StatefulWidget {
 class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScreen> {
   int selectedPayment = 0;
   DateTime fechaAux = DateTime.now();
+  final formKey = GlobalKey<FormState>();
   TextEditingController dateInputController = TextEditingController();
 
   @override
@@ -25,7 +26,6 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
     super.initState();
     final prospectoEBloc = BlocProvider.of<ProspectoBloc>(context, listen: false);
     String lol = prospectoEBloc.state.prospecto?.fechaNacimiento ?? '';
-    print('object');
     dateInputController.text = lol;
   }
 
@@ -64,6 +64,42 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
     
     changeRadio(String sexo) => prospectoBloc.add(ChangeProspectoSexo(sexo));
 
+    submit() async {
+      FocusScope.of(context).unfocus();
+      
+      if(!formKey.currentState!.validate()){
+        SnackBar snackBar =  SnackBar(
+          content: Text('Por favor revisa el formulario, hay campos que no se han completado correctamente.'.toUpperCase(),
+              style: const TextStyle(color: Color.fromRGBO(209, 57, 41, 1), fontWeight: FontWeight.w900, fontStyle: FontStyle.italic)),
+          backgroundColor: const Color.fromRGBO(230, 230, 230, 1),
+          behavior: SnackBarBehavior.floating,
+          margin: const EdgeInsets.only(
+            left: 10,
+            right: 10)   
+        );
+
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        return;
+      }
+
+      if(prospectoBloc.state.prospecto?.sexo == null || prospectoBloc.state.prospecto?.sexo == '' ){
+        SnackBar snackBar =  SnackBar(
+          content: Text('Por favor indica el sexo del prospecto.'.toUpperCase(),
+              style: const TextStyle(color: Color.fromRGBO(209, 57, 41, 1), fontWeight: FontWeight.w900, fontStyle: FontStyle.italic)),
+          backgroundColor: const Color.fromRGBO(230, 230, 230, 1),
+          behavior: SnackBarBehavior.floating,
+          margin: const EdgeInsets.only(
+            left: 10,
+            right: 10)   
+        );
+
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        return;
+      }
+
+      Navigator.pushNamed(context, 'formEvaluacionProspecto');
+    }
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
@@ -86,6 +122,8 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
       body: Container(
         color: Colors.white,
         child: Form(
+          key: formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: SingleChildScrollView(
@@ -101,6 +139,8 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     decoration: InputDecorations.formInputDecoration(labelText: 'Nombre'),
                     textInputAction: TextInputAction.next,
                     initialValue: prospectoBloc.state.prospecto?.nombre,
+                    validator: (value) => FormValidators.existValidator(value),
+                    inputFormatters: [UpperCaseTextFormatter()]
                   ),
                   const SizedBox(height: seperacion), 
                   TextFormField(
@@ -110,6 +150,8 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     decoration: InputDecorations.formInputDecoration(labelText: 'Primer Apellido'),
                     textInputAction: TextInputAction.next,
                     initialValue: prospectoBloc.state.prospecto?.primerApellido,
+                    validator: (value) => FormValidators.existValidator(value),
+                    inputFormatters: [UpperCaseTextFormatter()]
                   ),
                   const SizedBox(height: seperacion), 
                   TextFormField(
@@ -119,6 +161,8 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     decoration: InputDecorations.formInputDecoration(labelText: 'Segundo Apellido'),
                     textInputAction: TextInputAction.next,
                     initialValue: prospectoBloc.state.prospecto?.segundoApellido,
+                    validator: (value) => FormValidators.existValidator(value),
+                    inputFormatters: [UpperCaseTextFormatter()]
                   ),
                   const SizedBox(height: seperacion),
                   Container(padding: const EdgeInsets.only(left: 10), width: double.infinity, child: const Text('Sexo', style: TextStyles.tStyleNegritaGrey16,textAlign: TextAlign.start,)) ,
@@ -144,6 +188,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     textCapitalization: TextCapitalization.words,
                     decoration: InputDecorations.formInputDecoration(labelText: 'Fecha Nacimiento'),
                     textInputAction: TextInputAction.next,
+                    validator: (value) => FormValidators.existValidator(value),
                     readOnly: true,
                     onTap: () => pickerFechaNacimiento(),
                   ),
@@ -158,6 +203,8 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     decoration: InputDecorations.formInputDecoration(labelText: 'Calle'),
                     textInputAction: TextInputAction.next,
                     initialValue: prospectoBloc.state.prospecto?.calle,
+                    validator: (value) => FormValidators.existValidator(value),
+                    inputFormatters: [UpperCaseTextFormatter()]
                   ),
                   const SizedBox(height: seperacion),
                   Row(
@@ -171,6 +218,8 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                           decoration: InputDecorations.formInputDecoration(labelText: 'No Ext.'),
                           textInputAction: TextInputAction.next,
                           initialValue: prospectoBloc.state.prospecto?.noExterior,
+                          validator: (value) => FormValidators.existValidator(value),
+                          inputFormatters: [UpperCaseTextFormatter()]
                         ),
                       ),
                       const SizedBox(
@@ -181,8 +230,9 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                           style: const TextStyle(fontWeight: FontWeight.bold),
                           textAlign: TextAlign.end,
                           textCapitalization: TextCapitalization.words,
-                          decoration: InputDecorations.formInputDecoration(labelText: 'No Int.'),
+                          decoration: InputDecorations.formInputDecoration(labelText: 'No Int.', hintText: 'Opcional'),
                           textInputAction: TextInputAction.next,
+                          inputFormatters: [UpperCaseTextFormatter()]
                         ),
                       )
                     ],
@@ -197,6 +247,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     maxLength: 5,
                     textInputAction: TextInputAction.next,
                     initialValue: prospectoBloc.state.prospecto?.cp,
+                    validator: (value) => FormValidators.existValidator(value),
                   ),
                   const SizedBox(height: seperacion),
                   TextFormField(
@@ -206,14 +257,17 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     decoration: InputDecorations.formInputDecoration(labelText: 'Colonia'),
                     textInputAction: TextInputAction.next,
                     initialValue: prospectoBloc.state.prospecto?.colonia,
+                    validator: (value) => FormValidators.existValidator(value),
+                    inputFormatters: [UpperCaseTextFormatter()]
                   ),
                   const SizedBox(height: seperacion),
                   TextFormField(
                     style: const TextStyle(fontWeight: FontWeight.bold),
                     textAlign: TextAlign.end,
                     textCapitalization: TextCapitalization.words,
-                    decoration: InputDecorations.formInputDecoration(labelText: 'Delegación'),
+                    decoration: InputDecorations.formInputDecoration(labelText: 'Delegación', hintText: 'Opcional'),
                     textInputAction: TextInputAction.next,
+                    inputFormatters: [UpperCaseTextFormatter()]
                   ),
                   const SizedBox(height: seperacion),
                   TextFormField(
@@ -223,6 +277,8 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     decoration: InputDecorations.formInputDecoration(labelText: 'Ciudad'),
                     textInputAction: TextInputAction.next,
                     initialValue: prospectoBloc.state.prospecto?.ciudad,
+                    validator: (value) => FormValidators.existValidator(value),
+                    inputFormatters: [UpperCaseTextFormatter()]
                   ),
                   const SizedBox(height: seperacion),
                   TextFormField(
@@ -232,13 +288,15 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     decoration: InputDecorations.formInputDecoration(labelText: 'Estado'),
                     textInputAction: TextInputAction.next,
                     initialValue: prospectoBloc.state.prospecto?.estado,
+                    validator: (value) => FormValidators.existValidator(value),
+                    inputFormatters: [UpperCaseTextFormatter()]
                   ),
                   const SizedBox(height: seperacion),
                   TextFormField(
                     style: const TextStyle(fontWeight: FontWeight.bold),
                     textAlign: TextAlign.end,
                     textCapitalization: TextCapitalization.words,
-                    decoration: InputDecorations.formInputDecoration(labelText: 'Teléfono Fijo'),
+                    decoration: InputDecorations.formInputDecoration(labelText: 'Teléfono Fijo', hintText: 'Opcional'),
                     keyboardType: TextInputType.number,
                     maxLength: 15,
                     inputFormatters: [FormMasked.telMaskFormatter],
@@ -253,6 +311,9 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     keyboardType: TextInputType.number,
                     maxLength: 15,
                     inputFormatters: [FormMasked.telMaskFormatter],
+                    validator: (value){
+                      return FormValidators.telValidator(value?.replaceAll(RegExp('[^0-9]'), ''));
+                    },
                     textInputAction: TextInputAction.next,
                   ),
                   const SizedBox(height: 50),
@@ -263,9 +324,10 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     style: const TextStyle(fontWeight: FontWeight.bold),
                     textAlign: TextAlign.justify,
                     textCapitalization: TextCapitalization.words,
-                    decoration: InputDecorations.formInputDecoration(labelText: 'Observaciones', isLabel: true),
+                    decoration: InputDecorations.formInputDecoration(labelText: 'Observaciones', isLabel: true, hintText: 'Opcional'),
                     textInputAction: TextInputAction.next,
                     maxLines: 4,
+                    inputFormatters: [UpperCaseTextFormatter()]
                   ),
                 ],
               ),
@@ -289,9 +351,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
             ],
           ), 
         ),
-        onPressed: (){
-          Navigator.pushNamed(context, 'formEvaluacionProspecto');
-        }
+        onPressed: () => submit()
       ),
     );
   }

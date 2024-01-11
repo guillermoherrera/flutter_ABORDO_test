@@ -8,6 +8,8 @@ part 'prospecto_event.dart';
 class ProspectoBloc extends Bloc<ProspectoEvent, ProspectoState>{
 
   ProspectoBloc() : super(const ProspectoInitialState()){
+    on<NewProspecto>((event, emit) => emit(ProspectoSetState(event.prospecto)));
+    
     on<NewProspectoOcr>((event, emit) => emit(ProspectoOcrSetState(event.prospecto)));
 
     on<ChangeProspectoSexo>((event, emit) {

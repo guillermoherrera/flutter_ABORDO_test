@@ -15,6 +15,11 @@ class ProspectoInitialState extends ProspectoState{
   const ProspectoInitialState(): super(isFromOcr: false, prospecto: null);
 }
 
+class ProspectoSetState extends ProspectoState{
+  final Prospecto prospecto;
+
+  const ProspectoSetState(this.prospecto): super(isFromOcr: false, prospecto: prospecto);
+}
 class ProspectoOcrSetState extends ProspectoState{
   final Prospecto prospectoOcr;
 
