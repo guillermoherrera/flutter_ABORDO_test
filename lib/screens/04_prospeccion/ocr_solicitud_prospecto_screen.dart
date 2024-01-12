@@ -14,6 +14,10 @@ import 'package:mask_for_camera_view/mask_for_camera_view_inside_line_position.d
 import 'package:mask_for_camera_view/mask_for_camera_view_result.dart';
 import 'package:path_provider/path_provider.dart';
 
+// ignore: library_prefixes, depend_on_referenced_packages
+import 'package:image/image.dart' as IMG;
+
+
 class OcrSolicitudProspectoScreen extends StatefulWidget {
   const OcrSolicitudProspectoScreen({super.key});
 
@@ -44,11 +48,29 @@ class _OcrSolicitudProspectoScreenState extends State<OcrSolicitudProspectoScree
     Future<void> scannImage(MaskForCameraViewResult res) async{
       final navigator = Navigator.of(context);
       try {
+        IMG.Image? img = IMG.decodeImage(res.croppedImage!);
+        int w = img?.width ?? 0;
+        int h = img?.height ?? 0;
+        
         final tempDir = await getTemporaryDirectory();
-        File file = await File('${tempDir.path}/image.png').create();
+        File file = await File('${tempDir.path}/image.jpg').create();
         file.writeAsBytesSync(res.croppedImage!);
 
-        final inputImage = InputImage.fromFile(file);
+        File rotateImage;
+        if(h > w){
+          final newFile = await file.copy(file.path);
+          final originalImage = IMG.decodeImage(res.croppedImage!);
+          IMG.Image fixedImage;
+          fixedImage = IMG.copyRotate(originalImage!, 180);
+
+          final fixedFile = await newFile.writeAsBytes(IMG.encodeJpg(fixedImage),
+            flush: true);
+          rotateImage = fixedFile;
+        }else{
+          rotateImage = file;
+        }
+
+        final inputImage = InputImage.fromFile(rotateImage);
         final recognizedText = await _textRecognizaer.processImage(inputImage);
 
         final dateFormat = RegExp(r'^([0-9][0-9]\/[012][0-9]\/[0-9]{4})');
@@ -127,21 +149,21 @@ class _OcrSolicitudProspectoScreenState extends State<OcrSolicitudProspectoScree
               .map((string) => int.tryParse(string) ?? string)
         ];
 
-        List<dynamic> calleNumero = await weirdSplit(domicilio[1]);
+        List<dynamic> calleNumero = domicilio.length >= 2 ? await weirdSplit(domicilio[1]) : ['',''];
 
         Prospecto prospecto = Prospecto(
-          nombre: nombre[3], 
-          primerApellido: nombre[1], 
-          segundoApellido: nombre[2], 
+          nombre: nombre.length >= 4 ? nombre[3] :'', 
+          primerApellido: nombre.length >= 2 ? nombre[1] : '', 
+          segundoApellido: nombre.length >= 3 ? nombre[2] : '', 
           fechaNacimiento: fechaNacimiento, 
           sexo: sexo,
-          calle: calleNumero[0], 
-          noExterior: '${calleNumero[1]}', 
-          colonia: domicilio[2], 
-          ciudad: domicilio[3], 
-          cp: domicilio[4], 
-          estado: domicilio[5],
-          image: res.firstPartImage);
+          calle: calleNumero.isNotEmpty ? calleNumero[0] : '', 
+          noExterior: '${calleNumero.length >= 2 ? calleNumero[1] : ''}', 
+          colonia: domicilio.length >= 3 ? domicilio[2] : '', 
+          ciudad: domicilio.length >= 4 ? domicilio[3] : '', 
+          cp: domicilio.length >= 5 ? domicilio[4] : '', 
+          estado: domicilio.length >= 6 ? domicilio[5] : '',
+          image: rotateImage.readAsBytesSync());
 
         prospectoBloc.add(NewProspectoOcr(prospecto));
         navigator.pushReplacementNamed('formSolicitudProspecto');

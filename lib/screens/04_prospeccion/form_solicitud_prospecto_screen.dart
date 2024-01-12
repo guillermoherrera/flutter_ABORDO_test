@@ -62,12 +62,12 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
     final size = MediaQuery.of(context).size;
     const double seperacion = 10;
     final prospectoBloc = context.watch<ProspectoBloc>();
-    
+
     changeRadio(String sexo) => prospectoBloc.add(ChangeProspectoSexo(sexo));
 
     submit() async {
       FocusScope.of(context).unfocus();
-      
+
       if(!formKey.currentState!.validate()){
         SnackBar snackBar =  SnackBar(
           content: Text('Por favor revisa el formulario, hay campos que no se han completado correctamente.'.toUpperCase(),
@@ -76,7 +76,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
           behavior: SnackBarBehavior.floating,
           margin: const EdgeInsets.only(
             left: 10,
-            right: 10)   
+            right: 10)
         );
 
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -91,7 +91,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
           behavior: SnackBarBehavior.floating,
           margin: const EdgeInsets.only(
             left: 10,
-            right: 10)   
+            right: 10)
         );
 
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -102,7 +102,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
       await Future.delayed(const Duration(seconds: 3));
       if(mounted) Navigator.pushNamed(context, 'formEvaluacionProspecto');
       setState(() => loading = false);
-        
+
     }
 
     return Scaffold(
@@ -135,12 +135,12 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  prospectoBloc.state.prospecto?.image == null ? Container() : Container(
-                    margin: const EdgeInsets.only(bottom: 10.0),
-                    width: double.infinity,
-                    height: 100,
-                    child: CircleAvatar(backgroundColor: Colors.transparent,child: ClipOval(child: Image.memory(prospectoBloc.state.prospecto!.image!,fit: BoxFit.cover, width: 100, height: 100,))),
-                  ),
+                  // prospectoBloc.state.prospecto?.image == null ? Container() : Container(
+                  //   margin: const EdgeInsets.only(bottom: 10.0),
+                  //   height: 60,
+                  //   width: 100,
+                  //   child: Image.memory(prospectoBloc.state.prospecto!.image!,fit: BoxFit.cover),
+                  // ),
                   Container(padding: const EdgeInsets.only(left: 0), width: double.infinity, child: Text('INFORMACIÓN DEL PROSPECTO', style: TextStyles.tStyleNegritaStrongGrey12,textAlign: TextAlign.start,)) ,
                   const Divider(),
                   const SizedBox(height: 10),
@@ -154,7 +154,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     validator: (value) => FormValidators.existValidator(value),
                     inputFormatters: [UpperCaseTextFormatter()]
                   ),
-                  const SizedBox(height: seperacion), 
+                  const SizedBox(height: seperacion),
                   TextFormField(
                     style: const TextStyle(fontWeight: FontWeight.bold),
                     textAlign: TextAlign.end,
@@ -165,7 +165,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     validator: (value) => FormValidators.existValidator(value),
                     inputFormatters: [UpperCaseTextFormatter()]
                   ),
-                  const SizedBox(height: seperacion), 
+                  const SizedBox(height: seperacion),
                   TextFormField(
                     style: const TextStyle(fontWeight: FontWeight.bold),
                     textAlign: TextAlign.end,
@@ -192,7 +192,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                       )
                     ],
                   ),
-                  const SizedBox(height: seperacion), 
+                  const SizedBox(height: seperacion),
                   TextFormField(
                     controller: dateInputController,
                     style: const TextStyle(fontWeight: FontWeight.bold),
@@ -362,7 +362,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
               Text('Guardar y Continuar ', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color.fromRGBO(230, 230, 230, 1)),),
               Icon(Icons.arrow_forward_outlined, color: Color.fromRGBO(230, 230, 230, 1),)
             ],
-          ), 
+          ),
         )
       ),
     );
