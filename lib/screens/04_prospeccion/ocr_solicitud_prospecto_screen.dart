@@ -1,9 +1,9 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/blocs/blocs.dart';
 import 'package:flutter_application_2/models/models.dart';
+import 'package:flutter_application_2/widgets/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:mask_for_camera_view/mask_for_camera_view.dart';
@@ -41,12 +41,12 @@ class _OcrSolicitudProspectoScreenState extends State<OcrSolicitudProspectoScree
     final size = MediaQuery.of(context).size;
     final prospectoBloc = context.watch<ProspectoBloc>();
     
-    Future<void> scannImage(Uint8List imageBytes) async{
+    Future<void> scannImage(MaskForCameraViewResult res) async{
       final navigator = Navigator.of(context);
       try {
         final tempDir = await getTemporaryDirectory();
         File file = await File('${tempDir.path}/image.png').create();
-        file.writeAsBytesSync(imageBytes);
+        file.writeAsBytesSync(res.croppedImage!);
 
         final inputImage = InputImage.fromFile(file);
         final recognizedText = await _textRecognizaer.processImage(inputImage);
@@ -140,12 +140,13 @@ class _OcrSolicitudProspectoScreenState extends State<OcrSolicitudProspectoScree
           colonia: domicilio[2], 
           ciudad: domicilio[3], 
           cp: domicilio[4], 
-          estado: domicilio[5]);
+          estado: domicilio[5],
+          image: res.firstPartImage);
 
         prospectoBloc.add(NewProspectoOcr(prospecto));
         navigator.pushReplacementNamed('formSolicitudProspecto');
       } catch (e) {
-        if(context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Asegurate que la INE este dento del cuadro punteado u Vulve a Intentarlo. \nError:${e.toString()}')));
+        if(context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Vulve a Intentarlo y asegurate mantener la INE dento del cuadro punteado mientras se captura. \nError:${e.toString()}')));
       }
     }
 
@@ -168,7 +169,7 @@ class _OcrSolicitudProspectoScreenState extends State<OcrSolicitudProspectoScree
             position: MaskForCameraViewInsideLinePosition.partFour,
             direction: MaskForCameraViewInsideLineDirection.vertical,
           ),
-          onTake: (MaskForCameraViewResult? res) => {if (res != null) scannImage(res.croppedImage!)}
+          onTake: (MaskForCameraViewResult? res) => {if (res != null) scannImage(res)}
         ),
         SafeArea(
           child: Align(alignment: Alignment.topRight,
@@ -182,6 +183,24 @@ class _OcrSolicitudProspectoScreenState extends State<OcrSolicitudProspectoScree
                   color: const Color.fromRGBO(230, 230, 230, 1),
                 )),
           ),),
+        ),
+        Align(
+          alignment: Alignment.bottomRight,
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 10,right: 10),
+            child: CustomElevatedButton(text: 'Manual',onPressed: ()=>Navigator.pushReplacementNamed(context, 'formSolicitudProspecto'),),
+          ),
+        ),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: RotatedBox(
+            quarterTurns: 1,
+            child: Text(
+              'Presiona el botón y manten alineada la INE con la linea punteada del cuadro mientras se hace la captura',
+              style: Theme.of(context).primaryTextTheme.labelMedium,
+              textAlign: TextAlign.center,
+            ),
+          ),
         ),
         Center(
           child: RotatedBox(

@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 class Prospecto{
   final String? nombre;
   final String? primerApellido;
@@ -12,6 +13,8 @@ class Prospecto{
   final String? cp;
   final String? estado;
 
+  final Uint8List? image;
+
   Prospecto({
     this.nombre, 
     this.primerApellido, 
@@ -23,7 +26,8 @@ class Prospecto{
     this.colonia, 
     this.ciudad, 
     this.cp, 
-    this.estado
+    this.estado,
+    this.image,
   });
 
   Prospecto copyWith({
@@ -38,6 +42,7 @@ class Prospecto{
     String? ciudad,
     String? cp,
     String? estado,
+    Uint8List? image,
   }) => Prospecto(
     nombre: nombre ?? this.nombre, 
     primerApellido: primerApellido ?? this.primerApellido, 
@@ -49,5 +54,6 @@ class Prospecto{
     colonia: colonia ?? this.colonia, 
     ciudad: ciudad ?? this.ciudad, 
     cp: cp ?? this.cp, 
-    estado: estado ?? this.estado);
+    estado: estado ?? this.estado,
+    image: image ?? this.image);
 }

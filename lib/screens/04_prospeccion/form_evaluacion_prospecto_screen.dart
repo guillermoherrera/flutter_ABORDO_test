@@ -57,7 +57,7 @@ class _FormEvaluacionProspectoScreenState extends State<FormEvaluacionProspectoS
 
       if(selectedPayment == -1 || selectedRequisitos == -1 || selectedEdad == -1 || selectedInteres == -1 || selectedAfiliado == -1){
         
-        String mensaje = selectedPayment == -1 ? 'Indica si esta ¿Vencido de alguna Relacion?' : selectedRequisitos == -1 ? 'Indica si ¿Reunue los REquisitos?' : selectedEdad == -1 ? 'Indica si ¿Cumple la Edad?' : selectedInteres == -1 ? 'Indica si ¿Mostro Interes?' : selectedAfiliado == -1  ? 'Indica si ¿Esta Afiliado?' : 'Contacta a soporte';
+        String mensaje = selectedPayment == -1 ? 'Indica si esta Vencido de alguna Relacion?' : selectedRequisitos == -1 ? 'Indica si Reune los Requisitos?' : selectedEdad == -1 ? 'Indica si Cumple la Edad?' : selectedInteres == -1 ? 'Indica si Mostró Interés?' : selectedAfiliado == -1  ? 'Indica si Esta Afiliado?' : 'Contacta a soporte';
         
         SnackBar snackBar =  SnackBar(
           content: Text('$mensaje.'.toUpperCase(),
@@ -86,6 +86,7 @@ class _FormEvaluacionProspectoScreenState extends State<FormEvaluacionProspectoS
           color: Color.fromRGBO(249, 251, 253, 1)
         ),
         backgroundColor: const Color.fromRGBO(230, 230, 230, 1),
+        surfaceTintColor: Colors.transparent,
         title: const Center(child: Text('Solicitud - Evaluación', style: TextStyles.tStyleAppBar2,)),
         elevation: 0,
         actions: [
@@ -280,7 +281,7 @@ class _FormEvaluacionProspectoScreenState extends State<FormEvaluacionProspectoS
                     textInputAction: TextInputAction.next,
                   ),
                   const SizedBox(height: seperacion),
-                  SizedBox(width: double.infinity, child: Text('¿Mostró Interes Al Afiliarse?', style: TextStyles.tStyleNegritaStrongGrey16,textAlign: TextAlign.start)),
+                  SizedBox(width: double.infinity, child: Text('¿Mostró Interés Al Afiliarse?', style: TextStyles.tStyleNegritaStrongGrey16,textAlign: TextAlign.start)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -373,13 +374,16 @@ class SuccessEvalScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.fact_check_outlined, size: 150, color: Color.fromRGBO(9, 85, 179, .8),),
-                const Text('Bien hecho.', style: TextStyles.tStyleNegrita24),
+                const Icon(Icons.fact_check_outlined, size: 180, color: Color.fromRGBO(9, 85, 179, .6),),
+                const Text('Bien hecho !', style: TextStyles.tStyleNegrita24),
                 const Text('El prospecto y su evaluación se han registrado correctamente.', style: TextStyles.tStyleNegrita16, textAlign: TextAlign.center,),
                 const SizedBox(height: 20),
-                const Text('Ahora continua el proceso de alta desde la pantalla principal de prospectos.', style: TextStyles.tStyleNegritaGrey16, textAlign: TextAlign.center),
+                const Text('Ahora puedes ir a la pantalla de Prospección para dar seguimiento y gestionar tus prospectos registrados.', style: TextStyles.tStyleNegritaGrey14, textAlign: TextAlign.center),
                 const SizedBox(height: 30),
-                CustomElevatedButton(text: 'Continuar con el alta',onPressed: () => Navigator.pushNamed(context, 'dashProspeccion'))
+                CustomElevatedButton(text: 'Continuar',onPressed: (){
+                  int count = 0;
+                  Navigator.of(context).popUntil((_) => count++ >= 3);
+                }) //Navigator.of(context).pushNamedAndRemoveUntil('home', (Route<dynamic> route) => false)) //Navigator.pushReplacementNamed(context, 'dashProspeccion'))
               ],
             ),
           ),

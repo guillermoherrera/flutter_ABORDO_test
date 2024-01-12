@@ -179,7 +179,22 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
       padding: const EdgeInsets.only(top: 0,left: 0, right: 00),
       child: Row(
         children: [
-          CustomElevatedButton(text: 'Ver más',onPressed: (){},)
+          TextButton(
+            style: TextButton.styleFrom(
+                padding: EdgeInsets.zero,
+                minimumSize: const Size(50, 30),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                alignment: Alignment.centerLeft),
+            child: const Text(
+              'Ver más',
+              style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  decoration: TextDecoration.underline, 
+                  decorationColor: Colors.black),
+            ),
+            onPressed: () {}),
         ],
       ),
     );

@@ -108,9 +108,10 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
-          color: Color.fromRGBO(9, 85, 179, 1)
+          color: Color.fromRGBO(249, 251, 253, 1)
         ),
         backgroundColor: const Color.fromRGBO(230, 230, 230, 1),
+        surfaceTintColor: Colors.transparent,
         title: const Center(child: Text('Solicitud - Prospecto', style: TextStyles.tStyleAppBar2,)),
         elevation: 0,
         actions: [
@@ -134,6 +135,12 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  prospectoBloc.state.prospecto?.image == null ? Container() : Container(
+                    margin: const EdgeInsets.only(bottom: 10.0),
+                    width: double.infinity,
+                    height: 100,
+                    child: CircleAvatar(backgroundColor: Colors.transparent,child: ClipOval(child: Image.memory(prospectoBloc.state.prospecto!.image!,fit: BoxFit.cover, width: 100, height: 100,))),
+                  ),
                   Container(padding: const EdgeInsets.only(left: 0), width: double.infinity, child: Text('INFORMACIÓN DEL PROSPECTO', style: TextStyles.tStyleNegritaStrongGrey12,textAlign: TextAlign.start,)) ,
                   const Divider(),
                   const SizedBox(height: 10),
@@ -312,7 +319,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     style: const TextStyle(fontWeight: FontWeight.bold),
                     textAlign: TextAlign.end,
                     textCapitalization: TextCapitalization.words,
-                    decoration: InputDecorations.formInputDecoration(labelText: 'Teléono Celular'),
+                    decoration: InputDecorations.formInputDecoration(labelText: 'Teléfono Celular'),
                     keyboardType: TextInputType.number,
                     maxLength: 15,
                     inputFormatters: [FormMasked.telMaskFormatter],
