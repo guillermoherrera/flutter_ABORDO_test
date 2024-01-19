@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../ui/ui_files.dart';
+
 class CardContainer extends StatelessWidget {
-  const CardContainer({super.key, required this.child, this.backgroundColor = Colors.transparent, this.paddingHorizontal = 20, this.boxShadowColor = Colors.transparent});
+  const CardContainer({super.key, required this.child, this.backgroundColor = ColorPalette.colorTransparent, this.paddingHorizontal = 20, this.boxShadowColor = ColorPalette.colorTransparent});
 
   final Widget child;
   final Color? backgroundColor;

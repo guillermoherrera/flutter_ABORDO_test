@@ -16,14 +16,14 @@ class ButtonCircle extends StatelessWidget {
           size: const Size(80, 80),
           child: ClipOval(
             child: Material(
-              color: !enable ? Colors.grey : const Color.fromRGBO(9, 85, 179, 1),
+              color: !enable ? ColorPalette.colorTerciarioMedio : ColorPalette.colorPrincipal,
               child: InkWell(
-                splashColor: const Color.fromRGBO(209, 57, 41, 1), 
+                splashColor: ColorPalette.colorSecundario, 
                 onTap: onTap, 
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Icon(icono, size: 40, color: Colors.white.withOpacity(enable ? 1.0 : 0.3),), // <-- Icon
+                    Icon(icono, size: 40, color: ColorPalette.colorBlanco.withOpacity(enable ? 1.0 : 0.3),), // <-- Icon
                     //Text(texto), // <-- Text
                   ],
                 ),

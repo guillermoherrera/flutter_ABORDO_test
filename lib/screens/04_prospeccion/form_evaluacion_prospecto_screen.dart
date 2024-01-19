@@ -43,8 +43,8 @@ class _FormEvaluacionProspectoScreenState extends State<FormEvaluacionProspectoS
       if(!formKey.currentState!.validate()){
         SnackBar snackBar =  SnackBar(
           content: Text('Por favor revisa el formulario, hay campos que no se han completado correctamente.'.toUpperCase(),
-              style: const TextStyle(color: Color.fromRGBO(209, 57, 41, 1), fontWeight: FontWeight.w900, fontStyle: FontStyle.italic)),
-          backgroundColor: const Color.fromRGBO(230, 230, 230, 1),
+              style: const TextStyle(color: ColorPalette.colorSecundario, fontWeight: FontWeight.w900, fontStyle: FontStyle.italic)),
+          backgroundColor: ColorPalette.colorTerciario,
           behavior: SnackBarBehavior.floating,
           margin: const EdgeInsets.only(
             left: 10,
@@ -61,8 +61,8 @@ class _FormEvaluacionProspectoScreenState extends State<FormEvaluacionProspectoS
         
         SnackBar snackBar =  SnackBar(
           content: Text('$mensaje.'.toUpperCase(),
-              style: const TextStyle(color: Color.fromRGBO(209, 57, 41, 1), fontWeight: FontWeight.w900, fontStyle: FontStyle.italic)),
-          backgroundColor: const Color.fromRGBO(230, 230, 230, 1),
+              style: const TextStyle(color: ColorPalette.colorSecundario, fontWeight: FontWeight.w900, fontStyle: FontStyle.italic)),
+          backgroundColor: ColorPalette.colorTerciario,
           behavior: SnackBarBehavior.floating,
           margin: const EdgeInsets.only(
             left: 10,
@@ -83,10 +83,10 @@ class _FormEvaluacionProspectoScreenState extends State<FormEvaluacionProspectoS
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
-          color: Color.fromRGBO(249, 251, 253, 1)
+          color: ColorPalette.colorBlanco
         ),
-        backgroundColor: const Color.fromRGBO(230, 230, 230, 1),
-        surfaceTintColor: Colors.transparent,
+        backgroundColor: ColorPalette.colorTerciario,
+        surfaceTintColor: ColorPalette.colorTransparent,
         title: const Center(child: Text('Solicitud - Evaluación', style: TextStyles.tStyleAppBar2,)),
         elevation: 0,
         actions: [
@@ -101,7 +101,7 @@ class _FormEvaluacionProspectoScreenState extends State<FormEvaluacionProspectoS
         )
       ),
       body: Container(
-        color: Colors.white,
+        color: ColorPalette.colorBlanco,
         child: Form(
           key: formKey,
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -336,18 +336,18 @@ class _FormEvaluacionProspectoScreenState extends State<FormEvaluacionProspectoS
       ),
       bottomNavigationBar: MaterialButton(
         minWidth: size.width * 1,
-        disabledColor: Colors.grey,
+        disabledColor: ColorPalette.colorTerciarioMedio,
         elevation: 0,
-        color: const Color.fromRGBO(9, 179, 85, 1),
+        color: ColorPalette.colorSuccess,
         onPressed: loading ? null : () => submit(),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-          child: loading ? const CircularProgressIndicator(color: Color.fromRGBO(230, 230, 230, 1),) : const Row(
+          child: loading ? const CircularProgressIndicator(color: ColorPalette.colorTerciario,) : const Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Guardar Evaluación ', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color.fromRGBO(250, 250, 250, 1)),),
-              Icon(Icons.check_outlined, color: Color.fromRGBO(250, 250, 250, 1),)
+              Text('Guardar Evaluación ', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco),),
+              Icon(Icons.check_outlined, color: ColorPalette.colorBlanco,)
             ],
           ), 
         )
@@ -367,7 +367,7 @@ class SuccessEvalScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          backgroundColor: const Color.fromRGBO(230, 230, 230, 1),
+          backgroundColor: ColorPalette.colorTerciario,
           actions: [
           Image(image: const AssetImage('assets/ICONO_APLICACION_SOLUCIONES_AB.png'), width: size.width * 0.10,),
             const SizedBox(width: 10,),
@@ -379,7 +379,7 @@ class SuccessEvalScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.fact_check_outlined, size: 180, color: Color.fromRGBO(9, 85, 179, 1),),
+                const Icon(Icons.fact_check_outlined, size: 180, color: ColorPalette.colorPrincipal,),
                 const Text('Bien hecho !', style: TextStyles.tStyleNegrita24),
                 const Text('El prospecto y su evaluación se han registrado correctamente.', style: TextStyles.tStyleNegrita16, textAlign: TextAlign.center,),
                 const SizedBox(height: 20),

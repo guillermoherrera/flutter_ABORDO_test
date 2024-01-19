@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../ui/ui_files.dart';
+
 class AuthBackground extends StatelessWidget {
   const AuthBackground({super.key, required this.child, this.header = true, this.mainBox = true});
 
@@ -33,8 +35,8 @@ class _HeaderIcon extends StatelessWidget {
         margin: EdgeInsets.only(top: size.width * 0.25),
         child: const Column(
           children: [
-            //Icon(Icons.person_pin_outlined, color: Colors.white, size: size.width * 0.40,),
-            //  Text('Hola !', textAlign: TextAlign.center,style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),),
+            //Icon(Icons.person_pin_outlined, color: ColorPalette.colorBlanco, size: size.width * 0.40,),
+            //  Text('Hola !', textAlign: TextAlign.center,style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco),),
             //  SizedBox(height: 10),
             //Image(image: const AssetImage('assets/ICONO_RECONOCIMIENTO_FACIAL.png'), width: size.width * 0.35,),
           ],
@@ -71,8 +73,8 @@ class _MainBox extends StatelessWidget {
   BoxDecoration _mainBackground() {
     return const BoxDecoration(
       gradient: LinearGradient(colors: [
-        Color.fromRGBO(9, 85, 179, 1),
-        Color.fromRGBO(4, 68, 155, 1)
+        ColorPalette.colorPrincipal,
+        ColorPalette.colorPrincipalMedio
       ])
     );
   }
@@ -87,7 +89,7 @@ class _MainBox extends StatelessWidget {
 //       height: 100,
 //       decoration: BoxDecoration(
 //         borderRadius: BorderRadius.circular(100),
-//         color: const Color.fromRGBO(255, 255, 255, 0.05)
+//         color: const ColorPalette.colorBlanco.withOpacity(0.5)
 //         ),
 //     );
 //   }

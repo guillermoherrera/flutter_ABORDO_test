@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/helpers/helpers.dart';
-import 'package:flutter_application_2/ui/input_decorations.dart';
+import '../../ui/ui_files.dart';
 import 'package:flutter_application_2/widgets/widgets.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -13,7 +13,7 @@ class LoginScreen extends StatelessWidget {
       body: AuthBackground(
         child: SingleChildScrollView(
           child: Column(children: [
-            const SizedBox(height: 150,),
+            const SizedBox(height: 120,),
             const CardContainer(
               child: Column(
                 children: [
@@ -36,16 +36,16 @@ class LoginScreen extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white),
+                    color: ColorPalette.colorBlanco),
                   children: [
                     TextSpan(
                       text: 'Activar cuenta',
                       style: TextStyle(
                         decoration: TextDecoration.underline,
-                        decorationColor: Colors.white,
+                        decorationColor: ColorPalette.colorBlanco,
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white)),
+                        color: ColorPalette.colorBlanco)),
                   ],
                 ),
               ),
@@ -54,8 +54,7 @@ class LoginScreen extends StatelessWidget {
           ],),
         ),
       ),
-      bottomNavigationBar: Container(
-        color: Colors.amber,
+      bottomNavigationBar: SizedBox(
         width: double.infinity,
         child: Wrap(
           direction: Axis.vertical,
@@ -63,12 +62,12 @@ class LoginScreen extends StatelessWidget {
             Image(image: const AssetImage('assets/BANNER_INICIAL.jpg'), width: size.width * 1),
             MaterialButton(
               minWidth: size.width * 1,
-              disabledColor: Colors.grey,
+              disabledColor: ColorPalette.colorTerciarioMedio,
               elevation: 0,
-              color: const Color.fromRGBO(209, 57, 41, 1),
+              color: ColorPalette.colorSecundario,
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                child: const Text('Términos y Aviso Legal', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),), 
+                child: const Text('Términos y Aviso Legal', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco),), 
               ),
               onPressed: (){
             
@@ -123,13 +122,13 @@ class _LoginFormState extends State<_LoginForm> {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Column(
         children: [
-          const Text('Hola !', textAlign: TextAlign.center,style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),),
+          const Text('Hola !', textAlign: TextAlign.center,style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco),),
           const SizedBox(height: 10),
-          const Text('Iniciar Sesión', textAlign: TextAlign.center,style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),),
+          const Text('Iniciar Sesión', textAlign: TextAlign.center,style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco),),
           const SizedBox(height: 50),
           TextFormField(
             enabled: !loading,
-            style: const TextStyle(color: Color.fromRGBO(4, 68, 155, 1), fontWeight: FontWeight.bold),
+            style: const TextStyle(color: ColorPalette.colorPrincipalMedio, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
             decoration: InputDecorations.authInputDecoration(hintText: '', labelText: 'Nº Empleado', prefixIcon: null, iconField: Icons.numbers ),
             //onChanged: (value) => loginCubit.usuarioChanged(value),
@@ -146,7 +145,7 @@ class _LoginFormState extends State<_LoginForm> {
           const SizedBox(height: 20,),
           TextFormField(
             enabled: !loading,
-            style: const TextStyle(color: Color.fromRGBO(4, 68, 155, 1), fontWeight: FontWeight.bold),
+            style: const TextStyle(color: ColorPalette.colorPrincipalMedio, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
             autocorrect: false,
             obscureText: obscureText,
@@ -162,7 +161,7 @@ class _LoginFormState extends State<_LoginForm> {
               minimumSize: const Size(50, 30),
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               alignment: Alignment.centerLeft),
-            child: const Text('Olvidé mi contraseña', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white, decoration: TextDecoration.underline, decorationColor: Colors.white)),
+            child: const Text('Olvidé mi contraseña', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco, decoration: TextDecoration.underline, decorationColor: ColorPalette.colorBlanco)),
             onPressed: ()=>Navigator.pushNamed(context, 'contrasena'),  
           ),
           const SizedBox(height: 40,),

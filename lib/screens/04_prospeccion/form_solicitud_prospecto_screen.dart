@@ -42,8 +42,8 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
       confirmText: 'Seleccionar',
       cancelText: 'Cerrar',
       looping: true,
-      textColor: const  Color.fromRGBO(255, 255, 255, 1),
-      backgroundColor: const  Color.fromRGBO(9, 85, 179, 1),
+      textColor: ColorPalette.colorBlanco,
+      backgroundColor: ColorPalette.colorPrincipal,
       reverse: true
     );
 
@@ -71,8 +71,8 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
       if(!formKey.currentState!.validate()){
         SnackBar snackBar =  SnackBar(
           content: Text('Por favor revisa el formulario, hay campos que no se han completado correctamente.'.toUpperCase(),
-              style: const TextStyle(color: Color.fromRGBO(209, 57, 41, 1), fontWeight: FontWeight.w900, fontStyle: FontStyle.italic)),
-          backgroundColor: const Color.fromRGBO(230, 230, 230, 1),
+              style: const TextStyle(color: ColorPalette.colorSecundario, fontWeight: FontWeight.w900, fontStyle: FontStyle.italic)),
+          backgroundColor: ColorPalette.colorTerciario,
           behavior: SnackBarBehavior.floating,
           margin: const EdgeInsets.only(
             left: 10,
@@ -86,8 +86,8 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
       if(prospectoBloc.state.prospecto?.sexo == null || prospectoBloc.state.prospecto?.sexo == '' ){
         SnackBar snackBar =  SnackBar(
           content: Text('Por favor indica el sexo del prospecto.'.toUpperCase(),
-              style: const TextStyle(color: Color.fromRGBO(209, 57, 41, 1), fontWeight: FontWeight.w900, fontStyle: FontStyle.italic)),
-          backgroundColor: const Color.fromRGBO(230, 230, 230, 1),
+              style: const TextStyle(color: ColorPalette.colorSecundario, fontWeight: FontWeight.w900, fontStyle: FontStyle.italic)),
+          backgroundColor: ColorPalette.colorTerciario,
           behavior: SnackBarBehavior.floating,
           margin: const EdgeInsets.only(
             left: 10,
@@ -108,10 +108,10 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
-          color: Color.fromRGBO(249, 251, 253, 1)
+          color: ColorPalette.colorBlanco
         ),
-        backgroundColor: const Color.fromRGBO(230, 230, 230, 1),
-        surfaceTintColor: Colors.transparent,
+        backgroundColor: ColorPalette.colorTerciario,
+        surfaceTintColor: ColorPalette.colorTransparent,
         title: const Center(child: Text('Solicitud - Prospecto', style: TextStyles.tStyleAppBar2,)),
         elevation: 0,
         actions: [
@@ -126,7 +126,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
         )
       ),
       body: Container(
-        color: Colors.white,
+        color: ColorPalette.colorBlanco,
         child: Form(
           key: formKey,
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -350,18 +350,18 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
       ),
       bottomNavigationBar: MaterialButton(
         minWidth: size.width * 1,
-        disabledColor: Colors.grey,
+        disabledColor: ColorPalette.colorTerciarioMedio,
         elevation: 0,
-        color: const Color.fromRGBO(9, 85, 179, 1),
+        color: ColorPalette.colorPrincipal,
         onPressed: loading ? null : () => submit(),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-          child: loading ? const CircularProgressIndicator(color: Color.fromRGBO(230, 230, 230, 1),) : const Row(
+          child: loading ? const CircularProgressIndicator(color: ColorPalette.colorTerciario,) : const Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Guardar y Continuar ', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color.fromRGBO(230, 230, 230, 1)),),
-              Icon(Icons.arrow_forward_outlined, color: Color.fromRGBO(230, 230, 230, 1),)
+              Text('Guardar y Continuar ', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: ColorPalette.colorTerciario),),
+              Icon(Icons.arrow_forward_outlined, color: ColorPalette.colorTerciario,)
             ],
           ),
         )

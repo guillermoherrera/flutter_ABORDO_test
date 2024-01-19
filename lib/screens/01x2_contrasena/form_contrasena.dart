@@ -4,6 +4,7 @@ import 'package:flutter_application_2/helpers/form_validators.dart';
 import 'package:flutter_application_2/ui/input_decorations.dart';
 import 'package:flutter_application_2/widgets/widgets.dart';
 import '../../blocs/blocs.dart';
+import '../../ui/ui_files.dart';
 
 
 class ContrasenaForm extends StatefulWidget {
@@ -45,13 +46,13 @@ class _ContrasenaFormState extends State<ContrasenaForm> {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Column(
         children: [
-          const Text('Establecer Contraseña', textAlign: TextAlign.center,style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),),
+          const Text('Establecer Contraseña', textAlign: TextAlign.center,style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco),),
           const SizedBox(height: 20),
-          const Icon(Icons.lock_open, size: 50, color: Colors.white),
+          const Icon(Icons.lock_open, size: 50, color: ColorPalette.colorBlanco),
           const SizedBox(height: 30),
           TextFormField(
             enabled: !loading,
-            style: const TextStyle(color: Color.fromRGBO(4, 68, 155, 1), fontWeight: FontWeight.bold),
+            style: const TextStyle(color: ColorPalette.colorPrincipalMedio, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
             keyboardType: TextInputType.visiblePassword,
             obscureText: obscureText,
@@ -68,7 +69,7 @@ class _ContrasenaFormState extends State<ContrasenaForm> {
           ),
           TextFormField(
             enabled: !loading,
-            style: const TextStyle(color: Color.fromRGBO(4, 68, 155, 1), fontWeight: FontWeight.bold),
+            style: const TextStyle(color: ColorPalette.colorPrincipalMedio, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
             keyboardType: TextInputType.visiblePassword,
             obscureText: obscureText,
@@ -101,7 +102,7 @@ class _ContrasenaFormState extends State<ContrasenaForm> {
     Widget widget = Column(
       children: [
         const SizedBox(height: 10),
-        const Center(child: Icon(Icons.check_circle_outline, size: 70, color:  Colors.green)),
+        const Center(child: Icon(Icons.check_circle_outline, size: 70, color:  ColorPalette.colorSuccess)),
         const SizedBox(height: 10),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 10), 

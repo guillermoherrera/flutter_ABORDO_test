@@ -3,8 +3,8 @@ import 'package:flutter_application_2/blocs/blocs.dart';
 import 'package:flutter_application_2/helpers/helpers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application_2/widgets/widgets.dart';
-import 'package:flutter_application_2/ui/input_decorations.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import '../../ui/ui_files.dart';
 
 class ActivarForm extends StatefulWidget {
   const ActivarForm({super.key});
@@ -88,16 +88,16 @@ class _ActivarFormState extends State<ActivarForm> {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Column(
         children: [
-          const Text('Activar Cuenta', textAlign: TextAlign.center,style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),),
+          const Text('Activar Cuenta', textAlign: TextAlign.center,style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco),),
           const SizedBox(height: 30),
           const Padding(
             padding: EdgeInsets.only(bottom: 4.0),
-            child: Text('* Recuerda que solo podrás iniciar sesión desde este dispositivo una vez termines la activación.', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white), textAlign: TextAlign.justify,),
+            child: Text('* Recuerda que solo podrás iniciar sesión desde este dispositivo una vez termines la activación.', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco), textAlign: TextAlign.justify,),
           ),
           const SizedBox(height: 20),
           TextFormField(
             enabled: !loading && !isVAlid,
-            style: const TextStyle(color: Color.fromRGBO(4, 68, 155, 1), fontWeight: FontWeight.bold),
+            style: const TextStyle(color: ColorPalette.colorPrincipalMedio, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
             decoration: InputDecorations.authInputDecoration(
                 labelText: 'Nº Empleado',
@@ -114,7 +114,7 @@ class _ActivarFormState extends State<ActivarForm> {
           TextFormField(
             enabled: !loading && !isVAlid,
             focusNode: focusNode,
-            style: const TextStyle(color: Color.fromRGBO(4, 68, 155, 1), fontWeight: FontWeight.bold),
+            style: const TextStyle(color: ColorPalette.colorPrincipalMedio, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
             keyboardType: TextInputType.number,
             maxLength: 15,
@@ -130,7 +130,7 @@ class _ActivarFormState extends State<ActivarForm> {
           ),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 1),
-            child: Text('El telefonó celular debe ser el mismo que proporcionaste cuando se te registró en sistema, puedes consultarlo en sucursal si lo necesitas.', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white), textAlign: TextAlign.justify,),
+            child: Text('El telefonó celular debe ser el mismo que proporcionaste cuando se te registró en sistema, puedes consultarlo en sucursal si lo necesitas.', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco), textAlign: TextAlign.justify,),
           ),
           !isCodeSend ? Container() : TextButton(
             style: TextButton.styleFrom(
@@ -140,14 +140,14 @@ class _ActivarFormState extends State<ActivarForm> {
               alignment: Alignment.centerRight
               ),
             onPressed: loading ? null : () => _displayBottomSheet(context, activarCubit),  
-            child: const Align(alignment: Alignment.topRight ,child: Text('Corregir Datos', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),)),
+            child: const Align(alignment: Alignment.topRight ,child: Text('Corregir Datos', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco),)),
           ),
           const SizedBox(
             height: 40,
           ),
           !isCodeSend ? Container() : const Padding(
             padding: EdgeInsets.only(bottom: 4.0),
-            child: Text('* Ingresa aquí el Código de Activación', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white), textAlign: TextAlign.justify,),
+            child: Text('* Ingresa aquí el Código de Activación', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco), textAlign: TextAlign.justify,),
           ),
           !isCodeSend ? Container() : PinCodeTextField(
             controller: codigoController,
@@ -157,29 +157,29 @@ class _ActivarFormState extends State<ActivarForm> {
             errorTextSpace: 15,
             errorAnimationDuration: 500,
             textStyle: const TextStyle(
-              color: Colors.white,
+              color: ColorPalette.colorBlanco,
               fontWeight: FontWeight.bold,
             ),
             length: 6,
             obscureText: false,
-            cursorColor: Colors.white,
+            cursorColor: ColorPalette.colorBlanco,
             animationType: AnimationType.fade,
             pinTheme: PinTheme(
               shape: PinCodeFieldShape.box,
               borderRadius: BorderRadius.circular(5),
               fieldHeight: 60,
               fieldWidth: 40,
-              activeColor: const Color.fromRGBO(209, 57, 41, 1),
-              inactiveColor: Colors.white,
-              selectedColor: const Color.fromRGBO(9, 85, 179, 1),
-              activeFillColor: const Color.fromRGBO(209, 57, 41, 1),
-              selectedFillColor: const Color.fromRGBO(209, 57, 41, 1),
-              inactiveFillColor: const Color.fromRGBO(209, 57, 41, 1),
-              errorBorderColor: Colors.white,
+              activeColor: ColorPalette.colorSecundario,
+              inactiveColor: ColorPalette.colorBlanco,
+              selectedColor: ColorPalette.colorPrincipal,
+              activeFillColor: ColorPalette.colorSecundario,
+              selectedFillColor: ColorPalette.colorSecundario,
+              inactiveFillColor: ColorPalette.colorSecundario,
+              errorBorderColor: ColorPalette.colorBlanco,
               errorBorderWidth: 20
             ),
             animationDuration: const Duration(milliseconds: 300),
-            backgroundColor: Colors.transparent,
+            backgroundColor: ColorPalette.colorTransparent,
             enableActiveFill: true,
             onCompleted: (v) {
               submitActivacion();
@@ -195,7 +195,7 @@ class _ActivarFormState extends State<ActivarForm> {
               alignment: Alignment.centerRight
               ),
             onPressed: loading ? null : () => _displayBottomSheetCode(context, activarCubit, submitSolicitarActivacion),
-            child: const Align(alignment: Alignment.topRight ,child: Text('Reenviar código', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),)),  
+            child: const Align(alignment: Alignment.topRight ,child: Text('Reenviar código', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco),)),  
           ),
           !isCodeSend ? Container() : const SizedBox(
             height: 40,
@@ -218,7 +218,7 @@ class _ActivarFormState extends State<ActivarForm> {
     Widget widget = Column(
       children: [
         const SizedBox(height: 10),
-        const Center(child: Icon(Icons.error_outline, size: 70, color:  Color.fromRGBO(209, 57, 41, 1))),
+        const Center(child: Icon(Icons.error_outline, size: 70, color:  ColorPalette.colorSecundario)),
         const SizedBox(height: 10),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10), 
@@ -246,7 +246,7 @@ class _ActivarFormState extends State<ActivarForm> {
     Widget widget = Column(
       children: [
         const SizedBox(height: 10),
-        const Center(child: Icon(Icons.error_outline, size: 70, color:  Color.fromRGBO(209, 57, 41, 1))),
+        const Center(child: Icon(Icons.error_outline, size: 70, color:  ColorPalette.colorSecundario)),
         const SizedBox(height: 10),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 10), 
@@ -279,7 +279,7 @@ class _ActivarFormState extends State<ActivarForm> {
     Widget widget = Column(
       children: [
         const SizedBox(height: 10),
-        const Center(child: Icon(Icons.check_circle_outline, size: 70, color:  Colors.green)),
+        const Center(child: Icon(Icons.check_circle_outline, size: 70, color:  ColorPalette.colorSuccess)),
         const SizedBox(height: 10),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 10), 
@@ -305,8 +305,8 @@ class _ActivarFormState extends State<ActivarForm> {
   showCustomSnackBar(context) {
     SnackBar snackBar =  SnackBar(
       content: Text('Se ha enviado un código de activación al teléfono capturado.'.toUpperCase(),
-          style: const TextStyle(color: Color.fromRGBO(50, 73, 137, 1), fontWeight: FontWeight.w900, fontStyle: FontStyle.italic)),
-      backgroundColor: const Color.fromRGBO(230, 230, 230, 1),
+          style: const TextStyle(color: ColorPalette.colorPrincipal, fontWeight: FontWeight.w900, fontStyle: FontStyle.italic)),
+      backgroundColor: ColorPalette.colorTerciario,
       //dismissDirection: DismissDirection.up,
       behavior: SnackBarBehavior.floating,
       margin: const EdgeInsets.only(

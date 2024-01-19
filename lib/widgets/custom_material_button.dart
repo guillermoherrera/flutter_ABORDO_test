@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../ui/ui_files.dart';
 
 class CustomMaterialButton extends StatelessWidget {
   final String text;
@@ -14,9 +15,9 @@ class CustomMaterialButton extends StatelessWidget {
     return MaterialButton(
       padding: const EdgeInsets.all(0),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      disabledColor: Colors.grey,
+      disabledColor: ColorPalette.colorTerciarioMedio,
       elevation: 10,
-      color: isNegative == true ? Colors.white : const Color.fromRGBO(209, 57, 41, 1),
+      color: isNegative == true ? ColorPalette.colorBlanco : ColorPalette.colorSecundario,
       onPressed: onPressed,
       child: Container(
         width: widthContainer,
@@ -27,10 +28,10 @@ class CustomMaterialButton extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              isNegative == true ? const Color.fromRGBO(9, 85, 179, 1) : const Color.fromRGBO(209, 57, 41, 1),
-              isNegative == true ? const Color.fromRGBO(9, 85, 179, 1) : const Color.fromRGBO(209, 57, 41, 1),
-              isNegative == true ? const Color.fromRGBO(4, 68, 155, 1) : const Color.fromRGBO(159, 57, 41, 1),
-              isNegative == true ? const Color.fromRGBO(4, 68, 155, 1) : const Color.fromRGBO(159, 57, 41, 1),
+              isNegative == true ? ColorPalette.colorPrincipal : ColorPalette.colorSecundario,
+              isNegative == true ? ColorPalette.colorPrincipal : ColorPalette.colorSecundario,
+              isNegative == true ? ColorPalette.colorPrincipalMedio : ColorPalette.colorSecundarioMedio,
+              isNegative == true ? ColorPalette.colorPrincipalMedio : ColorPalette.colorSecundarioMedio,
             ],
           ),
         ), 
@@ -39,20 +40,20 @@ class CustomMaterialButton extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(text, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+              Text(text, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco)),
               const SizedBox(width: 10,),
               const SizedBox(
                 height: 20,
                 width: 20,
                 child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation(Color.fromRGBO(209, 57, 41, 1)),
-                  backgroundColor: Colors.white,
+                  valueColor: AlwaysStoppedAnimation(ColorPalette.colorSecundario),
+                  backgroundColor: ColorPalette.colorBlanco,
                   strokeWidth: 3,
                 ),
               )
             ],
           ),
-        ) : FittedBox(child: Text(text, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white))),
+        ) : FittedBox(child: Text(text, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco))),
       )
     );
   }

@@ -22,8 +22,8 @@ class _DashVerificacionScreenState extends State<DashVerificacionScreen> {
             Container(
               padding: const EdgeInsets.only(top: 15),
               child: CardContainer(
-                backgroundColor: Colors.white,
-                boxShadowColor: Colors.black45,
+                backgroundColor: ColorPalette.colorBlanco,
+                boxShadowColor: ColorPalette.colorShadow,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -44,17 +44,17 @@ class _DashVerificacionScreenState extends State<DashVerificacionScreen> {
                             padding: const EdgeInsets.only(bottom: 0),
                             child: Material(
                               child: InkWell(
-                                splashColor: const Color.fromRGBO(209, 57, 41, 1),
+                                splashColor: ColorPalette.colorSecundario,
                                 onTap: (){},
                                 child: ListTile(
                                   dense: true,
                                   leading:  Container(
                                     padding: const EdgeInsets.all(0),
                                     decoration: const BoxDecoration(
-                                      color: Color.fromRGBO(230, 230, 230, 1),
+                                      color: ColorPalette.colorTerciario,
                                       shape: BoxShape.circle
                                     ),
-                                    child: const Icon(Icons.house, color: Color.fromRGBO(9, 85, 179, 1),)),
+                                    child: const Icon(Icons.house, color: ColorPalette.colorPrincipal,)),
                                   title: const Text('Nombre Prospecto', style: TextStyles.tStyleTileTitle2,),
                                   subtitle: const Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,7 +62,7 @@ class _DashVerificacionScreenState extends State<DashVerificacionScreen> {
                                       Text('Estatus: por verificar', style: TextStyles.tStyleTileSubtitle),
                                     ],
                                   ),
-                                  trailing: const IconButton(onPressed: null, icon: Icon(Icons.arrow_forward_ios_outlined, color: Color.fromRGBO(9, 85, 179, 1))),
+                                  trailing: const IconButton(onPressed: null, icon: Icon(Icons.arrow_forward_ios_outlined, color: ColorPalette.colorPrincipal)),
                                 ),
                               ),
                             ),
@@ -96,10 +96,10 @@ class _DashVerificacionScreenState extends State<DashVerificacionScreen> {
           Container(
           padding: const EdgeInsets.all(5),
           decoration: const BoxDecoration(
-            color: Colors.white,
+            color: ColorPalette.colorBlanco,
             shape: BoxShape.circle
           ),
-          child: const Icon(Icons.person, size: 40, color: Color.fromRGBO(9, 85, 179, 1)))
+          child: const Icon(Icons.person, size: 40, color: ColorPalette.colorPrincipal))
         ],
       ),
     );
@@ -121,9 +121,9 @@ class _DashVerificacionScreenState extends State<DashVerificacionScreen> {
               style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: ColorPalette.colorNegro,
                   decoration: TextDecoration.underline, 
-                  decorationColor: Colors.black),
+                  decorationColor: ColorPalette.colorNegro),
             ),
             onPressed: () {}),
         ],

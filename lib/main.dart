@@ -4,6 +4,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:mask_for_camera_view/mask_for_camera_view.dart';
 import 'package:flutter_application_2/screens/screens.dart';
 import 'package:flutter_application_2/blocs/blocs.dart';
+import '../../ui/ui_files.dart';
 
 void main() {
   serviceLocatorInit();
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
         'formEvaluacionProspecto': (_)=> const FormEvaluacionProspectoScreen(),
         'dashVerificacion': (_)=> const DashVerificacionScreen(),
       },
-      theme: ThemeData.light().copyWith(scaffoldBackgroundColor:  const Color.fromRGBO(230, 230, 230, 1)),
+      theme: ThemeData.light().copyWith(scaffoldBackgroundColor:  ColorPalette.colorTerciario),
     );
   }
 }

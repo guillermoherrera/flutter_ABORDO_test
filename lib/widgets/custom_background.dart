@@ -13,7 +13,7 @@ class CustomBackground extends StatelessWidget {
     return Stack(
         children: [
           Container(
-            color: const Color.fromRGBO(9, 85, 179, 1),
+            color: ColorPalette.colorPrincipal,
             height: double.infinity,
             width: double.infinity,
           ),
@@ -21,7 +21,7 @@ class CustomBackground extends StatelessWidget {
             children: [
               Expanded(child: Container()),
               Container(
-                color: const Color.fromRGBO(230, 230, 230, 1),
+                color: ColorPalette.colorTerciario,
                 width: double.infinity,
                 height: size.height * 0.5,
               )
@@ -33,9 +33,9 @@ class CustomBackground extends StatelessWidget {
                 AppBar(
                   toolbarHeight: kToolbarHeight + 1,
                   iconTheme: const IconThemeData(
-                    color: Color.fromRGBO(230, 230, 230, 1)
+                    color: ColorPalette.colorTerciario
                   ),
-                  backgroundColor: const Color.fromRGBO(9, 85, 179, 1),
+                  backgroundColor: ColorPalette.colorPrincipal,
                   title: Text(appBarTitle, style: TextStyles.tStyleAppBar,),
                   elevation: 0,
                   actions: [

@@ -13,6 +13,7 @@ import 'package:mask_for_camera_view/mask_for_camera_view_inside_line_direction.
 import 'package:mask_for_camera_view/mask_for_camera_view_inside_line_position.dart';
 import 'package:mask_for_camera_view/mask_for_camera_view_result.dart';
 import 'package:path_provider/path_provider.dart';
+import '../../ui/ui_files.dart';
 
 // ignore: library_prefixes, depend_on_referenced_packages
 import 'package:image/image.dart' as IMG;
@@ -176,17 +177,17 @@ class _OcrSolicitudProspectoScreenState extends State<OcrSolicitudProspectoScree
       children: [
         MaskForCameraView(
           visiblePopButton: false,
-          appBarColor: const Color.fromRGBO(9, 85, 179, 1),
+          appBarColor: ColorPalette.colorPrincipal,
           title: 'Alinea la INE a la Imagen Guía y Captura',
-          takeButtonActionColor: const Color.fromRGBO(9, 85, 179, 1),
-          iconsColor: const Color.fromRGBO(230, 230, 230, 1),
-          titleStyle: const TextStyle(color: Color.fromRGBO(230, 230, 230, 1), fontWeight: FontWeight.bold, fontSize: 15.0),
+          takeButtonActionColor: ColorPalette.colorPrincipal,
+          iconsColor: ColorPalette.colorTerciario,
+          titleStyle: const TextStyle(color: ColorPalette.colorTerciario, fontWeight: FontWeight.bold, fontSize: 15.0),
           borderType: MaskForCameraViewBorderType.dotted,
           boxBorderWidth: 0,
           boxBorderRadius: 0,
           boxWidth: size.height * .3,
           boxHeight: size.width * 1,
-          takeButtonColor: const Color.fromRGBO(230, 230, 230, 1),
+          takeButtonColor: ColorPalette.colorTerciario,
           insideLine: MaskForCameraViewInsideLine(
             position: MaskForCameraViewInsideLinePosition.partFour,
             direction: MaskForCameraViewInsideLineDirection.vertical,
@@ -202,7 +203,7 @@ class _OcrSolicitudProspectoScreenState extends State<OcrSolicitudProspectoScree
                 child: ImageIcon(
                   const AssetImage("assets/landscape.png"),
                   size: size.width * .2,
-                  color: const Color.fromRGBO(230, 230, 230, 1),
+                  color: ColorPalette.colorTerciario,
                 )),
           ),),
         ),
@@ -227,7 +228,7 @@ class _OcrSolicitudProspectoScreenState extends State<OcrSolicitudProspectoScree
         Center(
           child: RotatedBox(
             quarterTurns: 1,
-            child: Image(image: const AssetImage('assets/id_card_ine.png'), color: Colors.white.withOpacity(0.3), width: size.width * 1, height: size.height * 0.3, fit: BoxFit.fill)),
+            child: Image(image: const AssetImage('assets/id_card_ine.png'), color: ColorPalette.colorBlanco.withOpacity(0.3), width: size.width * 1, height: size.height * 0.3, fit: BoxFit.fill)),
         )
       ],
     );

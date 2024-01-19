@@ -15,14 +15,14 @@ class CustomElevatedButton extends StatelessWidget {
       backgroundColor: MaterialStateProperty.resolveWith((states) {
         // If the button is pressed, return green, otherwise blue
         if (states.contains(MaterialState.pressed)) {
-          return const Color.fromRGBO(9, 85, 179, 1);
+          return ColorPalette.colorPrincipal;
         }
-        return Colors.black;
+        return ColorPalette.colorNegro;
       }),
       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
         RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(18.0),
-          side: const BorderSide(color: Colors.black)
+          side: const BorderSide(color: ColorPalette.colorNegro)
         )
       )
     ), 

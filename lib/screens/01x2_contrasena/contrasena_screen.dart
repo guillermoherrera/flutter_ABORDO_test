@@ -5,6 +5,7 @@ import 'package:flutter_application_2/blocs/blocs.dart';
 import 'package:flutter_application_2/screens/01x2_contrasena/form_recuperar.dart';
 //import 'package:flutter_application_2/screens/01x2_contrasena/form_contrasena.dart';
 
+import '../../ui/ui_files.dart';
 import '../../widgets/widgets.dart';
 
 class ContrasenaScreen extends StatelessWidget {
@@ -31,6 +32,7 @@ class ContrasenaScreen extends StatelessWidget {
                     child: Column(
                   children: [
                     codigo.length == 6 ? const ContrasenaForm() :  const RecuperarContrasenaForm(),
+                    const SizedBox(height: 20),
                     isCodeSend || loading ? Container() : TextButton(
                         style: TextButton.styleFrom(
                             padding: EdgeInsets.zero,
@@ -43,16 +45,16 @@ class ContrasenaScreen extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white),
+                                color: ColorPalette.colorBlanco),
                             children: [
                               TextSpan(
                                   text: 'Iniciar sesión',
                                   style: TextStyle(
                                       decoration: TextDecoration.underline,
-                                      decorationColor: Colors.white,
+                                      decorationColor: ColorPalette.colorBlanco,
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.white)),
+                                      color: ColorPalette.colorBlanco)),
                             ],
                           ),
                         ),

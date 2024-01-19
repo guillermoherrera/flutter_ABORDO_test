@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_2/ui/text_styles.dart';
+import '../../ui/ui_files.dart';
 import 'dart:math' as maths;
 
 
@@ -19,9 +19,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
-          color: Color.fromRGBO(230, 230, 230, 1)
+          color: ColorPalette.colorTerciario
         ),
-        backgroundColor: const Color.fromRGBO(9, 85, 179, 1),
+        backgroundColor: ColorPalette.colorPrincipal,
         title: const Text('Notificaciones', style: TextStyles.tStyleAppBar,),
         actions: [
           Image(image: const AssetImage('assets/ICONO_APLICACION_SOLUCIONES_AB.png'), width: size.width * 0.10,),
@@ -40,7 +40,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   color: Color((maths.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(0.1),
                   shape: BoxShape.circle
                 ),
-                child: const Icon(Icons.notifications_outlined, color: Color.fromRGBO(9, 85, 179, 1),)),
+                child: const Icon(Icons.notifications_outlined, color: ColorPalette.colorPrincipal,)),
               title: const Text('Descripción de la notificación', style: TextStyles.tStyleTileTitle2,),
               subtitle: const Text('01/01/2000 00:00:00', style: TextStyles.tStyleTileSubtitle),
             ),

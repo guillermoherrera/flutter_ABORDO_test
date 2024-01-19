@@ -27,8 +27,8 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
           Container(
             padding: const EdgeInsets.only(top: 15),
             child: CardContainer(
-              backgroundColor: Colors.white,
-              boxShadowColor: Colors.black45,
+              backgroundColor: ColorPalette.colorBlanco,
+              boxShadowColor: ColorPalette.colorShadow,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -49,7 +49,7 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
                           padding: const EdgeInsets.only(bottom: 0),
                           child: Material(
                             child: InkWell(
-                              splashColor: const Color.fromRGBO(209, 57, 41, 1),
+                              splashColor: ColorPalette.colorSecundario,
                               onTap: (){},
                               child: ListTile(
                                 dense: true,
@@ -57,10 +57,10 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
                                   padding: const EdgeInsets.all(0),
                                   decoration: const BoxDecoration(
                                     //color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
-                                    color: Color.fromRGBO(230, 230, 230, 1),
+                                    color: ColorPalette.colorTerciario,
                                     shape: BoxShape.circle
                                   ),
-                                  child: const Icon(Icons.person, color: Color.fromRGBO(9, 85, 179, 1),)),
+                                  child: const Icon(Icons.person, color: ColorPalette.colorPrincipal,)),
                                 title: const Text('Nombre Prospecto', style: TextStyles.tStyleTileTitle2,),
                                 subtitle: const Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,7 +69,7 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
                                     Text('01/01/2000', style: TextStyles.tStyleTileSubtitle),
                                   ],
                                 ),
-                                trailing: const IconButton(onPressed: null, icon: Icon(Icons.arrow_forward_ios_outlined, color: Color.fromRGBO(9, 85, 179, 1))),
+                                trailing: const IconButton(onPressed: null, icon: Icon(Icons.arrow_forward_ios_outlined, color: ColorPalette.colorPrincipal)),
                               ),
                             ),
                           ),
@@ -85,8 +85,8 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
             padding: const EdgeInsets.only(top: 15),
             margin: const EdgeInsets.only(bottom: 15),
             child: CardContainer(
-              backgroundColor: Colors.white,
-              boxShadowColor: Colors.black45,
+              backgroundColor: ColorPalette.colorBlanco,
+              boxShadowColor: ColorPalette.colorShadow,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -101,7 +101,7 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
                           padding: const EdgeInsets.only(bottom: 0),
                           child: Material(
                             child: InkWell(
-                              splashColor: const Color.fromRGBO(209, 57, 41, 1),
+                              splashColor: ColorPalette.colorSecundario,
                               onTap: (){},
                               child: ListTile(
                                 dense: true,
@@ -109,10 +109,10 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
                                   padding: const EdgeInsets.all(0),
                                   decoration:  BoxDecoration(
                                     //color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
-                                    color: index % 2 == 0 ? const Color.fromRGBO(230, 230, 230, 1) : const Color.fromRGBO(9, 85, 179, 1),
+                                    color: index % 2 == 0 ? ColorPalette.colorTerciario : ColorPalette.colorPrincipal,
                                     shape: BoxShape.circle
                                   ),
-                                  child: const Icon(Icons.house, color: Color.fromRGBO(9, 85, 179, 1),)),
+                                  child: const Icon(Icons.house, color: ColorPalette.colorPrincipal,)),
                                 title: const Text('Nombre Prospecto', style: TextStyles.tStyleTileTitle2,),
                                 subtitle:  Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,7 +121,7 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
                                     Text(index % 2 == 0 ? 'por visitar' : 'visitado', style: TextStyles.tStyleTileSubtitle),
                                   ],
                                 ),
-                                trailing: const IconButton(onPressed: null, icon: Icon(Icons.arrow_forward_ios_outlined, color: Color.fromRGBO(9, 85, 179, 1))),
+                                trailing: const IconButton(onPressed: null, icon: Icon(Icons.arrow_forward_ios_outlined, color: ColorPalette.colorPrincipal)),
                               ),
                             ),
                           ),
@@ -154,10 +154,10 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
           Container(
           padding: const EdgeInsets.all(5),
           decoration: const BoxDecoration(
-            color: Colors.white,
+            color: ColorPalette.colorBlanco,
             shape: BoxShape.circle
           ),
-          child: const Icon(Icons.person, size: 40, color: Color.fromRGBO(9, 85, 179, 1)))
+          child: const Icon(Icons.person, size: 40, color: ColorPalette.colorPrincipal))
         ],
       ),
     );
@@ -190,9 +190,9 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
               style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: ColorPalette.colorNegro,
                   decoration: TextDecoration.underline, 
-                  decorationColor: Colors.black),
+                  decorationColor: ColorPalette.colorNegro),
             ),
             onPressed: () {}),
         ],
@@ -204,7 +204,7 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
     Widget widget = Column(
       children: [
         const SizedBox(height: 10),
-        const Center(child: Icon(Icons.note_alt_outlined, size: 70, color: Color.fromRGBO(9, 85, 179, 1))),
+        const Center(child: Icon(Icons.note_alt_outlined, size: 70, color: ColorPalette.colorPrincipal)),
         const SizedBox(height: 10),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 10), 

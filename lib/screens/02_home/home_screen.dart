@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_2/ui/text_styles.dart';
+import '../../ui/ui_files.dart';
 import 'package:flutter_application_2/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -34,7 +34,7 @@ class HomeScreen extends StatelessWidget {
           children: [
             const SizedBox(height: 40),
             const CardContainer(
-              backgroundColor: Colors.white,
+              backgroundColor: ColorPalette.colorBlanco,
               child: Column(
                 children: [
                   ListTile(
@@ -67,8 +67,8 @@ class HomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             CardContainer(
-              backgroundColor: Colors.white,
-              boxShadowColor: Colors.black45,
+              backgroundColor: ColorPalette.colorBlanco,
+              boxShadowColor: ColorPalette.colorShadow,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -88,17 +88,17 @@ class HomeScreen extends StatelessWidget {
                           padding: const EdgeInsets.only(bottom: 0),
                           child: Material(
                             child: InkWell(
-                              splashColor: const Color.fromRGBO(209, 57, 41, 1),
+                              splashColor: ColorPalette.colorSecundario,
                               onTap: (){},
                               child: ListTile(
                                 dense: true,
                                 leading:  Container(
                                   padding: const EdgeInsets.all(0),
                                   decoration: const BoxDecoration(
-                                    color: Color.fromRGBO(230, 230, 230, 1),
+                                    color: ColorPalette.colorTerciario,
                                     shape: BoxShape.circle
                                   ),
-                                  child: const Icon(Icons.note_alt_outlined, color: Color.fromRGBO(9, 85, 179, 1),)),
+                                  child: const Icon(Icons.note_alt_outlined, color: ColorPalette.colorPrincipal,)),
                                 title: const Text('Evento descripción', style: TextStyles.tStyleTileTitle2,),
                                 subtitle: const Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,7 +106,7 @@ class HomeScreen extends StatelessWidget {
                                     Text('01/01/2000', style: TextStyles.tStyleTileSubtitle),
                                   ],
                                 ),
-                                trailing: const IconButton(onPressed: null, icon: Icon(Icons.arrow_forward_ios_outlined, color: Color.fromRGBO(9, 85, 179, 1))),
+                                trailing: const IconButton(onPressed: null, icon: Icon(Icons.arrow_forward_ios_outlined, color: ColorPalette.colorPrincipal)),
                               ),
                             ),
                           ),
@@ -139,9 +139,9 @@ class HomeScreen extends StatelessWidget {
             label: 'Salir',
           ),
         ],
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white,
-        backgroundColor: const Color.fromRGBO(209, 57, 41, 1),
+        selectedItemColor: ColorPalette.colorBlanco,
+        unselectedItemColor: ColorPalette.colorBlanco,
+        backgroundColor: ColorPalette.colorSecundario,
         onTap: onItemTapped,
       ),
     );
@@ -153,11 +153,11 @@ class HomeScreen extends StatelessWidget {
         const SizedBox(height: 5),
         Center(child: Container(
           padding: const EdgeInsets.all(5),
-          decoration: const BoxDecoration(
-            color: Color.fromRGBO(9, 85, 179, 0.1),
+          decoration: BoxDecoration(
+            color: ColorPalette.colorPrincipal.withOpacity(0.1),
             shape: BoxShape.circle
           ),
-          child: const Icon(Icons.person, size: 100, color: Color.fromRGBO(9, 85, 179, 1)))
+          child: const Icon(Icons.person, size: 100, color: ColorPalette.colorPrincipal))
         ),
         const SizedBox(height: 5),
         const Center(

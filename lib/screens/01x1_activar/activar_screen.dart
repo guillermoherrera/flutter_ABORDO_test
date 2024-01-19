@@ -5,6 +5,8 @@ import 'package:flutter_application_2/widgets/auth_backgrpund.dart';
 import 'package:flutter_application_2/widgets/card_container.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../ui/ui_files.dart';
+
 class ActivarScreen extends StatelessWidget {
   const ActivarScreen({super.key});
 
@@ -28,6 +30,7 @@ class ActivarScreen extends StatelessWidget {
                     child: Column(
                   children: [
                     const ActivarForm(),
+                    const SizedBox(height: 20),
                     isCodeSend || loading ? Container() : TextButton(
                         style: TextButton.styleFrom(
                             padding: EdgeInsets.zero,
@@ -39,9 +42,9 @@ class ActivarScreen extends StatelessWidget {
                           style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                              color: ColorPalette.colorBlanco,
                               decoration: TextDecoration.underline, 
-                              decorationColor: Colors.white),
+                              decorationColor: ColorPalette.colorBlanco),
                         ),
                         onPressed: () {
                           //activarCubit.deleteActivarState();
