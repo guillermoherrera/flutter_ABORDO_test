@@ -30,9 +30,26 @@ class LoginScreen extends StatelessWidget {
                 minimumSize: const Size(50, 30),
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 alignment: Alignment.centerLeft),
-              child: const Text('Activar cuenta', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white, decoration: TextDecoration.underline, decorationColor: Colors.white),),
-              onPressed: ()=>Navigator.pushNamed(context, 'activar')
-            ),
+              child: const Text.rich(
+                TextSpan(
+                  text: 'Aún no tengo contraseña. ',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+                  children: [
+                    TextSpan(
+                      text: 'Activar cuenta',
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        decorationColor: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white)),
+                  ],
+                ),
+              ),
+              onPressed: ()=>Navigator.pushNamed(context, 'activar')),
             const SizedBox(height: 50),
           ],),
         ),
@@ -106,14 +123,17 @@ class _LoginFormState extends State<_LoginForm> {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Column(
         children: [
+          const Text('Hola !', textAlign: TextAlign.center,style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),),
+          const SizedBox(height: 10),
           const Text('Iniciar Sesión', textAlign: TextAlign.center,style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),),
           const SizedBox(height: 50),
           TextFormField(
             enabled: !loading,
             style: const TextStyle(color: Color.fromRGBO(4, 68, 155, 1), fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
-            decoration: InputDecorations.authInputDecoration(hintText: '', labelText: 'Usuario', prefixIcon: null ),
+            decoration: InputDecorations.authInputDecoration(hintText: '', labelText: 'Nº Empleado', prefixIcon: null, iconField: Icons.numbers ),
             //onChanged: (value) => loginCubit.usuarioChanged(value),
+            keyboardType: TextInputType.number,
             validator: (value){
               String? val;
               val = FormValidators.existValidator(value);

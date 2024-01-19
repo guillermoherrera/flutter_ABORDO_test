@@ -33,10 +33,10 @@ class _HeaderIcon extends StatelessWidget {
         margin: EdgeInsets.only(top: size.width * 0.25),
         child: const Column(
           children: [
-             //Icon(Icons.person_pin_outlined, color: Colors.white, size: size.width * 0.40,),
-             Text('Hola !', textAlign: TextAlign.center,style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),),
-             SizedBox(height: 10),
-             //Image(image: const AssetImage('assets/ICONO_RECONOCIMIENTO_FACIAL.png'), width: size.width * 0.35,),
+            //Icon(Icons.person_pin_outlined, color: Colors.white, size: size.width * 0.40,),
+            //  Text('Hola !', textAlign: TextAlign.center,style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),),
+            //  SizedBox(height: 10),
+            //Image(image: const AssetImage('assets/ICONO_RECONOCIMIENTO_FACIAL.png'), width: size.width * 0.35,),
           ],
         ),
       ),

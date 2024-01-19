@@ -100,9 +100,10 @@ class _ActivarFormState extends State<ActivarForm> {
             style: const TextStyle(color: Color.fromRGBO(4, 68, 155, 1), fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
             decoration: InputDecorations.authInputDecoration(
-                labelText: 'Usuario',
-                prefixIcon: null),
+                labelText: 'Nº Empleado',
+                prefixIcon: null, iconField: Icons.numbers),
             //onChanged: (value) => activarCubit.usuarioChanged(value),
+            keyboardType: TextInputType.number,
             textInputAction: TextInputAction.next,
             onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
             validator: (value) => FormValidators.existValidator(value),
@@ -126,6 +127,10 @@ class _ActivarFormState extends State<ActivarForm> {
             },
             inputFormatters: [FormMasked.telMaskFormatter],
             onFieldSubmitted: (value) => _displayBottomSheetCode(context, activarCubit, submitSolicitarActivacion),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 1),
+            child: Text('El telefonó celular debe ser el mismo que proporcionaste cuando se te registró en sistema, puedes consultarlo en sucursal si lo necesitas.', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white), textAlign: TextAlign.justify,),
           ),
           !isCodeSend ? Container() : TextButton(
             style: TextButton.styleFrom(

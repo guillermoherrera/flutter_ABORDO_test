@@ -34,8 +34,8 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
     var datePicked = await DatePicker.showSimpleDatePicker(
       context,
       initialDate: DateTime(2000, 1, 1),
-      firstDate: DateTime(fechaAux.year - 70, fechaAux.month, fechaAux.day),
-      lastDate: DateTime(fechaAux.year - 20, fechaAux.month, fechaAux.day),
+      firstDate: DateTime(fechaAux.year - 99, fechaAux.month, fechaAux.day),
+      lastDate: DateTime(fechaAux.year - 18, fechaAux.month, fechaAux.day),
       dateFormat: "dd-MM-yyyy",
       locale: DateTimePickerLocale.es,
       titleText: '',
@@ -152,7 +152,8 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     textInputAction: TextInputAction.next,
                     initialValue: prospectoBloc.state.prospecto?.nombre,
                     validator: (value) => FormValidators.existValidator(value),
-                    inputFormatters: [UpperCaseTextFormatter()]
+                    inputFormatters: [UpperCaseTextFormatter()],
+                    autofocus: prospectoBloc.state.prospecto?.image == null,
                   ),
                   const SizedBox(height: seperacion),
                   TextFormField(

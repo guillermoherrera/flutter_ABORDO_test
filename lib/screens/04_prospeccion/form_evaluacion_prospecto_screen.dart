@@ -361,20 +361,25 @@ class SuccessEvalScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return PopScope(
       canPop: false,
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: const Color.fromRGBO(230, 230, 230, 1),
-          title: const Center(child: Text('Éxito', style: TextStyles.tStyleNegritaGrey16,))),
+          actions: [
+          Image(image: const AssetImage('assets/ICONO_APLICACION_SOLUCIONES_AB.png'), width: size.width * 0.10,),
+            const SizedBox(width: 10,),
+          ],
+          title: const Center(child: Text('', style: TextStyles.tStyleNegritaGrey16,))),
         body: Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 50),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.fact_check_outlined, size: 180, color: Color.fromRGBO(9, 85, 179, .6),),
+                const Icon(Icons.fact_check_outlined, size: 180, color: Color.fromRGBO(9, 85, 179, 1),),
                 const Text('Bien hecho !', style: TextStyles.tStyleNegrita24),
                 const Text('El prospecto y su evaluación se han registrado correctamente.', style: TextStyles.tStyleNegrita16, textAlign: TextAlign.center,),
                 const SizedBox(height: 20),
