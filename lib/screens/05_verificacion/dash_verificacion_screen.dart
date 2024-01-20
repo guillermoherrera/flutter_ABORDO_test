@@ -110,22 +110,7 @@ class _DashVerificacionScreenState extends State<DashVerificacionScreen> {
       padding: const EdgeInsets.only(top: 0,left: 0, right: 00),
       child: Row(
         children: [
-          TextButton(
-            style: TextButton.styleFrom(
-                padding: EdgeInsets.zero,
-                minimumSize: const Size(50, 30),
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                alignment: Alignment.centerLeft),
-            child: const Text(
-              'Ver más',
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: ColorPalette.colorNegro,
-                  decoration: TextDecoration.underline, 
-                  decorationColor: ColorPalette.colorNegro),
-            ),
-            onPressed: () {}),
+          CustomTextButton(onPressed: () => () =>{}, text: 'Ver más', color: ColorPalette.colorNegro, decorationColor: ColorPalette.colorNegro)
         ],
       ),
     );

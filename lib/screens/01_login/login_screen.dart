@@ -24,32 +24,14 @@ class LoginScreen extends StatelessWidget {
                 ],
               ),
             ),
-            TextButton(
-              style: TextButton.styleFrom(
-                padding: EdgeInsets.zero,
-                minimumSize: const Size(50, 30),
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                alignment: Alignment.centerLeft),
-              child: const Text.rich(
-                TextSpan(
-                  text: 'Aún no tengo contraseña. ',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: ColorPalette.colorBlanco),
-                  children: [
-                    TextSpan(
-                      text: 'Activar cuenta',
-                      style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        decorationColor: ColorPalette.colorBlanco,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: ColorPalette.colorBlanco)),
-                  ],
-                ),
-              ),
-              onPressed: ()=>Navigator.pushNamed(context, 'activar')),
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Aún no tengo contraseña. ', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco),),
+                CustomTextButton(onPressed: ()=>Navigator.pushNamed(context, 'activar'), text: 'Activar cuenta'),
+              ],
+            ),
             const SizedBox(height: 50),
           ],),
         ),
@@ -155,16 +137,8 @@ class _LoginFormState extends State<_LoginForm> {
             validator: (value) => FormValidators.lengthValidator(value, 6),
             onFieldSubmitted: (value) => submitLogin() ,
           ),
-          TextButton(
-            style: TextButton.styleFrom(
-              padding: EdgeInsets.zero,
-              minimumSize: const Size(50, 30),
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              alignment: Alignment.centerLeft),
-            child: const Text('Olvidé mi contraseña', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco, decoration: TextDecoration.underline, decorationColor: ColorPalette.colorBlanco)),
-            onPressed: ()=>Navigator.pushNamed(context, 'contrasena'),  
-          ),
-          const SizedBox(height: 40,),
+          CustomTextButton(onPressed: ()=>Navigator.pushNamed(context, 'contrasena'), text: 'Olvidé mi contraseña'),
+          const SizedBox(height: 20,),
           CustomMaterialButton(
             text: !loading ? 'Entrar' : 'Ingresando ...', 
             loading: loading,

@@ -52,6 +52,7 @@ class _RecuperarContrasenaFormState extends State<RecuperarContrasenaForm> {
       });
       contrasenaCubit.loadingChanged(loading);
       await Future.delayed(const Duration(seconds: 3));
+      codigoController = TextEditingController();
       setState(() {
         loading = false;
         isVAlid = true;
@@ -125,16 +126,7 @@ class _RecuperarContrasenaFormState extends State<RecuperarContrasenaForm> {
             padding: EdgeInsets.symmetric(horizontal: 1),
             child: Text('El telefonó celular debe ser el mismo que proporcionaste cuando se te registró en sistema, puedes consultarlo en sucursal si lo necesitas.', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco), textAlign: TextAlign.justify,),
           ),
-          !isCodeSend ? Container() : TextButton(
-            style: TextButton.styleFrom(
-              padding: EdgeInsets.zero,
-              minimumSize: const Size(0, 0),
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              alignment: Alignment.centerRight
-              ),
-            onPressed: loading ? null : () => _displayBottomSheet(context, contrasenaCubit),  
-            child: const Align(alignment: Alignment.topRight ,child: Text('Corregir Datos', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco),)),
-          ),
+          !isCodeSend ? Container() :  Align(alignment: Alignment.centerRight, child: CustomTextButton(onPressed: () => _displayBottomSheet(context, contrasenaCubit), text: 'Corregir Datos')),
           const SizedBox(
             height: 40,
           ),
@@ -180,15 +172,17 @@ class _RecuperarContrasenaFormState extends State<RecuperarContrasenaForm> {
             validator: (value) => FormValidators.lengthValidator(value, 6),
             onSubmitted: (value) => submitRecuperacion()
           ),
-          !isCodeSend ? Container() : TextButton(
-            style: TextButton.styleFrom(
-              padding: EdgeInsets.zero,
-              minimumSize: const Size(0, 0),
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              alignment: Alignment.centerRight
-              ),
-            onPressed: loading ? null : () => _displayBottomSheetCode(context, contrasenaCubit, submitSolicitarRecuperacion),
-            child: const Align(alignment: Alignment.topRight ,child: Text('Reenviar código', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco),)),  
+          !isCodeSend 
+          ? Container() 
+          : Align(
+            alignment: Alignment.centerRight ,
+            child: CustomTextButton(
+              onPressed: () {
+                setState(() {isCodeSend = false;});
+                contrasenaCubit.isCodeSendChanged(isCodeSend);
+              },
+              text: 'Reenviar código',
+            )
           ),
           !isCodeSend ? Container() : const SizedBox(
             height: 40,

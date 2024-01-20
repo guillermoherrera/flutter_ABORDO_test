@@ -33,35 +33,14 @@ class ContrasenaScreen extends StatelessWidget {
                   children: [
                     codigo.length == 6 ? const ContrasenaForm() :  const RecuperarContrasenaForm(),
                     const SizedBox(height: 20),
-                    isCodeSend || loading ? Container() : TextButton(
-                        style: TextButton.styleFrom(
-                            padding: EdgeInsets.zero,
-                            minimumSize: const Size(50, 30),
-                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            alignment: Alignment.centerLeft),
-                        child: codigo.length == 6 ? Container() :const Text.rich(
-                          TextSpan(
-                            text: 'Ya sé mi contraseña. ',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: ColorPalette.colorBlanco),
-                            children: [
-                              TextSpan(
-                                  text: 'Iniciar sesión',
-                                  style: TextStyle(
-                                      decoration: TextDecoration.underline,
-                                      decorationColor: ColorPalette.colorBlanco,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      color: ColorPalette.colorBlanco)),
-                            ],
-                          ),
-                        ),
-                        onPressed: () {
-                          //activarCubit.deleteActivarState();
-                          Navigator.pop(context);
-                        }),
+                    isCodeSend || loading ? Container() : Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('Ya sé mi contraseña. ', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco),),
+                        CustomTextButton(onPressed: () => Navigator.pop(context), text: 'Iniciar sesión'),
+                      ],
+                    ),
                     const SizedBox(height: 50),
                   ],
                 ))
