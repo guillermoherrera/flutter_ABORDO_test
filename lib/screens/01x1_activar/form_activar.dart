@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/blocs/blocs.dart';
 import 'package:flutter_application_2/helpers/helpers.dart';
@@ -21,6 +22,8 @@ class _ActivarFormState extends State<ActivarForm> {
   bool isCodeSend = false;
   late FocusNode focusNode;
   late FocusNode focusCode;
+  late Timer timer;
+  int start = 0;
 
   @override
   void initState() {
@@ -33,7 +36,24 @@ class _ActivarFormState extends State<ActivarForm> {
   void dispose() {
     focusNode.dispose();
     focusCode.dispose();
+    timer.cancel();
     super.dispose();
+  }
+
+  void startTimer() {
+    const oneSec = Duration(seconds: 1);
+    timer = Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        if (start == 0) {
+          setState(() {timer.cancel();});
+        } else {
+          setState(() {
+            start--;
+          });
+        }
+      },
+    );
   }
 
   @override
@@ -131,7 +151,7 @@ class _ActivarFormState extends State<ActivarForm> {
           ),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 1),
-            child: Text('El telefonó celular debe ser el mismo que proporcionaste cuando se te registró en sistema, puedes consultarlo en sucursal si lo necesitas.', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco), textAlign: TextAlign.justify,),
+            child: Text('El teléfono celular debe ser el mismo que proporcionaste cuando se te registró en sistema, puedes consultarlo en sucursal si lo necesitas.', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco), textAlign: TextAlign.justify,),
           ),
           !isCodeSend ? Container() : Align(alignment: Alignment.centerRight, child: CustomTextButton(onPressed: () => _displayBottomSheet(context, activarCubit), text: 'Corregir Datos')),
           const SizedBox(
@@ -184,11 +204,15 @@ class _ActivarFormState extends State<ActivarForm> {
           : Align(
               alignment: Alignment.centerRight ,
               child: CustomTextButton(
-                onPressed: () {
+                onPressed: start > 0 ? (){} : () async{
                   setState(() {isCodeSend = false;});
                   activarCubit.isCodeSendChanged(isCodeSend);
+                  await Future.delayed(const Duration(milliseconds: 500));
+                  if(mounted) _displayBottomSheetCode(context, activarCubit, submitSolicitarActivacion);
                 },
-                text: 'Reenviar código',
+                color: start > 0 ? ColorPalette.colorTerciarioMedio : ColorPalette.colorBlanco,
+                decorationColor: start > 0 ? ColorPalette.colorPrincipal : ColorPalette.colorBlanco,
+                text: 'Reenviar código ${start > 0 ? '(espera $start)' : ''}',
               )
             ),
           !isCodeSend ? Container() : const SizedBox(
@@ -222,8 +246,13 @@ class _ActivarFormState extends State<ActivarForm> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            CustomMaterialButton(text: 'No, corregir', isNegative: true, onPressed: () => Navigator.pop(context)),
+            CustomMaterialButton(text: 'No, corregir', isNegative: true, onPressed: (){
+              setState(() {isVAlid = false;});
+              Navigator.pop(context);
+            }),
             CustomMaterialButton(text: 'Si, envíar', onPressed: () {
+              setState(() {start = start + 120;});
+              startTimer();
               focusCode = FocusNode();
               submitSolicitarActivacion();
               Navigator.pop(context);  
@@ -255,6 +284,7 @@ class _ActivarFormState extends State<ActivarForm> {
               setState(() {
                 isVAlid = false;
                 isCodeSend = false;
+                timer.cancel();
               });
               activarCubit.isCodeSendChanged(isCodeSend);
               Navigator.pop(context);

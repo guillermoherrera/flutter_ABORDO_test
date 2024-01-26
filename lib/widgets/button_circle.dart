@@ -12,8 +12,19 @@ class ButtonCircle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox.fromSize(
-          size: const Size(80, 80),
+        Container(
+          height: 80,
+          width: 80,
+          decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(40),
+          boxShadow: [
+            BoxShadow(
+                blurRadius: 20,
+                offset: const Offset(5, 15),
+                color: !enable ? ColorPalette.colorTransparent : ColorPalette.colorNegro,
+                spreadRadius: -9)
+          ]),
+          //size: const Size(80, 80),
           child: ClipOval(
             child: Material(
               color: !enable ? ColorPalette.colorTerciarioMedio : ColorPalette.colorPrincipal,

@@ -33,14 +33,17 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 40),
-            const CardContainer(
+            CardContainer(
+              boxShadowColor: ColorPalette.colorShadow,
               backgroundColor: ColorPalette.colorBlanco,
+              paddingHorizontal: 0,
               child: Column(
                 children: [
                   ListTile(
                     dense: true,
-                    title: Text('Bienvenido Guillermo Herrera', style: TextStyles.tStyleTileTitle,),
-                    subtitle: Text('Empleado 001 - Corporativo Torreón', style: TextStyles.tStyleTileSubtitle),
+                    title: const FittedBox(child: Text('Bienvenido José Guillermo Herrera', style: TextStyles.tStyleTileTitle,)),
+                    subtitle: const Text('Inicio Sesión: 23/01/2024 09:04', style: TextStyles.tStyleTileSubtitle),
+                    leading: Image(image: const AssetImage('assets/ICONO_APLICACION_SOLUCIONES_AB.png'), width: size.width * 0.10,),
                   )
                 ],
             ),),
