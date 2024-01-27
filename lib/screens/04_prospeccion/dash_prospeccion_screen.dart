@@ -179,7 +179,7 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
       padding: const EdgeInsets.only(top: 0,left: 0, right: 00),
       child: Row(
         children: [
-          CustomTextButton(onPressed: () => () =>{}, text: 'Ver más', color: ColorPalette.colorNegro, decorationColor: ColorPalette.colorNegro)
+          CustomTextButton(onPressed: () => Navigator.pushNamed(context, 'listProspectos'), text: 'Ver más', color: ColorPalette.colorNegro, decorationColor: ColorPalette.colorNegro)
         ],
       ),
     );

@@ -65,4 +65,26 @@ class InputDecorations{
       suffix: Text(suffixText ?? '')
     );
   }
+
+  static InputDecoration searchInputDecoration({
+    required String  labelText,
+    final bool? isLabel,
+    final bool? isDense,
+    final String? hintText,
+    final String? prefixText,
+    final String? suffixText
+  }){
+    return InputDecoration(
+      border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(0)) ,borderSide: BorderSide(color: ColorPalette.colorTerciario)),
+      enabledBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(0)) ,borderSide: BorderSide(color: ColorPalette.colorTerciario)),
+      disabledBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(0)) ,borderSide: BorderSide(color: ColorPalette.colorTerciario, width: 1)),
+      focusedBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(0)) ,borderSide: BorderSide(color: ColorPalette.colorTerciario, width: 1)),
+      errorBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(0)) ,borderSide: BorderSide(color: ColorPalette.colorTerciario, width: 1)),
+      hintText: hintText,
+      prefixIcon: const Icon(Icons.search, color: ColorPalette.colorTerciarioMedio),
+      filled: true,
+      fillColor: ColorPalette.colorBlanco,
+      hintStyle: TextStyle(fontSize: 16, color: ColorPalette.colorTerciarioMedio.withOpacity(0.5), fontWeight: FontWeight.bold),
+    );
+  }
 }

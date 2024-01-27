@@ -56,6 +56,7 @@ class MyApp extends StatelessWidget {
         'formSolicitudProspecto': (_)=> const FormSolicitudProspectoScreen(),
         'formEvaluacionProspecto': (_)=> const FormEvaluacionProspectoScreen(),
         'dashVerificacion': (_)=> const DashVerificacionScreen(),
+        'listProspectos': (_)=> const ListProspectosScreen(),
       },
       theme: ThemeData.light().copyWith(scaffoldBackgroundColor:  ColorPalette.colorTerciario),
     );
