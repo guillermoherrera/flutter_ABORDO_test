@@ -30,7 +30,9 @@ class ActivarScreen extends StatelessWidget {
                   children: [
                     const ActivarForm(),
                     const SizedBox(height: 20),
-                    isCodeSend || loading ? Container() : CustomTextButton(onPressed: ()=>Navigator.pop(context), text: 'Iniciar sesión'),
+                    isCodeSend || loading ? Container() : CustomTextButton(onPressed: ()async{
+                      await Future.delayed(const Duration(milliseconds: 500));
+                      if(context.mounted) Navigator.pop(context);}, text: 'Iniciar sesión'),
                     const SizedBox(height: 50),
                   ],
                 ))

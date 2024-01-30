@@ -59,8 +59,12 @@ class HomeScreen extends StatelessWidget {
                   spacing: 10,
                   runSpacing: 20,
                   children: [
-                    ButtonCircle(icono: Icons.note_alt_outlined, texto: 'Prospección', enable: true, onTap: () => Navigator.pushNamed(context, 'dashProspeccion'),),
-                    ButtonCircle(icono: Icons.fact_check_outlined, texto: 'Verificación', enable: true, onTap: () => Navigator.pushNamed(context, 'dashVerificacion')),
+                    ButtonCircle(icono: Icons.note_alt_outlined, texto: 'Prospección', enable: true, onTap: ()async{
+                      await Future.delayed(const Duration(milliseconds: 500));
+                      if(context.mounted) Navigator.pushNamed(context, 'dashProspeccion');}),
+                    ButtonCircle(icono: Icons.fact_check_outlined, texto: 'Verificación', enable: true, onTap: ()async{
+                      await Future.delayed(const Duration(milliseconds: 500));
+                      if(context.mounted) Navigator.pushNamed(context, 'dashVerificacion');}),
                     const ButtonCircle(icono: Icons.motorcycle_outlined, texto: 'Cobranza', enable: false),
                     const ButtonCircle(icono: Icons.monetization_on_outlined, texto: 'Claridad\nde Pago', enable: false),
                     const ButtonCircle(icono: Icons.school_outlined, texto: 'Capacitación', enable: false),

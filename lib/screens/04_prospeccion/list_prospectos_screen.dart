@@ -57,16 +57,20 @@ class _ListProspectosScreenState extends State<ListProspectosScreen> {
         appBarTitle: 'Mis Prospectos',
         content: Column(children: [
           _header(),
-          _list()
+          Container(
+            padding: const EdgeInsets.only(bottom: 20),
+            height: size.height * .85 , 
+            child: _list()
+          )
         ]),
       ),
-      floatingActionButton: FloatingActionButton(
-        splashColor: ColorPalette.colorSecundario,
-        backgroundColor: ColorPalette.colorNegro,
-        tooltip: 'Filtrar',
-        onPressed: ()=>_displayBottomSheet(context, size),
-        child: const Text('Filtrar', style: TextStyles.tStyleGreyBase14,),
-        ),
+      // floatingActionButton: FloatingActionButton(
+      //   splashColor: ColorPalette.colorSecundario,
+      //   backgroundColor: ColorPalette.colorNegro,
+      //   tooltip: 'Filtrar',
+      //   onPressed: ()=>_displayBottomSheet(context, size),
+      //   child: const Text('Filtrar', style: TextStyles.tStyleGreyBase14,),
+      //   ),
     );
   }
 
@@ -127,99 +131,99 @@ class _ListProspectosScreenState extends State<ListProspectosScreen> {
     );
   }
 
-  Future _displayBottomSheet(BuildContext context, Size size)async{
-    Widget widget = Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              CustomElevatedButton(text: 'Aplicar',onPressed: ()=>Navigator.pop(context))
-            ],
-          ),
-        ),
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(5),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(5),
-                width: double.infinity,
-                color: ColorPalette.colorTerciario,
-                child: const Text('Fecha Registro', style: TextStyles.tStyleNegritaGrey14,))
-            ]
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: TextFormField(
-                  controller: dateInputController,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.end,
-                  textCapitalization: TextCapitalization.words,
-                  decoration: InputDecorations.formInputDecoration(labelText: 'Desde', isLabel: true),
-                  textInputAction: TextInputAction.next,
-                  readOnly: true,
-                  onTap: () => pickerFechaNacimiento(),
-                ),
-              ),
-              const SizedBox(width: 20),
-              Expanded(
-                child: TextFormField(
-                  controller: dateInputController,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.end,
-                  textCapitalization: TextCapitalization.words,
-                  decoration: InputDecorations.formInputDecoration(labelText: 'Hasta', isLabel: true),
-                  textInputAction: TextInputAction.next,
-                  readOnly: true,
-                  onTap: () => pickerFechaNacimiento(),
-                ),
-              ),
-            ]
-          ),
-        ),
-        const SizedBox(height: 20),
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(5),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(5),
-                color: ColorPalette.colorTerciario,
-                width: double.infinity,
-                child: const Text('Estado del Prospecto', style: TextStyles.tStyleNegritaGrey14,))
-            ]
-          ),
-        ),
-        Expanded(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: GridView.count(  
-                crossAxisCount: 4,  
-                crossAxisSpacing: 1,  
-                mainAxisSpacing: 1,  
-                children: List.generate(11, (index) {  
-                  return Center(  
-                    child: CustomRadioSexoButton(radioName: 'ACTIVO', index: 'H', selectedPayment: '', onPressed: (i){},),// your widget  
-                  );  
-                }  
-              )  
-            ),
-          ),
-        )
-      ],
-    );
+  // Future _displayBottomSheet(BuildContext context, Size size)async{
+  //   Widget widget = Column(
+  //     children: [
+  //       Padding(
+  //         padding: const EdgeInsets.all(10),
+  //         child: Row(
+  //           mainAxisAlignment: MainAxisAlignment.end,
+  //           children: [
+  //             CustomElevatedButton(text: 'Aplicar',onPressed: ()=>Navigator.pop(context))
+  //           ],
+  //         ),
+  //       ),
+  //       Container(
+  //         width: double.infinity,
+  //         padding: const EdgeInsets.all(5),
+  //         child: Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             Container(
+  //               padding: const EdgeInsets.all(5),
+  //               width: double.infinity,
+  //               color: ColorPalette.colorTerciario,
+  //               child: const Text('Fecha Registro', style: TextStyles.tStyleNegritaGrey14,))
+  //           ]
+  //         ),
+  //       ),
+  //       Container(
+  //         padding: const EdgeInsets.symmetric(horizontal: 20),
+  //         child: Row(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             Expanded(
+  //               child: TextFormField(
+  //                 controller: dateInputController,
+  //                 style: const TextStyle(fontWeight: FontWeight.bold),
+  //                 textAlign: TextAlign.end,
+  //                 textCapitalization: TextCapitalization.words,
+  //                 decoration: InputDecorations.formInputDecoration(labelText: 'Desde', isLabel: true),
+  //                 textInputAction: TextInputAction.next,
+  //                 readOnly: true,
+  //                 onTap: () => pickerFechaNacimiento(),
+  //               ),
+  //             ),
+  //             const SizedBox(width: 20),
+  //             Expanded(
+  //               child: TextFormField(
+  //                 controller: dateInputController,
+  //                 style: const TextStyle(fontWeight: FontWeight.bold),
+  //                 textAlign: TextAlign.end,
+  //                 textCapitalization: TextCapitalization.words,
+  //                 decoration: InputDecorations.formInputDecoration(labelText: 'Hasta', isLabel: true),
+  //                 textInputAction: TextInputAction.next,
+  //                 readOnly: true,
+  //                 onTap: () => pickerFechaNacimiento(),
+  //               ),
+  //             ),
+  //           ]
+  //         ),
+  //       ),
+  //       const SizedBox(height: 20),
+  //       Container(
+  //         width: double.infinity,
+  //         padding: const EdgeInsets.all(5),
+  //         child: Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             Container(
+  //               padding: const EdgeInsets.all(5),
+  //               color: ColorPalette.colorTerciario,
+  //               width: double.infinity,
+  //               child: const Text('Estado del Prospecto', style: TextStyles.tStyleNegritaGrey14,))
+  //           ]
+  //         ),
+  //       ),
+  //       Expanded(
+  //         child: Container(
+  //           padding: const EdgeInsets.symmetric(horizontal: 20),
+  //           child: GridView.count(  
+  //               crossAxisCount: 4,  
+  //               crossAxisSpacing: 1,  
+  //               mainAxisSpacing: 1,  
+  //               children: List.generate(11, (index) {  
+  //                 return Center(  
+  //                   child: CustomRadioSexoButton(radioName: 'ACTIVO', index: 'H', selectedPayment: '', onPressed: (i){},),// your widget  
+  //                 );  
+  //               }  
+  //             )  
+  //           ),
+  //         ),
+  //       )
+  //     ],
+  //   );
 
-    if(context.mounted) await CustomBottomSheet.show(context: context, widget: widget, height: 500, backgroundColor: ColorPalette.colorBlanco);
-  }
+  //   if(context.mounted) await CustomBottomSheet.show(context: context, widget: widget, height: 500, backgroundColor: ColorPalette.colorBlanco);
+  // }
 }

@@ -38,7 +38,9 @@ class ContrasenaScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text('Ya sé mi contraseña. ', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco),),
-                        CustomTextButton(onPressed: () => Navigator.pop(context), text: 'Iniciar sesión'),
+                        CustomTextButton(onPressed: ()async{
+                          await Future.delayed(const Duration(milliseconds: 500));
+                          if(context.mounted) Navigator.pop(context);}, text: 'Iniciar sesión'),
                       ],
                     ),
                     const SizedBox(height: 50),

@@ -179,7 +179,9 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
       padding: const EdgeInsets.only(top: 0,left: 0, right: 00),
       child: Row(
         children: [
-          CustomTextButton(onPressed: () => Navigator.pushNamed(context, 'listProspectos'), text: 'Ver más', color: ColorPalette.colorNegro, decorationColor: ColorPalette.colorNegro)
+          CustomTextButton(onPressed: ()async{
+            await Future.delayed(const Duration(milliseconds: 500));
+            if(context.mounted) Navigator.pushNamed(context, 'listProspectos');}, text: 'Ver más', color: ColorPalette.colorNegro, decorationColor: ColorPalette.colorNegro)
         ],
       ),
     );
@@ -202,18 +204,24 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 50),
-              child: CustomMaterialButton(text: 'Escanear INE', isNegative: true, widthContainer: size.width * .5, onPressed: (){
-                Navigator.pop(context);
-                Navigator.pushNamed(context, 'ocrSolicitudProspecto');
+              child: CustomMaterialButton(text: 'Escanear INE', isNegative: true, widthContainer: size.width * .5, onPressed: ()async{
+                await Future.delayed(const Duration(milliseconds: 500));
+                if(context.mounted){
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, 'ocrSolicitudProspecto');
+                }
               }),
             ),
             const SizedBox(height: 2),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 50),
-              child: CustomMaterialButton(text: 'Captura Manual', isNegative: true, widthContainer: size.width * .5, onPressed: (){
+              child: CustomMaterialButton(text: 'Captura Manual', isNegative: true, widthContainer: size.width * .5, onPressed: ()async{
                 prospectoBloc.add(NewProspecto(Prospecto()));
-                Navigator.pop(context);
-                Navigator.pushNamed(context, 'formSolicitudProspecto');
+                await Future.delayed(const Duration(milliseconds: 500));
+                if(context.mounted){
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, 'formSolicitudProspecto');
+                }
               }),
             ),
           ],

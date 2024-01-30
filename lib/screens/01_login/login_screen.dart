@@ -29,7 +29,9 @@ class LoginScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text('Aún no tengo contraseña. ', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco),),
-                CustomTextButton(onPressed: ()=>Navigator.pushNamed(context, 'activar'), text: 'Activar cuenta'),
+                CustomTextButton(onPressed: ()async{
+                  await Future.delayed(const Duration(milliseconds: 500));
+                  if(context.mounted) Navigator.pushNamed(context, 'activar');}, text: 'Activar cuenta'),
               ],
             ),
             const SizedBox(height: 50),
@@ -137,7 +139,9 @@ class _LoginFormState extends State<_LoginForm> {
             validator: (value) => FormValidators.lengthValidator(value, 6),
             onFieldSubmitted: (value) => submitLogin() ,
           ),
-          CustomTextButton(onPressed: ()=>Navigator.pushNamed(context, 'contrasena'), text: 'Olvidé mi contraseña'),
+          CustomTextButton(onPressed: ()async{
+            await Future.delayed(const Duration(milliseconds: 500));
+            if(context.mounted) Navigator.pushNamed(context, 'contrasena');}, text: 'Olvidé mi contraseña'),
           const SizedBox(height: 20,),
           CustomMaterialButton(
             text: !loading ? 'Entrar' : 'Ingresando ...', 
