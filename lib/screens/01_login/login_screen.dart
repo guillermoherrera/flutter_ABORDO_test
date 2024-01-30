@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/helpers/helpers.dart';
 import 'package:flutter_application_2/services/api_services.dart';
+import '../../models/models.dart';
 import '../../ui/ui_files.dart';
 import 'package:flutter_application_2/widgets/widgets.dart';
 
@@ -74,6 +75,8 @@ class _LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<_LoginForm> {
   final formKey = GlobalKey<FormState>();
+  TextEditingController userCtrlr = TextEditingController();
+  TextEditingController passCtrlr = TextEditingController();
   bool loading = false;
   bool obscureText = true;
   final _apiCV = ApiService();
@@ -89,17 +92,19 @@ class _LoginFormState extends State<_LoginForm> {
       FocusScope.of(context).unfocus();
       if(!formKey.currentState!.validate()) return;
       
-      //loginCubit.loadingChanged();
-      setState(() {
-        loading = true;
+      setState(() {loading = true;});
+      await Future.delayed(const Duration(milliseconds: 1000));
+      await _apiCV.login(int.parse(userCtrlr.text), passCtrlr.text).then((Login res){
+        if(res.error == 0){
+          Navigator.pushReplacementNamed(context, 'home');
+        }else{
+          DialogHelper.exit(context, res.resultado!);
+        }        
+      }).catchError((e){
+        DialogHelper.exit(context, e.toString());
       });
-      _apiCV.login();
-      await Future.delayed(const Duration(seconds: 3));
-      //loginCubit.loadingChanged();
-      setState(() {
-        loading = false;
-      });
-      if(context.mounted) Navigator.pushReplacementNamed(context, 'home');
+      
+      setState(() {loading = false;});
     }
 
     chanceObscureText() => setState(()=>obscureText = !obscureText);
@@ -114,6 +119,7 @@ class _LoginFormState extends State<_LoginForm> {
           const Text('Iniciar Sesión', textAlign: TextAlign.center,style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco),),
           const SizedBox(height: 50),
           TextFormField(
+            controller: userCtrlr,
             enabled: !loading,
             style: const TextStyle(color: ColorPalette.colorPrincipalMedio, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
@@ -131,6 +137,7 @@ class _LoginFormState extends State<_LoginForm> {
           ),
           const SizedBox(height: 20,),
           TextFormField(
+            controller: passCtrlr,
             enabled: !loading,
             style: const TextStyle(color: ColorPalette.colorPrincipalMedio, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,

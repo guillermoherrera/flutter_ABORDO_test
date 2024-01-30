@@ -4,6 +4,7 @@ import 'ui_files.dart';
 
 abstract class TextStyles{
   static const TextStyle tStyleNormal14 = TextStyle(fontSize: 14);
+  static const TextStyle tStyleNormal16 = TextStyle(fontSize: 16);
 
   static const TextStyle tStyleAppBar = TextStyle(fontSize: 18, color: ColorPalette.colorTerciario, fontWeight: FontWeight.bold);
   static const TextStyle tStyleAppBar2 = TextStyle(fontSize: 18, color: ColorPalette.colorPrincipal, fontWeight: FontWeight.bold);

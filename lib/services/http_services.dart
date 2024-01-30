@@ -6,7 +6,7 @@ class HttpService{
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer',
-      'UUId': 'testx'
+      'UUId': 'test'
     };
 
     await http.post(url, headers: headers, body: body).then((value){
