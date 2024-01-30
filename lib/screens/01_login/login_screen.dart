@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/helpers/helpers.dart';
+import 'package:flutter_application_2/services/api_services.dart';
 import '../../ui/ui_files.dart';
 import 'package:flutter_application_2/widgets/widgets.dart';
 
@@ -75,6 +76,7 @@ class _LoginFormState extends State<_LoginForm> {
   final formKey = GlobalKey<FormState>();
   bool loading = false;
   bool obscureText = true;
+  final _apiCV = ApiService();
   
   @override
   Widget build(BuildContext context) {
@@ -91,6 +93,7 @@ class _LoginFormState extends State<_LoginForm> {
       setState(() {
         loading = true;
       });
+      _apiCV.login();
       await Future.delayed(const Duration(seconds: 3));
       //loginCubit.loadingChanged();
       setState(() {
