@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import '../../blocs/blocs.dart';
+import '../../services/api_services.dart';
 import '../../ui/ui_files.dart';
 import 'package:flutter_application_2/widgets/widgets.dart';
 
@@ -12,8 +13,9 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final loginBloc = context.watch<LoginBloc>();
+    final apiCV = ApiService();
 
-    void onItemTapped(int index) {
+    void onItemTapped(int index) async{
       switch (index) {
         case 0:
           //Navigator.pushNamed(context, 'home', arguments: 0);
@@ -26,10 +28,14 @@ class HomeScreen extends StatelessWidget {
           Navigator.pushNamed(context, 'notificaciones', arguments: 0);
           break;
         case 3:
-          Navigator.pushReplacementNamed(context, 'login', arguments: 0);
+          await Future.delayed(const Duration(milliseconds: 250));
+          if(await apiCV.logout() && context.mounted){
+            Navigator.pushReplacementNamed(context, 'login', arguments: 0);
+          }
           break;
         default:
-          //Navigator.pushNamed(context, 'home', arguments: 0);
+          Navigator.pushNamed(context, 'home', arguments: 0);
+          break;
       }
     }
 

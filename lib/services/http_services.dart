@@ -14,7 +14,7 @@ class HttpService{
     }).catchError((e){
       respuesta = "{\"data\": null, \"error\": 1, \"resultado\": \"${e.toString()}\"}";
     }).timeout(const Duration(seconds: 60), onTimeout: (){
-      respuesta = "{\"data\": null, \"error\": 1, \"resultado\": \"REQUEST ERROR: TIEMPO DE ESPERA AGOTADO PARA LA SOLICITUD\"}";
+      respuesta = "{\"data\": null, \"error\": 1, \"resultado\": \"TIEMPO DE ESPERA AGOTADO.\\nPOR FAVOR REVISA TU CONEXIÓN.\"}";
     });
 
     return respuesta;
