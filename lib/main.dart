@@ -21,7 +21,7 @@ class BlocsProviders extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => getIt<LoginCubit>()),
+        BlocProvider(create: (context) => getIt<LoginBloc>()),
         BlocProvider(create: (context) => getIt<ActivarCubit>()),
         BlocProvider(create: (context) => getIt<ContrasenaCubit>()),
         BlocProvider(create: (context) => getIt<ProspectoBloc>()),

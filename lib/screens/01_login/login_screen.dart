@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/helpers/helpers.dart';
 import 'package:flutter_application_2/services/api_services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../blocs/blocs.dart';
 import '../../models/models.dart';
 import '../../ui/ui_files.dart';
 import 'package:flutter_application_2/widgets/widgets.dart';
@@ -96,6 +98,8 @@ class _LoginFormState extends State<_LoginForm> {
       await Future.delayed(const Duration(milliseconds: 1000));
       await _apiCV.login(int.parse(userCtrlr.text), passCtrlr.text).then((Login res){
         if(res.error == 0){
+          final loginBloc = BlocProvider.of<LoginBloc>(context, listen: false);
+          loginBloc.add(NewLogin(res));
           Navigator.pushReplacementNamed(context, 'home');
         }else{
           DialogHelper.exit(context, res.resultado!);

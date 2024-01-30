@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import '../../blocs/blocs.dart';
 import '../../ui/ui_files.dart';
 import 'package:flutter_application_2/widgets/widgets.dart';
 
@@ -8,6 +11,8 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final loginBloc = context.watch<LoginBloc>();
+
     void onItemTapped(int index) {
       switch (index) {
         case 0:
@@ -41,8 +46,8 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   ListTile(
                     dense: true,
-                    title: const FittedBox(child: Text('Bienvenido José Guillermo Herrera', style: TextStyles.tStyleTileTitle,)),
-                    subtitle: const Text('Inicio Sesión: 23/01/2024 09:04', style: TextStyles.tStyleTileSubtitle),
+                    title: FittedBox(child: Text('BIENVEND${loginBloc.state.login?.data?.sexo == true ? 'O' : 'A'} ${loginBloc.state.login?.data?.nombre} ${loginBloc.state.login?.data?.apPaterno}', style: TextStyles.tStyleTileTitle,)),
+                    subtitle: Text('Inicio Sesión: ${DateFormat('dd-MM-yyyy hh:mm:ss').format(loginBloc.state.login!.data!.fechaLogin)}', style: TextStyles.tStyleTileSubtitle),
                     leading: Image(image: const AssetImage('assets/ICONO_APLICACION_SOLUCIONES_AB.png'), width: size.width * 0.10,),
                   )
                 ],

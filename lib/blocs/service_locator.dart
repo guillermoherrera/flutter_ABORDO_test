@@ -5,7 +5,7 @@ import 'blocs.dart';
 GetIt getIt = GetIt.instance;
 
 void serviceLocatorInit(){
-  getIt.registerSingleton(LoginCubit());
+  getIt.registerSingleton(LoginBloc());
   getIt.registerSingleton(ActivarCubit());
   getIt.registerSingleton(ContrasenaCubit());
   getIt.registerSingleton(ProspectoBloc());

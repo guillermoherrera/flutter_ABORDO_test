@@ -1,23 +1,19 @@
-part of 'login_cubit.dart';
+part of 'login_bloc.dart';
 
-class LoginState extends Equatable {
-  final String usuario;
-  final String contrasena;
-  
-  const LoginState({this.usuario = "", this.contrasena = ""});
+@immutable
+abstract class LoginState{
+  final Login? login;
 
-  LoginState copyWith({
-    String? usuario,
-    String? contrasena,
-    bool? loading,
-    bool? isValid,
-  }) => LoginState(
-    usuario: usuario ?? this.usuario,
-    contrasena: contrasena ?? this.contrasena,
-  );
-
-  @override
-  List<Object> get props => [usuario, contrasena];
+  const LoginState({
+    this.login 
+    });
 }
 
-final class LoginInitial extends LoginState {}
+class LoginInitialState extends LoginState{
+  const LoginInitialState(): super(login: null);
+}
+
+class LoginSetState extends LoginState{
+  final Login loginNew;
+  const LoginSetState(this.loginNew): super(login: loginNew);
+}
