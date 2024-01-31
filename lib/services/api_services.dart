@@ -63,4 +63,12 @@ class ApiService{
     return res;
   }
 
+  Future<InfoUsuario> infoUsuario() async{
+    final url = Uri.http(Endpoints.baseUrl, Endpoints.infoUsuarioUrl);
+    String str = await _httpService.getRequest(url);
+    InfoUsuario res = infoUsuarioFromJson(str);
+    
+    return res;
+  }
+
 }

@@ -25,6 +25,7 @@ class BlocsProviders extends StatelessWidget {
         BlocProvider(create: (context) => getIt<ActivarCubit>()),
         BlocProvider(create: (context) => getIt<ContrasenaCubit>()),
         BlocProvider(create: (context) => getIt<ProspectoBloc>()),
+        BlocProvider(create: (context) => getIt<InfoUsuarioBloc>()),
       ], 
       child: const MyApp() 
     );

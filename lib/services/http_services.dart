@@ -44,4 +44,25 @@ class HttpService{
     return respuesta;
   }
 
+  Future<String> getRequest(url) async{
+    String respuesta = '';
+    String? token = await _storage.read(key: 'token');
+    String uuid = await getDeviceUniqueId();
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+      'UUId': uuid
+    };
+
+    await http.get(url, headers: headers).then((value){
+      respuesta = value.body;
+    }).catchError((e){
+      respuesta = "{\"data\": null, \"error\": 1, \"resultado\": \"${e.toString()}\"}";
+    }).timeout(const Duration(seconds: 60), onTimeout: (){
+      respuesta = "{\"data\": null, \"error\": 1, \"resultado\": \"TIEMPO DE ESPERA AGOTADO.\\nPOR FAVOR REVISA TU CONEXIÓN.\"}";
+    });
+
+    return respuesta;
+  }
+
 }

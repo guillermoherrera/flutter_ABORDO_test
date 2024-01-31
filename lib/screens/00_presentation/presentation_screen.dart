@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:async';
 import 'package:video_player/video_player.dart';
 import 'package:flutter_application_2/widgets/widgets.dart';
@@ -13,16 +14,23 @@ class PresentationScreen extends StatefulWidget {
 class _PresentationScreenState extends State<PresentationScreen> {
   final video = 'assets/PANTALLA_1.mp4';
   late VideoPlayerController controller;
+  final _storage = const FlutterSecureStorage();
 
   @override
-  void initState() {
+  void initState(){
     super.initState();
     controller = VideoPlayerController.asset(video)
     ..addListener(() => setState(() {}))
     ..setLooping(false)
     ..initialize().then((_) => controller.play());
+    
+    checkToken();
+  }
+
+  checkToken()async{
+    String? token = await _storage.read(key: 'token');
     Timer(const Duration(milliseconds: 6550), () {
-      Navigator.pushReplacementNamed(context, 'login');
+      if(context.mounted) Navigator.pushReplacementNamed(context, token == null ? 'login' : 'home');
     });
   }
 

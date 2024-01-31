@@ -9,4 +9,5 @@ void serviceLocatorInit(){
   getIt.registerSingleton(ActivarCubit());
   getIt.registerSingleton(ContrasenaCubit());
   getIt.registerSingleton(ProspectoBloc());
+  getIt.registerSingleton(InfoUsuarioBloc());
 }
