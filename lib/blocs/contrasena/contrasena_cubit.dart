@@ -27,4 +27,7 @@ class ContrasenaCubit extends Cubit<ContrasenaState> {
   void contrasenaInitial(){
     emit(const ContrasenaInitial());
   }
+  void origenChanged(String value){
+    emit(state.copyWith(origen: value));
+  }
 }

@@ -5,6 +5,8 @@ import 'package:flutter_application_2/blocs/blocs.dart';
 import 'package:flutter_application_2/helpers/helpers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application_2/widgets/widgets.dart';
+import '../../models/models.dart';
+import '../../services/api_services.dart';
 import '../../ui/ui_files.dart';
 
 class RecuperarContrasenaForm extends StatefulWidget {
@@ -16,7 +18,9 @@ class RecuperarContrasenaForm extends StatefulWidget {
 
 class _RecuperarContrasenaFormState extends State<RecuperarContrasenaForm> {
   final formKey = GlobalKey<FormState>();
-  TextEditingController codigoController = TextEditingController();
+  TextEditingController userCtrlr = TextEditingController();
+  TextEditingController telCtrlr = TextEditingController();
+  TextEditingController codCtrlr = TextEditingController();
   bool loading = false;
   bool isVAlid = false;
   bool isCodeSend = false;
@@ -24,6 +28,8 @@ class _RecuperarContrasenaFormState extends State<RecuperarContrasenaForm> {
   late FocusNode focusCode;
   Timer? timer;
   int start = 0;
+  String? codigoApi = '';
+  final _apiCV = ApiService();
 
   @override
   void initState() {
@@ -69,28 +75,41 @@ class _RecuperarContrasenaFormState extends State<RecuperarContrasenaForm> {
       FocusScope.of(context).unfocus();
       
       if(!formKey.currentState!.validate()) return;
-      setState(() {
-        loading = true;
-      });
+      setState(() {loading = true;});
       contrasenaCubit.loadingChanged(loading);
-      await Future.delayed(const Duration(seconds: 3));
-      codigoController = TextEditingController();
-      setState(() {
-        loading = false;
-        isVAlid = true;
-        isCodeSend = true;
+      await Future.delayed(const Duration(seconds: 1));
+      codCtrlr = TextEditingController();
+      await _apiCV.recuperacionCodigo(int.parse(userCtrlr.text), telCtrlr.text.replaceAll(RegExp(r'[^0-9]'),'')).then((ActivacionCodigo res)async{
+        if(res.error == 0){
+          setState(() {
+            isVAlid = true;
+            isCodeSend = true;
+            codigoApi = res.data?.codigo;
+          });
+          contrasenaCubit.isCodeSendChanged(isCodeSend);
+          await Future.delayed(const Duration(milliseconds: 500));
+          if(context.mounted) FocusScope.of(context).requestFocus(focusCode);
+          await Future.delayed(const Duration(milliseconds: 500));
+          if(context.mounted) showCustomSnackBar(context);
+        }else{
+          DialogHelper.exit(context, res.resultado!);
+        }        
+      }).catchError((e){
+        DialogHelper.exit(context, e.toString());
       });
+      setState(() {loading = false;});
       contrasenaCubit.loadingChanged(loading);
-      contrasenaCubit.isCodeSendChanged(isCodeSend);
-      await Future.delayed(const Duration(milliseconds: 500));
-      if(context.mounted) FocusScope.of(context).requestFocus(focusCode);
-      await Future.delayed(const Duration(milliseconds: 500));
-      if(context.mounted) showCustomSnackBar(context);
     }
     
     submitRecuperacion() async {
       FocusScope.of(context).unfocus();
       if(!formKey.currentState!.validate()) return;
+
+      if(codigoApi != codCtrlr.text){
+        DialogHelper.exit(context, 'El CÓDIGO QUE INGRESASTE NO ES CORRECTO.');
+        return;
+      }
+
       setState(() {
         loading = true;
       });
@@ -112,6 +131,7 @@ class _RecuperarContrasenaFormState extends State<RecuperarContrasenaForm> {
           const Text('Recuperar Contraseña', textAlign: TextAlign.center,style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco),),
           const SizedBox(height: 50),
           TextFormField(
+            controller: userCtrlr,
             enabled: !loading && !isVAlid,
             style: const TextStyle(color: ColorPalette.colorPrincipalMedio, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
@@ -128,6 +148,7 @@ class _RecuperarContrasenaFormState extends State<RecuperarContrasenaForm> {
             height: 20,
           ),
           TextFormField(
+            controller: telCtrlr,
             enabled: !loading && !isVAlid,
             focusNode: focusNode,
             style: const TextStyle(color: ColorPalette.colorPrincipalMedio, fontWeight: FontWeight.bold),
@@ -157,7 +178,7 @@ class _RecuperarContrasenaFormState extends State<RecuperarContrasenaForm> {
             child: Text('* Ingresa aquí el Código de Recuperación', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco), textAlign: TextAlign.justify,),
           ),
           !isCodeSend ? Container() : PinCodeTextField(
-            controller: codigoController,
+            controller: codCtrlr,
             appContext: context,
             enabled: !loading,
             focusNode: focusCode,
@@ -311,7 +332,9 @@ class _RecuperarContrasenaFormState extends State<RecuperarContrasenaForm> {
             start = 0;
           });
           contrasenaCubit.isCodeSendChanged(isCodeSend);
-          contrasenaCubit.codigoChanged(codigoController.text);
+          contrasenaCubit.origenChanged('recuperacion');
+          contrasenaCubit.codigoChanged(codCtrlr.text);
+          contrasenaCubit.usuarioChanged(userCtrlr.text);
           Navigator.pop(context);
         }))
       ],

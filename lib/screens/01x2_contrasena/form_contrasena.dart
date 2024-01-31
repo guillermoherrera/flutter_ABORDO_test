@@ -34,17 +34,30 @@ class _ContrasenaFormState extends State<ContrasenaForm> {
       setState(() {loading = true;});
       contrasenaCubit.loadingChanged(loading);
       await Future.delayed(const Duration(seconds: 1));
-      await _apiCV.activacion(int.parse(usuario), codigo, contrasena).then((Login res)async{
-        if(res.error == 0){
-          final loginBloc = BlocProvider.of<LoginBloc>(context, listen: false);
-          loginBloc.add(NewLogin(res));
-          await _displayBottomSheetSuccess(context, contrasenaCubit);
-        }else{
-          DialogHelper.exit(context, res.resultado!);
-        }        
-      }).catchError((e){
-        DialogHelper.exit(context, e.toString());
-      });
+
+      contrasenaCubit.state.origen == 'activacion' 
+      ?  await _apiCV.activacion(int.parse(usuario), codigo, contrasena).then((Login res)async{
+          if(res.error == 0){
+            final loginBloc = BlocProvider.of<LoginBloc>(context, listen: false);
+            loginBloc.add(NewLogin(res));
+            await _displayBottomSheetSuccess(context, contrasenaCubit);
+          }else{
+            DialogHelper.exit(context, res.resultado!);
+          }        
+        }).catchError((e){
+          DialogHelper.exit(context, e.toString());
+        }) 
+      : await _apiCV.recuperacion(int.parse(usuario), codigo, contrasena).then((Login res)async{
+          if(res.error == 0){
+            final loginBloc = BlocProvider.of<LoginBloc>(context, listen: false);
+            loginBloc.add(NewLogin(res));
+            await _displayBottomSheetSuccess(context, contrasenaCubit);
+          }else{
+            DialogHelper.exit(context, res.resultado!);
+          }        
+        }).catchError((e){
+          DialogHelper.exit(context, e.toString());
+        });
       
       setState(() {loading = false;});
       contrasenaCubit.loadingChanged(loading);

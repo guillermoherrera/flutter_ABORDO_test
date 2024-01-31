@@ -160,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       shape: BoxShape.circle
                                     ),
                                     child: const Icon(Icons.note_alt_outlined, color: ColorPalette.colorPrincipal,)),
-                                  title: Text('${logBloc.state.logUsuario?.data?[index].logDescripcion}' , style: TextStyles.tStyleTileTitle2,),
+                                  title: Text('${logBloc.state.logUsuario?.data?[index].logDescripcion}' , style: TextStyles.tStyleTileTitle2, overflow: TextOverflow.ellipsis,),
                                   subtitle: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [

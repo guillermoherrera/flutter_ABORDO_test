@@ -337,6 +337,7 @@ class _ActivarFormState extends State<ActivarForm> {
           });
           activarCubit.isCodeSendChanged(isCodeSend);
           contrasenaCubit.isCodeSendChanged(isCodeSend);
+          contrasenaCubit.origenChanged('activacion');
           contrasenaCubit.codigoChanged(codCtrlr.text);
           contrasenaCubit.usuarioChanged(userCtrlr.text);
           Navigator.pop(context);

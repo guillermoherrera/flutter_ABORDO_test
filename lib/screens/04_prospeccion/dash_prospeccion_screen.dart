@@ -90,11 +90,11 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
                                       shape: BoxShape.circle
                                     ),
                                     child: const Icon(Icons.person, color: ColorPalette.colorPrincipal,)),
-                                  title: Text('${prospectosListaBloc.state.prospectosLista?.data?[index].nombre}', style: TextStyles.tStyleTileTitle2, overflow: TextOverflow.ellipsis,),
+                                  title: Text(prospectosListaBloc.state.prospectosLista?.data?[index].nombre ?? '', style: TextStyles.tStyleTileTitle2, overflow: TextOverflow.ellipsis,),
                                   subtitle: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text('${prospectosListaBloc.state.prospectosLista?.data?[index].descClienteStat}', style: TextStyles.tStyleTileSubtitle),
+                                      Text(prospectosListaBloc.state.prospectosLista?.data?[index].descClienteStat ?? '', style: TextStyles.tStyleTileSubtitle),
                                       Text(DateFormat('dd/MM/yyyy').format(prospectosListaBloc.state.prospectosLista?.data?[index].fechaRegistro ?? DateTime.now()), style: TextStyles.tStyleTileSubtitle),
                                     ],
                                   ),
@@ -143,11 +143,11 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
                                       shape: BoxShape.circle
                                     ),
                                     child: const Icon(Icons.house, color: ColorPalette.colorPrincipal,)),
-                                  title: Text('${prospectosListaBloc.state.prospectosLista?.data?[index].nombre}', style: TextStyles.tStyleTileTitle2, overflow: TextOverflow.ellipsis),
+                                  title: Text(prospectosListaBloc.state.prospectosLista?.data?[index].nombre ?? '', style: TextStyles.tStyleTileTitle2, overflow: TextOverflow.ellipsis),
                                   subtitle:  Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text('${prospectosListaBloc.state.prospectosLista?.data?[index].descClienteStat}', style: TextStyles.tStyleTileSubtitle),
+                                      Text(prospectosListaBloc.state.prospectosLista?.data?[index].descClienteStat ?? '', style: TextStyles.tStyleTileSubtitle),
                                       const Text('', style: TextStyles.tStyleTileSubtitle),
                                     ],
                                   ),

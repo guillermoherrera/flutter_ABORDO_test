@@ -4,6 +4,8 @@ abstract class Endpoints{
   static const loginUrl = 'api/Usuarios/Login';
   static const activacionCodigoUrl = 'api/Usuarios/ActivacionCodigo';
   static const activacionUrl = 'api/Usuarios/Activacion';
+  static const recuperacionCodigoUrl = 'api/Usuarios/RecuperarContrasenaCodigo';
+  static const recuperacionUrl = 'api/Usuarios/RecuperarContrasena';
 
   static const infoUsuarioUrl = 'api/Home/InfoUsuario';
   static const logUsuarioUrl = 'api/Home/LogUsuario';

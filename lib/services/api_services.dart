@@ -63,6 +63,34 @@ class ApiService{
     return res;
   }
 
+  Future<ActivacionCodigo> recuperacionCodigo(int user, String telefono) async{
+    final url = Uri.http(Endpoints.baseUrl, Endpoints.recuperacionCodigoUrl);
+    Map<String, dynamic> object = {
+      'usuario': user,
+      'telefono': telefono};
+    final body = jsonEncode(object);
+    String str = await _httpService.postRequest(url, body);
+    ActivacionCodigo res = activacionCodigoFromJson(str);
+    
+    return res;
+  }
+
+  Future<Login> recuperacion(int user, String codigo, String password) async{
+    final url = Uri.http(Endpoints.baseUrl, Endpoints.recuperacionUrl);
+    Map<String, dynamic> object = {
+      'usuario': user,
+      'codigo': codigo,
+      'password': password,
+      'latitud': '',
+      'longitud': ''};
+    final body = jsonEncode(object);
+    String str = await _httpService.postRequest(url, body);
+    Login res = loginFromJson(str);
+    if(res.error == 0) await _storage.write(key: 'token', value: res.data?.token);
+    
+    return res;
+  }
+
   Future<InfoUsuario> infoUsuario() async{
     final url = Uri.http(Endpoints.baseUrl, Endpoints.infoUsuarioUrl);
     String str = await _httpService.getRequest(url);
