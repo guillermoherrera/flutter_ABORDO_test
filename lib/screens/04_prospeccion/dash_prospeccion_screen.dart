@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_2/blocs/prospecto/prospecto_bloc.dart';
 import 'package:flutter_application_2/models/models.dart';
 import 'package:flutter_application_2/ui/ui_files.dart';
 import 'package:flutter_application_2/widgets/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+
+import '../../blocs/blocs.dart';
+import '../../services/api_services.dart';
 
 class DashProspeccionScreen extends StatefulWidget {
   const DashProspeccionScreen({super.key});
@@ -13,142 +16,170 @@ class DashProspeccionScreen extends StatefulWidget {
 }
 
 class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
+  final _apiCV = ApiService();
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  getData() async{
+    await Future.delayed(const Duration(milliseconds: 1000));
+    await _apiCV.prospectosObtenerLista().then((ProspectosObtenerLista res)async{
+      if(res.error == 0){
+        final prospectosListaBloc = BlocProvider.of<ProspectosObtenerListaBloc>(context, listen: false);
+        prospectosListaBloc.add(NewProspectosObtenerLista(res));
+      }else{
+        DialogHelper.exit(context, res.resultado!);
+      }        
+    }).catchError((e){
+      DialogHelper.exit(context, e.toString());
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final infoBloc = context.watch<InfoUsuarioBloc>();
     final prospectoBloc = context.watch<ProspectoBloc>();
+    final prospectosListaBloc = context.watch<ProspectosObtenerListaBloc>();
     
     return Scaffold(
       body: CustomBackground(
         appBarTitle: 'Prospección',
-        content: Column(children: [
-          _header(),
-          _actions(size, prospectoBloc),
-          Container(
-            padding: const EdgeInsets.only(top: 15),
-            child: CardContainer(
-              backgroundColor: ColorPalette.colorBlanco,
-              boxShadowColor: ColorPalette.colorShadow,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text('Últimos Registros', style: TextStyles.tStyleNegrita16,),
-                      _verTodo()
-                    ],
-                  ),
-                  SizedBox(
-                    height: size.height * 0.3,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 0),
-                          child: Material(
-                            child: InkWell(
-                              splashColor: ColorPalette.colorSecundario,
-                              onTap: (){},
-                              child: ListTile(
-                                dense: true,
-                                leading:  Container(
-                                  padding: const EdgeInsets.all(0),
-                                  decoration: const BoxDecoration(
-                                    //color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
-                                    color: ColorPalette.colorTerciario,
-                                    shape: BoxShape.circle
+        content: RefreshIndicator(
+          onRefresh: () => getData(),
+          child: Column(children: [
+            _header(infoBloc),
+            _actions(size, prospectoBloc),
+            Container(
+              padding: const EdgeInsets.only(top: 15),
+              child: CardContainer(
+                backgroundColor: ColorPalette.colorBlanco,
+                boxShadowColor: ColorPalette.colorShadow,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Últimos Registros', style: TextStyles.tStyleNegrita16,),
+                        _verTodo()
+                      ],
+                    ),
+                    SizedBox(
+                      height: size.height * 0.3,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: (prospectosListaBloc.state.prospectosLista?.data?.length ?? 0) >= 5 ? 5 : prospectosListaBloc.state.prospectosLista?.data?.length ,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 0),
+                            child: Material(
+                              child: InkWell(
+                                splashColor: ColorPalette.colorSecundario,
+                                onTap: (){},
+                                child: ListTile(
+                                  dense: true,
+                                  leading:  Container(
+                                    padding: const EdgeInsets.all(0),
+                                    decoration: const BoxDecoration(
+                                      //color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
+                                      color: ColorPalette.colorTerciario,
+                                      shape: BoxShape.circle
+                                    ),
+                                    child: const Icon(Icons.person, color: ColorPalette.colorPrincipal,)),
+                                  title: Text('${prospectosListaBloc.state.prospectosLista?.data?[index].nombre}', style: TextStyles.tStyleTileTitle2, overflow: TextOverflow.ellipsis,),
+                                  subtitle: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text('${prospectosListaBloc.state.prospectosLista?.data?[index].descClienteStat}', style: TextStyles.tStyleTileSubtitle),
+                                      Text(DateFormat('dd/MM/yyyy').format(prospectosListaBloc.state.prospectosLista?.data?[index].fechaRegistro ?? DateTime.now()), style: TextStyles.tStyleTileSubtitle),
+                                    ],
                                   ),
-                                  child: const Icon(Icons.person, color: ColorPalette.colorPrincipal,)),
-                                title: const Text('Nombre Prospecto', style: TextStyles.tStyleTileTitle2,),
-                                subtitle: const Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Estatus: prospecto', style: TextStyles.tStyleTileSubtitle),
-                                    Text('01/01/2000', style: TextStyles.tStyleTileSubtitle),
-                                  ],
+                                  trailing: const IconButton(onPressed: null, icon: Icon(Icons.arrow_forward_ios_outlined, color: ColorPalette.colorPrincipal)),
                                 ),
-                                trailing: const IconButton(onPressed: null, icon: Icon(Icons.arrow_forward_ios_outlined, color: ColorPalette.colorPrincipal)),
                               ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
-                  )
-                ],
-              )
+                          );
+                        },
+                      ),
+                    )
+                  ],
+                )
+              ),
             ),
-          ),
-          Container(
-            padding: const EdgeInsets.only(top: 15),
-            margin: const EdgeInsets.only(bottom: 15),
-            child: CardContainer(
-              backgroundColor: ColorPalette.colorBlanco,
-              boxShadowColor: ColorPalette.colorShadow,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('Visitas', style: TextStyles.tStyleNegrita16,),                      
-                  SizedBox(
-                    height: size.height * 0.3,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: 2,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 0),
-                          child: Material(
-                            child: InkWell(
-                              splashColor: ColorPalette.colorSecundario,
-                              onTap: (){},
-                              child: ListTile(
-                                dense: true,
-                                leading:  Container(
-                                  padding: const EdgeInsets.all(0),
-                                  decoration:  BoxDecoration(
-                                    //color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
-                                    color: index % 2 == 0 ? ColorPalette.colorTerciario : ColorPalette.colorPrincipal,
-                                    shape: BoxShape.circle
+            Container(
+              padding: const EdgeInsets.only(top: 15),
+              margin: const EdgeInsets.only(bottom: 15),
+              child: CardContainer(
+                backgroundColor: ColorPalette.colorBlanco,
+                boxShadowColor: ColorPalette.colorShadow,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('Visitas', style: TextStyles.tStyleNegrita16,),                      
+                    SizedBox(
+                      height: size.height * 0.3,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: prospectosListaBloc.state.prospectosLista?.data?.where((i) => i.descClienteStat == 'PROSPECTO').toList().length,
+                        itemBuilder: (context, index) {
+                          if (prospectosListaBloc.state.prospectosLista?.data?[index].descClienteStat != 'PROSPECTO') return null;
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 0),
+                            child: Material(
+                              child: InkWell(
+                                splashColor: ColorPalette.colorSecundario,
+                                onTap: (){},
+                                child: ListTile(
+                                  dense: true,
+                                  leading:  Container(
+                                    padding: const EdgeInsets.all(0),
+                                    decoration: const BoxDecoration(
+                                      //color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
+                                      color: ColorPalette.colorTerciario,
+                                      shape: BoxShape.circle
+                                    ),
+                                    child: const Icon(Icons.house, color: ColorPalette.colorPrincipal,)),
+                                  title: Text('${prospectosListaBloc.state.prospectosLista?.data?[index].nombre}', style: TextStyles.tStyleTileTitle2, overflow: TextOverflow.ellipsis),
+                                  subtitle:  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text('${prospectosListaBloc.state.prospectosLista?.data?[index].descClienteStat}', style: TextStyles.tStyleTileSubtitle),
+                                      const Text('', style: TextStyles.tStyleTileSubtitle),
+                                    ],
                                   ),
-                                  child: const Icon(Icons.house, color: ColorPalette.colorPrincipal,)),
-                                title: const Text('Nombre Prospecto', style: TextStyles.tStyleTileTitle2,),
-                                subtitle:  Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text('Estatus: por verificar', style: TextStyles.tStyleTileSubtitle),
-                                    Text(index % 2 == 0 ? 'por visitar' : 'visitado', style: TextStyles.tStyleTileSubtitle),
-                                  ],
+                                  trailing: const IconButton(onPressed: null, icon: Icon(Icons.arrow_forward_ios_outlined, color: ColorPalette.colorPrincipal)),
                                 ),
-                                trailing: const IconButton(onPressed: null, icon: Icon(Icons.arrow_forward_ios_outlined, color: ColorPalette.colorPrincipal)),
                               ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
-                  )
-                ],
-              )
-            ),
-          )
-        ]),
+                          );
+                        },
+                      ),
+                    )
+                  ],
+                )
+              ),
+            )
+          ]),
+        ),
       )
     );
   }
   
-  Widget _header() {
+  Widget _header(infoBloc) {
     return  Padding(
       padding: const EdgeInsets.only(top: 25,left: 20, right: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Column(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Hola Guillermo Herrera', style: TextStyles.tStyleGreyBase14,),
-              Text('Gestiona tus propectos', style: TextStyles.tStyleGreyBase18,),
+              Text('HOLA ${infoBloc.state.infoUsuario?.data?.nombre ?? 'CARGANDO'} ${infoBloc.state.infoUsuario?.data?.apPaterno ?? 'USUARIO ...'}', style: TextStyles.tStyleGreyBase14,),
+              const Text('Gestiona tus propectos', style: TextStyles.tStyleGreyBase18,),
             ],
           ),
           Container(
@@ -157,7 +188,7 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
             color: ColorPalette.colorBlanco,
             shape: BoxShape.circle
           ),
-          child: const Icon(Icons.person, size: 40, color: ColorPalette.colorPrincipal))
+          child: Icon(infoBloc.state.infoUsuario?.data?.sexo ?? false == true ? Icons.person : Icons.person_2, size: 40, color: ColorPalette.colorPrincipal))
         ],
       ),
     );

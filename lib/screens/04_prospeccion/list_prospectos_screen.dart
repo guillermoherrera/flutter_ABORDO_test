@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/models/models.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_holo_date_picker/date_picker.dart';
 import 'package:flutter_holo_date_picker/i18n/date_picker_i18n.dart';
 import 'package:intl/intl.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
 
 // import '../../blocs/blocs.dart';
+import '../../blocs/blocs.dart';
 import '../../ui/ui_files.dart';
 import '../../widgets/widgets.dart';
 import 'dart:math' as maths;
@@ -19,6 +22,25 @@ class ListProspectosScreen extends StatefulWidget {
 class _ListProspectosScreenState extends State<ListProspectosScreen> {
   TextEditingController dateInputController = TextEditingController();
   DateTime fechaAux = DateTime.now();
+  List<DatumProspectos>? listaOriginal = [];
+  List<DatumProspectos>? lista = [];
+
+  @override
+  void initState() {
+    super.initState();
+    final prospectosBloc = BlocProvider.of<ProspectosObtenerListaBloc>(context, listen: false);
+    setState(() {
+      listaOriginal = prospectosBloc.state.prospectosLista?.data;
+      lista = prospectosBloc.state.prospectosLista?.data;
+    });
+  }
+
+  _filtroLista(String searchString){
+
+    setState(() {
+      lista = searchString.isEmpty ? listaOriginal : listaOriginal?.where((e) => e.nombre.toUpperCase().contains(searchString.toUpperCase()) || e.folioRegistro.toString().toUpperCase().contains(searchString) ).toList();
+    });
+  }
 
   pickerFechaNacimiento() async {
     var datePicked = await DatePicker.showSimpleDatePicker(
@@ -83,6 +105,7 @@ class _ListProspectosScreenState extends State<ListProspectosScreen> {
         textCapitalization: TextCapitalization.words,
         decoration: InputDecorations.searchInputDecoration(labelText: '', hintText: 'Buscar por Nombre o Folio'),
         textInputAction: TextInputAction.next,
+        onChanged: _filtroLista,
       ),
     );
   }
@@ -93,7 +116,7 @@ class _ListProspectosScreenState extends State<ListProspectosScreen> {
       child: ListView.builder(
         padding: EdgeInsets.zero,
         shrinkWrap: true,
-        itemCount: 15,
+        itemCount: lista?.length ?? 0,
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.all(0),
@@ -113,12 +136,12 @@ class _ListProspectosScreenState extends State<ListProspectosScreen> {
                       ),
                       child: const Icon(Icons.person, color: ColorPalette.colorTerciarioMedio, size: 50,)),
                   ),
-                  title: Text('${index}999 - NOMBRE DEL PROSPECTO', style: TextStyles.tStyleTileTitle2,),
-                  subtitle: const Column(
+                  title: Text('${lista?[index].folioRegistro} - ${lista?[index].nombre}', style: TextStyles.tStyleTileTitle2,),
+                  subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Estatus prospecto', style: TextStyles.tStyleGrey12),
-                      Text('Registro 01/12/23', style: TextStyles.tStyleGrey12),
+                      Text('ESTATUS ${lista?[index].descClienteStat}', style: TextStyles.tStyleGrey12),
+                      Text('REGISTRO ${DateFormat('dd/MM/yyyy').format(lista?[index].fechaRegistro ?? DateTime.now())}', style: TextStyles.tStyleGrey12),
                     ],
                   ),
                   //trailing: const IconButton(onPressed: null, icon: Icon(Icons.arrow_forward_ios_outlined, color: ColorPalette.colorPrincipal)),

@@ -34,7 +34,11 @@ class HttpService{
     };
 
     await http.post(url, headers: headers, body: body).then((value){
-      respuesta = value.body;
+      if(value.statusCode == 200){
+        respuesta = value.body;
+      }else{
+        respuesta = "{\"data\": null, \"error\": 1, \"resultado\": \"${value.statusCode} ${value.reasonPhrase}\"}";
+      }
     }).catchError((e){
       respuesta = "{\"data\": null, \"error\": 1, \"resultado\": \"${e.toString()}\"}";
     }).timeout(const Duration(seconds: 60), onTimeout: (){
@@ -55,7 +59,11 @@ class HttpService{
     };
 
     await http.get(url, headers: headers).then((value){
-      respuesta = value.body;
+      if(value.statusCode == 200){
+        respuesta = value.body;
+      }else{
+        respuesta = "{\"data\": null, \"error\": 1, \"resultado\": \"${value.statusCode} ${value.reasonPhrase}\"}";
+      }
     }).catchError((e){
       respuesta = "{\"data\": null, \"error\": 1, \"resultado\": \"${e.toString()}\"}";
     }).timeout(const Duration(seconds: 60), onTimeout: (){

@@ -79,4 +79,12 @@ class ApiService{
     return res;
   }
 
+  Future<ProspectosObtenerLista> prospectosObtenerLista() async{
+    final url = Uri.http(Endpoints.baseUrl, Endpoints.prospectosObtenerListaUrl);
+    String str = await _httpService.getRequest(url);
+    ProspectosObtenerLista res = prospectosObtenerListaFromJson(str);
+    
+    return res;
+  }
+
 }
