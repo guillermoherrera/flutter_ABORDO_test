@@ -52,7 +52,7 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   ListTile(
                     dense: true,
-                    title: FittedBox(child: Text('BIENVEND${loginBloc.state.login?.data?.sexo == true ? 'O' : 'A'} ${loginBloc.state.login?.data?.nombre} ${loginBloc.state.login?.data?.apPaterno}', style: TextStyles.tStyleTileTitle,)),
+                    title: FittedBox(child: Text('BIENVENID${loginBloc.state.login?.data?.sexo == true ? 'O' : 'A'} ${loginBloc.state.login?.data?.nombre} ${loginBloc.state.login?.data?.apPaterno}', style: TextStyles.tStyleTileTitle,)),
                     subtitle: Text('Inicio Sesión: ${DateFormat('dd-MM-yyyy hh:mm:ss').format(loginBloc.state.login!.data!.fechaLogin)}', style: TextStyles.tStyleTileSubtitle),
                     leading: Image(image: const AssetImage('assets/ICONO_APLICACION_SOLUCIONES_AB.png'), width: size.width * 0.10,),
                   )

@@ -22,7 +22,7 @@ class _RecuperarContrasenaFormState extends State<RecuperarContrasenaForm> {
   bool isCodeSend = false;
   late FocusNode focusNode;
   late FocusNode focusCode;
-  late Timer timer;
+  Timer? timer;
   int start = 0;
 
   @override
@@ -36,7 +36,7 @@ class _RecuperarContrasenaFormState extends State<RecuperarContrasenaForm> {
   void dispose() {
     focusNode.dispose();
     focusCode.dispose();
-    timer.cancel();
+    timer?.cancel();
     super.dispose();
   }
 
@@ -279,7 +279,7 @@ class _RecuperarContrasenaFormState extends State<RecuperarContrasenaForm> {
               setState(() {
                 isVAlid = false;
                 isCodeSend = false;
-                timer.cancel();
+                timer?.cancel();
               });
               contrasenaCubit.isCodeSendChanged(isCodeSend);
               Navigator.pop(context);
@@ -308,6 +308,7 @@ class _RecuperarContrasenaFormState extends State<RecuperarContrasenaForm> {
         Center(child: CustomMaterialButton(text: 'Continuar', onPressed: () {
           setState(() {
             isCodeSend = false;
+            start = 0;
           });
           contrasenaCubit.isCodeSendChanged(isCodeSend);
           contrasenaCubit.codigoChanged(codigoController.text);

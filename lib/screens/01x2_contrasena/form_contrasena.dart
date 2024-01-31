@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application_2/helpers/form_validators.dart';
 import 'package:flutter_application_2/widgets/widgets.dart';
 import '../../blocs/blocs.dart';
+import '../../models/models.dart';
+import '../../services/api_services.dart';
 import '../../ui/ui_files.dart';
 
 
@@ -17,24 +19,34 @@ class _ContrasenaFormState extends State<ContrasenaForm> {
   final formKey = GlobalKey<FormState>();
   bool loading = false;
   bool obscureText = false;
+  final _apiCV = ApiService();
 
   @override
   Widget build(BuildContext context) {
     final contrasenaCubit = context.watch<ContrasenaCubit>();
     final contrasena = contrasenaCubit.state.contrasena; 
+    final codigo = contrasenaCubit.state.codigo; 
+    final usuario = contrasenaCubit.state.usuario; 
     
     submitGuardarContrasena() async {
       FocusScope.of(context).unfocus();
       if(!formKey.currentState!.validate()) return;
-      setState(() {
-        loading = true;
-      });
+      setState(() {loading = true;});
       contrasenaCubit.loadingChanged(loading);
-      await Future.delayed(const Duration(seconds: 3));
-      if(context.mounted) await _displayBottomSheetSuccess(context, contrasenaCubit);
-      setState(() {
-        loading = false;
+      await Future.delayed(const Duration(seconds: 1));
+      await _apiCV.activacion(int.parse(usuario), codigo, contrasena).then((Login res)async{
+        if(res.error == 0){
+          final loginBloc = BlocProvider.of<LoginBloc>(context, listen: false);
+          loginBloc.add(NewLogin(res));
+          await _displayBottomSheetSuccess(context, contrasenaCubit);
+        }else{
+          DialogHelper.exit(context, res.resultado!);
+        }        
+      }).catchError((e){
+        DialogHelper.exit(context, e.toString());
       });
+      
+      setState(() {loading = false;});
       contrasenaCubit.loadingChanged(loading);
     }
 

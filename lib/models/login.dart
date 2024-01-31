@@ -5,7 +5,7 @@ Login loginFromJson(String str) => Login.fromJson(json.decode(str));
 String loginToJson(Login data) => json.encode(data.toJson());
 
 class Login {
-    Data? data;
+    DataLogin? data;
     int? error;
     String? resultado;
 
@@ -16,7 +16,7 @@ class Login {
     });
 
     factory Login.fromJson(Map<String, dynamic> json) => Login(
-        data: json["data"] != null ? Data.fromJson(json["data"]) : null,
+        data: json["data"] != null ? DataLogin.fromJson(json["data"]) : null,
         error: json["error"],
         resultado: json["resultado"],
     );
@@ -28,7 +28,7 @@ class Login {
     };
 }
 
-class Data {
+class DataLogin {
     int noEmpleado;
     String nombre;
     String apPaterno;
@@ -40,7 +40,7 @@ class Data {
     int puesto;
     String? token;
 
-    Data({
+    DataLogin({
         required this.noEmpleado,
         required this.nombre,
         required this.apPaterno,
@@ -53,7 +53,7 @@ class Data {
         this.token,
     });
 
-    factory Data.fromJson(Map<String, dynamic> json) => Data(
+    factory DataLogin.fromJson(Map<String, dynamic> json) => DataLogin(
         noEmpleado: json["no_Empleado"],
         nombre: json["nombre"],
         apPaterno: json["ap_Paterno"],

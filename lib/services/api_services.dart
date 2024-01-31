@@ -35,4 +35,32 @@ class ApiService{
     }
   }
 
+  Future<ActivacionCodigo> activacionCodigo(int user, String telefono) async{
+    final url = Uri.http(Endpoints.baseUrl, Endpoints.activacionCodigoUrl);
+    Map<String, dynamic> object = {
+      'usuario': user,
+      'telefono': telefono};
+    final body = jsonEncode(object);
+    String str = await _httpService.postRequest(url, body);
+    ActivacionCodigo res = activacionCodigoFromJson(str);
+    
+    return res;
+  }
+
+  Future<Login> activacion(int user, String codigo, String password) async{
+    final url = Uri.http(Endpoints.baseUrl, Endpoints.activacionUrl);
+    Map<String, dynamic> object = {
+      'usuario': user,
+      'codigo': codigo,
+      'password': password,
+      'latitud': '',
+      'longitud': ''};
+    final body = jsonEncode(object);
+    String str = await _httpService.postRequest(url, body);
+    Login res = loginFromJson(str);
+    if(res.error == 0) await _storage.write(key: 'token', value: res.data?.token);
+    
+    return res;
+  }
+
 }

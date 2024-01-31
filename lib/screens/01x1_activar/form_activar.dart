@@ -5,6 +5,8 @@ import 'package:flutter_application_2/helpers/helpers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application_2/widgets/widgets.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import '../../models/models.dart';
+import '../../services/api_services.dart';
 import '../../ui/ui_files.dart';
 
 class ActivarForm extends StatefulWidget {
@@ -16,14 +18,18 @@ class ActivarForm extends StatefulWidget {
 
 class _ActivarFormState extends State<ActivarForm> {
   final formKey = GlobalKey<FormState>();
-  TextEditingController codigoController = TextEditingController();
+  TextEditingController userCtrlr = TextEditingController();
+  TextEditingController telCtrlr = TextEditingController();
+  TextEditingController codCtrlr = TextEditingController();
   bool loading = false;
   bool isVAlid = false;
   bool isCodeSend = false;
   late FocusNode focusNode;
   late FocusNode focusCode;
-  late Timer timer;
+  Timer? timer;
   int start = 0;
+  String? codigoApi = '';
+  final _apiCV = ApiService();
 
   @override
   void initState() {
@@ -36,7 +42,7 @@ class _ActivarFormState extends State<ActivarForm> {
   void dispose() {
     focusNode.dispose();
     focusCode.dispose();
-    timer.cancel();
+    timer?.cancel();
     super.dispose();
   }
 
@@ -72,34 +78,46 @@ class _ActivarFormState extends State<ActivarForm> {
         loading = true;
       });
       activarCubit.loadingChanged(loading);
-      await Future.delayed(const Duration(seconds: 3));
-      codigoController = TextEditingController();
-      setState(() {
-        loading = false;
-        isVAlid = true;
-        isCodeSend = true;
+      await Future.delayed(const Duration(seconds: 1));
+      codCtrlr = TextEditingController();
+      await _apiCV.activacionCodigo(int.parse(userCtrlr.text), telCtrlr.text.replaceAll(RegExp(r'[^0-9]'),'')).then((ActivacionCodigo res)async{
+        if(res.error == 0){
+          setState(() {
+            isVAlid = true;
+            isCodeSend = true;
+            codigoApi = res.data?.codigo;
+          });
+          activarCubit.isCodeSendChanged(isCodeSend);
+          await Future.delayed(const Duration(milliseconds: 500));
+          if(context.mounted) FocusScope.of(context).requestFocus(focusCode);
+          await Future.delayed(const Duration(milliseconds: 500));
+          if(context.mounted) showCustomSnackBar(context);
+        }else{
+          DialogHelper.exit(context, res.resultado!);
+        }        
+      }).catchError((e){
+        DialogHelper.exit(context, e.toString());
       });
+      setState(() {loading = false;});
       activarCubit.loadingChanged(loading);
-      activarCubit.isCodeSendChanged(isCodeSend);
-      await Future.delayed(const Duration(milliseconds: 500));
-      if(context.mounted) FocusScope.of(context).requestFocus(focusCode);
-      await Future.delayed(const Duration(milliseconds: 500));
-      if(context.mounted) showCustomSnackBar(context);
+          
     }
     
     submitActivacion() async {
       FocusScope.of(context).unfocus();
       
       if(!formKey.currentState!.validate()) return;
-      setState(() {
-        loading = true;
-      });
+
+      if(codigoApi != codCtrlr.text){
+        DialogHelper.exit(context, 'El CÓDIGO QUE INGRESASTE NO ES CORRECTO.');
+        return;
+      }
+
+      setState(() {loading = true;});
       activarCubit.loadingChanged(loading);
-      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(const Duration(seconds: 1));
       if(context.mounted) await _displayBottomSheetSuccess(context, activarCubit, contrasenaCubit);
-      setState(() {
-        loading = false;
-      });
+      setState(() {loading = false;});
       activarCubit.loadingChanged(loading);
       //activarCubit.deleteActivarState();
     }
@@ -117,6 +135,7 @@ class _ActivarFormState extends State<ActivarForm> {
           ),
           const SizedBox(height: 20),
           TextFormField(
+            controller: userCtrlr,
             enabled: !loading && !isVAlid,
             style: const TextStyle(color: ColorPalette.colorPrincipalMedio, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
@@ -133,6 +152,7 @@ class _ActivarFormState extends State<ActivarForm> {
             height: 20,
           ),
           TextFormField(
+            controller: telCtrlr,
             enabled: !loading && !isVAlid,
             focusNode: focusNode,
             style: const TextStyle(color: ColorPalette.colorPrincipalMedio, fontWeight: FontWeight.bold),
@@ -162,7 +182,7 @@ class _ActivarFormState extends State<ActivarForm> {
             child: Text('* Ingresa aquí el Código de Activación', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco), textAlign: TextAlign.justify,),
           ),
           !isCodeSend ? Container() : PinCodeTextField(
-            controller: codigoController,
+            controller: codCtrlr,
             appContext: context,
             enabled: !loading,
             focusNode: focusCode,
@@ -284,7 +304,7 @@ class _ActivarFormState extends State<ActivarForm> {
               setState(() {
                 isVAlid = false;
                 isCodeSend = false;
-                timer.cancel();
+                timer?.cancel();
               });
               activarCubit.isCodeSendChanged(isCodeSend);
               Navigator.pop(context);
@@ -307,16 +327,18 @@ class _ActivarFormState extends State<ActivarForm> {
         const SizedBox(height: 10),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 10), 
-          child: Text('Enhorabuena! Se ha activado tu usuario, ahora crea una contraseña y podrás iniciar sesión.', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), textAlign: TextAlign.justify)
+          child: Text('Enhorabuena! Ahora crea una contraseña para poder iniciar sesión y tu usuario se habrá Activado.', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), textAlign: TextAlign.justify)
         ),
         const SizedBox(height: 20),
         Center(child: CustomMaterialButton(text: 'Crear Contraseña', onPressed: () {
           setState(() {
             isCodeSend = false;
+            start = 0;
           });
           activarCubit.isCodeSendChanged(isCodeSend);
           contrasenaCubit.isCodeSendChanged(isCodeSend);
-          contrasenaCubit.codigoChanged(codigoController.text);
+          contrasenaCubit.codigoChanged(codCtrlr.text);
+          contrasenaCubit.usuarioChanged(userCtrlr.text);
           Navigator.pop(context);
           Navigator.pushReplacementNamed(context, 'contrasena');
         }))
