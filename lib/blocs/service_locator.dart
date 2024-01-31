@@ -10,4 +10,5 @@ void serviceLocatorInit(){
   getIt.registerSingleton(ContrasenaCubit());
   getIt.registerSingleton(ProspectoBloc());
   getIt.registerSingleton(InfoUsuarioBloc());
+  getIt.registerSingleton(LogUsuarioBloc());
 }

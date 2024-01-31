@@ -71,4 +71,12 @@ class ApiService{
     return res;
   }
 
+  Future<LogUsuario> logUsuario() async{
+    final url = Uri.http(Endpoints.baseUrl, Endpoints.logUsuarioUrl);
+    String str = await _httpService.getRequest(url);
+    LogUsuario res = logUsuarioFromJson(str);
+    
+    return res;
+  }
+
 }
