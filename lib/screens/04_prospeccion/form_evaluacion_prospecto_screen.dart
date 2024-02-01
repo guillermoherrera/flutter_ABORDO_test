@@ -413,7 +413,7 @@ class SuccessEvalScreen extends StatelessWidget {
                 const SizedBox(height: 30),
                 CustomElevatedButton(text: 'Continuar',onPressed: (){
                   int count = 0;
-                  Navigator.of(context).popUntil((_) => count++ >= 3);
+                  Navigator.of(context).popUntil((_) => count++ >= 2);
                 }) //Navigator.of(context).pushNamedAndRemoveUntil('home', (Route<dynamic> route) => false)) //Navigator.pushReplacementNamed(context, 'dashProspeccion'))
               ],
             ),

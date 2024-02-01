@@ -48,6 +48,16 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
     final prospectoEBloc = BlocProvider.of<ProspectoBloc>(context, listen: false);
     String lol = prospectoEBloc.state.prospecto?.fechaNacimiento ?? '';
     dateInputController.text = lol;
+    nombreCtrlr.text = prospectoEBloc.state.prospecto?.nombre ?? '';
+    apPaternoCtrlr.text = prospectoEBloc.state.prospecto?.primerApellido ?? '';
+    apMaternoCtrlr.text = prospectoEBloc.state.prospecto?.segundoApellido ?? '';
+    calleCtrlr.text = prospectoEBloc.state.prospecto?.calle ?? '';
+    noExteriorCtrlr.text = prospectoEBloc.state.prospecto?.noExterior ?? '';
+    cpCtrlr.text = prospectoEBloc.state.prospecto?.cp ?? '';
+    coloniaCtrlr.text = prospectoEBloc.state.prospecto?.colonia ?? '';
+    delegacionCtrlr.text = prospectoEBloc.state.prospecto?.ciudad ?? '';
+    ciudadCtrlr.text = prospectoEBloc.state.prospecto?.ciudad ?? '';
+    estadoCtrlr.text = prospectoEBloc.state.prospecto?.estado ?? '';
   }
 
   pickerFechaNacimiento() async {
@@ -222,7 +232,6 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     textCapitalization: TextCapitalization.words,
                     decoration: InputDecorations.formInputDecoration(labelText: 'Nombre'),
                     textInputAction: TextInputAction.next,
-                    initialValue: prospectoBloc.state.prospecto?.nombre,
                     validator: (value) => FormValidators.existValidator(value),
                     inputFormatters: [UpperCaseTextFormatter()],
                     autofocus: prospectoBloc.state.prospecto?.image == null,
@@ -236,7 +245,6 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     textCapitalization: TextCapitalization.words,
                     decoration: InputDecorations.formInputDecoration(labelText: 'Primer Apellido'),
                     textInputAction: TextInputAction.next,
-                    initialValue: prospectoBloc.state.prospecto?.primerApellido,
                     validator: (value) => FormValidators.existValidator(value),
                     inputFormatters: [UpperCaseTextFormatter()]
                   ),
@@ -249,7 +257,6 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     textCapitalization: TextCapitalization.words,
                     decoration: InputDecorations.formInputDecoration(labelText: 'Segundo Apellido'),
                     textInputAction: TextInputAction.done,
-                    initialValue: prospectoBloc.state.prospecto?.segundoApellido,
                     validator: (value) => FormValidators.existValidator(value),
                     inputFormatters: [UpperCaseTextFormatter()]
                   ),
@@ -287,12 +294,13 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                   const Divider(),
                   const SizedBox(height: 10),
                   TextFormField(
+                    enabled: !loading,
+                    controller: calleCtrlr,
                     style: const TextStyle(fontWeight: FontWeight.bold),
                     textAlign: TextAlign.end,
                     textCapitalization: TextCapitalization.words,
                     decoration: InputDecorations.formInputDecoration(labelText: 'Calle'),
                     textInputAction: TextInputAction.next,
-                    initialValue: prospectoBloc.state.prospecto?.calle,
                     validator: (value) => FormValidators.existValidator(value),
                     inputFormatters: [UpperCaseTextFormatter()]
                   ),
@@ -309,7 +317,6 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                           textCapitalization: TextCapitalization.words,
                           decoration: InputDecorations.formInputDecoration(labelText: 'No Ext.'),
                           textInputAction: TextInputAction.next,
-                          initialValue: prospectoBloc.state.prospecto?.noExterior,
                           validator: (value) => FormValidators.existValidator(value),
                           inputFormatters: [UpperCaseTextFormatter()]
                         ),
@@ -342,7 +349,6 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     keyboardType: TextInputType.number,
                     maxLength: 5,
                     textInputAction: TextInputAction.next,
-                    initialValue: prospectoBloc.state.prospecto?.cp,
                     validator: (value) => FormValidators.existValidator(value),
                   ),
                   const SizedBox(height: seperacion),
@@ -354,7 +360,6 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     textCapitalization: TextCapitalization.words,
                     decoration: InputDecorations.formInputDecoration(labelText: 'Colonia'),
                     textInputAction: TextInputAction.next,
-                    initialValue: prospectoBloc.state.prospecto?.colonia,
                     validator: (value) => FormValidators.existValidator(value),
                     inputFormatters: [UpperCaseTextFormatter()]
                   ),
@@ -378,7 +383,6 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     textCapitalization: TextCapitalization.words,
                     decoration: InputDecorations.formInputDecoration(labelText: 'Ciudad'),
                     textInputAction: TextInputAction.next,
-                    initialValue: prospectoBloc.state.prospecto?.ciudad,
                     validator: (value) => FormValidators.existValidator(value),
                     inputFormatters: [UpperCaseTextFormatter()]
                   ),
@@ -391,7 +395,6 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     textCapitalization: TextCapitalization.words,
                     decoration: InputDecorations.formInputDecoration(labelText: 'Estado'),
                     textInputAction: TextInputAction.next,
-                    initialValue: prospectoBloc.state.prospecto?.estado,
                     validator: (value) => FormValidators.existValidator(value),
                     inputFormatters: [UpperCaseTextFormatter()]
                   ),

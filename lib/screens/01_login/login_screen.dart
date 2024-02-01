@@ -85,6 +85,7 @@ class _LoginFormState extends State<_LoginForm> {
   
   @override
   Widget build(BuildContext context) {
+    final infoBloc = context.watch<InfoUsuarioBloc>();
 
     //final loginCubit = context.watch<LoginCubit>();
     // final usuario = loginCubit.state.usuario;
@@ -118,7 +119,7 @@ class _LoginFormState extends State<_LoginForm> {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Column(
         children: [
-          const Text('Hola !', textAlign: TextAlign.center,style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco),),
+          Text('Hola ${infoBloc.state.infoUsuario?.data?.nombre ?? ''} !', textAlign: TextAlign.center,style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco),),
           const SizedBox(height: 10),
           const Text('Iniciar Sesión', textAlign: TextAlign.center,style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: ColorPalette.colorBlanco),),
           const SizedBox(height: 50),
