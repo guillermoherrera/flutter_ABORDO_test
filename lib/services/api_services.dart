@@ -106,6 +106,14 @@ class ApiService{
     
     return res;
   }
+  
+  Future<Notificaciones> notificaciones() async{
+    final url = Uri.http(Endpoints.baseUrl, Endpoints.notificacionesUrl);
+    String str = await _httpService.getRequest(url);
+    Notificaciones res = notificacionesFromJson(str);
+    
+    return res;
+  }
 
   Future<ProspectosObtenerLista> prospectosObtenerLista() async{
     final url = Uri.http(Endpoints.baseUrl, Endpoints.prospectosObtenerListaUrl);

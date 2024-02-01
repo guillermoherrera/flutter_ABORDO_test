@@ -9,6 +9,7 @@ abstract class Endpoints{
 
   static const infoUsuarioUrl = 'api/Home/InfoUsuario';
   static const logUsuarioUrl = 'api/Home/LogUsuario';
+  static const notificacionesUrl = 'api/Home/Notificaciones';
 
   static const prospectosObtenerListaUrl = 'api/Prospeccion/ProspectosObtenerLista';
   static const prospectoRegistroUrl = 'api/Prospeccion/ProspectoRegistro';

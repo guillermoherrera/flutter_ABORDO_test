@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import '../../models/models.dart';
+import '../../services/api_services.dart';
 import '../../ui/ui_files.dart';
 import 'dart:math' as maths;
+
+import '../../widgets/widgets.dart';
 
 
 class NotificationsScreen extends StatefulWidget {
@@ -11,7 +16,28 @@ class NotificationsScreen extends StatefulWidget {
 }
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
+  final _apiCV = ApiService();
   get math => null;
+  List<DatumNotificaciones>? lista = [];
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  getData() async{
+    await Future.delayed(const Duration(milliseconds: 1000));
+    await _apiCV.notificaciones().then((Notificaciones res){
+      if(res.error == 0){
+        setState(() {lista = res.data;});
+      }else{
+        DialogHelper.exit(context, res.resultado!);
+      }        
+    }).catchError((e){
+      DialogHelper.exit(context, e.toString());
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +54,11 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           const SizedBox(width: 10,),
         ],
       ),
-      body: ListView.builder(
+      body: (lista?.length ?? 0) == 0 
+      ? const EmptyWidget()
+      : ListView.builder(
         shrinkWrap: true,
-        itemCount: 7,
+        itemCount: lista?.length ?? 0,
         itemBuilder: (context, index) {
           return Card(
             child: ListTile(
@@ -41,8 +69,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   shape: BoxShape.circle
                 ),
                 child: const Icon(Icons.notifications_outlined, color: ColorPalette.colorPrincipal,)),
-              title: const Text('Descripción de la notificación', style: TextStyles.tStyleTileTitle2,),
-              subtitle: const Text('01/01/2000 00:00:00', style: TextStyles.tStyleTileSubtitle),
+              title: Text('${lista?[index].notificacion}', style: TextStyles.tStyleTileTitle2,),
+              subtitle: Text(DateFormat('dd/MM/yyyy hh:mm a').format(lista?[index].fecha ?? DateTime.now()), style: TextStyles.tStyleTileSubtitle),
             ),
           );
         },
