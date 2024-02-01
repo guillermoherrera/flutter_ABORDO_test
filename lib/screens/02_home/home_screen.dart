@@ -36,6 +36,9 @@ class _HomeScreenState extends State<HomeScreen> {
             logBloc.add(NewLogUsuario(res));
           }else{
             DialogHelper.exit(context, res.resultado!);
+            if(res.resultado!.contains('401')){
+              logout();
+            }
           }        
         }).catchError((e){
           DialogHelper.exit(context, e.toString());
@@ -43,10 +46,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
       }else{
         DialogHelper.exit(context, res.resultado!);
+        if(res.resultado!.contains('401')){
+          logout();
+        }
       }        
     }).catchError((e){
       DialogHelper.exit(context, e.toString());
     });
+  }
+
+  logout()async{
+    if(await _apiCV.logout() && context.mounted){
+      Navigator.pushReplacementNamed(context, 'login', arguments: 0);
+    }
   }
 
   @override
@@ -54,7 +66,6 @@ class _HomeScreenState extends State<HomeScreen> {
     final size = MediaQuery.of(context).size;
     final infoBloc = context.watch<InfoUsuarioBloc>();
     final logBloc = context.watch<LogUsuarioBloc>();
-    final apiCV = ApiService();
 
     void onItemTapped(int index) async{
       switch (index) {
@@ -70,9 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
           break;
         case 3:
           await Future.delayed(const Duration(milliseconds: 250));
-          if(await apiCV.logout() && context.mounted){
-            Navigator.pushReplacementNamed(context, 'login', arguments: 0);
-          }
+          logout();
           break;
         default:
           Navigator.pushNamed(context, 'home', arguments: 0);
@@ -96,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ListTile(
                       dense: true,
                       title: FittedBox(child: Text('BIENVENID${infoBloc.state.infoUsuario?.data?.sexo ?? false == true ? 'O' : 'A'} ${infoBloc.state.infoUsuario?.data?.nombre ?? 'CARGANDO'} ${infoBloc.state.infoUsuario?.data?.apPaterno ?? 'USUARIO ...'}', style: TextStyles.tStyleTileTitle,)),
-                      subtitle: Text('Inicio Sesión: ${DateFormat('dd/MM/yyyy hh:mm').format(infoBloc.state.infoUsuario?.data?.fechaLogin ?? DateTime.now())}', style: TextStyles.tStyleTileSubtitle),
+                      subtitle: Text('Inicio Sesión: ${DateFormat('dd/MM/yyyy hh:mm a').format(infoBloc.state.infoUsuario?.data?.fechaLogin ?? DateTime.now())}', style: TextStyles.tStyleTileSubtitle),
                       leading: Image(image: const AssetImage('assets/ICONO_APLICACION_SOLUCIONES_AB.png'), width: size.width * 0.10,),
                     )
                   ],
@@ -164,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   subtitle: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text(DateFormat('dd/MM/yyyy hh:mm').format(logBloc.state.logUsuario?.data?[index].fecha ?? DateTime.now()), style: TextStyles.tStyleTileSubtitle),
+                                      Text(DateFormat('dd/MM/yyyy hh:mm a').format(logBloc.state.logUsuario?.data?[index].fecha ?? DateTime.now()), style: TextStyles.tStyleTileSubtitle),
                                     ],
                                   ),
                                   //trailing: const IconButton(onPressed: null, icon: Icon(Icons.arrow_forward_ios_outlined, color: ColorPalette.colorPrincipal)),

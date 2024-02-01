@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/blocs/blocs.dart';
 import 'package:flutter_application_2/helpers/helpers.dart';
+import 'package:flutter_application_2/models/models.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_holo_date_picker/date_picker.dart';
 import 'package:flutter_holo_date_picker/i18n/date_picker_i18n.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_application_2/ui/ui_files.dart';
 import 'package:flutter_application_2/widgets/widgets.dart';
+
+import '../../services/api_services.dart';
 
 class FormSolicitudProspectoScreen extends StatefulWidget {
   const FormSolicitudProspectoScreen({super.key});
@@ -18,9 +21,26 @@ class FormSolicitudProspectoScreen extends StatefulWidget {
 class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScreen> {
   int selectedPayment = 0;
   DateTime fechaAux = DateTime.now();
+  DateTime fechaNac = DateTime.now();
   final formKey = GlobalKey<FormState>();
+  TextEditingController nombreCtrlr = TextEditingController();
+  TextEditingController apPaternoCtrlr = TextEditingController();
+  TextEditingController apMaternoCtrlr = TextEditingController();
+  TextEditingController sexoCtrlr = TextEditingController();
   TextEditingController dateInputController = TextEditingController();
+  TextEditingController calleCtrlr = TextEditingController();
+  TextEditingController noExteriorCtrlr = TextEditingController();
+  TextEditingController noInteriorCtrlr = TextEditingController();
+  TextEditingController cpCtrlr = TextEditingController();
+  TextEditingController coloniaCtrlr = TextEditingController();
+  TextEditingController delegacionCtrlr = TextEditingController();
+  TextEditingController ciudadCtrlr = TextEditingController();
+  TextEditingController estadoCtrlr = TextEditingController();
+  TextEditingController telFijoCtrlr = TextEditingController();
+  TextEditingController telCelularCtrlr = TextEditingController();
+  TextEditingController observacionCtrlr = TextEditingController();
   bool loading = false;
+  final _apiCV = ApiService();
 
   @override
   void initState() {
@@ -51,6 +71,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
       Intl.defaultLocale = 'es';
       var inputFormat = DateFormat('dd/MM/yyyy');
       dateInputController.text = inputFormat.format(datePicked);
+      setState(() {fechaNac = datePicked;});
     }else{
       final snackBar = SnackBar(content: Text("No se seleccionó fecha $datePicked"));
       if(mounted) ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -98,9 +119,58 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
         return;
       }
 
+      final infoUsuarioBloc = BlocProvider.of<InfoUsuarioBloc>(context, listen: false);
+      final prospectoEBloc = BlocProvider.of<ProspectoBloc>(context, listen: false);
+
+      var inputFormat = DateFormat('yyyy-MM-dd');
+      
+      Prospecto newProspecto = Prospecto(
+        nombre: nombreCtrlr.text,
+        primerApellido: apPaternoCtrlr.text,
+        segundoApellido: apMaternoCtrlr.text,
+        sexo: prospectoEBloc.state.prospecto!.sexo,
+        fechaNacimiento: inputFormat.format(fechaNac),
+        calle: calleCtrlr.text,
+        noExterior: noExteriorCtrlr.text,
+        noInterior: noInteriorCtrlr.text,
+        cp: cpCtrlr.text,
+        colonia: coloniaCtrlr.text,
+        delegacion: delegacionCtrlr.text,
+        ciudad: ciudadCtrlr.text,
+        estado: estadoCtrlr.text,
+        telFijo: telFijoCtrlr.text,
+        telCelular: telCelularCtrlr.text,
+        observacion: observacionCtrlr.text
+      );
+
       setState(() => loading = true);
-      await Future.delayed(const Duration(seconds: 3));
-      if(mounted) Navigator.pushNamed(context, 'formEvaluacionProspecto');
+      await Future.delayed(const Duration(seconds: 1));
+      await _apiCV.prospectoRegistro(newProspecto, infoUsuarioBloc.state.infoUsuario?.data?.idNumPlaza ?? 0, infoUsuarioBloc.state.infoUsuario?.data?.idNumSucursal ?? 0).then((ProspectoRegistro res)async{
+        if(res.error == 0){
+          prospectoBloc.add(ChangeProspectofolioRegistro(res.data?.folioRegistro ?? 0));
+          prospectoBloc.add(ChangeProspectoIdCliente(res.data?.idCliente ?? ''));
+
+          _apiCV.prospectosObtenerLista().then((ProspectosObtenerLista res){
+            if(res.error == 0){
+              final prospectosListaBloc = BlocProvider.of<ProspectosObtenerListaBloc>(context, listen: false);
+              prospectosListaBloc.add(NewProspectosObtenerLista(res));
+            }        
+          }).catchError((e){});
+
+          _apiCV.logUsuario().then((LogUsuario res){
+            if(res.error == 0){
+              final logBloc = BlocProvider.of<LogUsuarioBloc>(context, listen: false);
+              logBloc.add(NewLogUsuario(res));
+            }       
+          }).catchError((e){});
+
+          if(mounted) Navigator.pushReplacementNamed(context, 'formEvaluacionProspecto');
+        }else{
+          DialogHelper.exit(context, res.resultado!);
+        }        
+      }).catchError((e){
+        DialogHelper.exit(context, e.toString());
+      });
       setState(() => loading = false);
 
     }
@@ -145,6 +215,8 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                   const Divider(),
                   const SizedBox(height: 10),
                   TextFormField(
+                    enabled: !loading,
+                    controller: nombreCtrlr,
                     style: const TextStyle(fontWeight: FontWeight.bold),
                     textAlign: TextAlign.end,
                     textCapitalization: TextCapitalization.words,
@@ -157,6 +229,8 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                   ),
                   const SizedBox(height: seperacion),
                   TextFormField(
+                    enabled: !loading,
+                    controller: apPaternoCtrlr,
                     style: const TextStyle(fontWeight: FontWeight.bold),
                     textAlign: TextAlign.end,
                     textCapitalization: TextCapitalization.words,
@@ -168,11 +242,13 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                   ),
                   const SizedBox(height: seperacion),
                   TextFormField(
+                    enabled: !loading,
+                    controller: apMaternoCtrlr,
                     style: const TextStyle(fontWeight: FontWeight.bold),
                     textAlign: TextAlign.end,
                     textCapitalization: TextCapitalization.words,
                     decoration: InputDecorations.formInputDecoration(labelText: 'Segundo Apellido'),
-                    textInputAction: TextInputAction.next,
+                    textInputAction: TextInputAction.done,
                     initialValue: prospectoBloc.state.prospecto?.segundoApellido,
                     validator: (value) => FormValidators.existValidator(value),
                     inputFormatters: [UpperCaseTextFormatter()]
@@ -195,6 +271,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                   ),
                   const SizedBox(height: seperacion),
                   TextFormField(
+                    enabled: !loading,
                     controller: dateInputController,
                     style: const TextStyle(fontWeight: FontWeight.bold),
                     textAlign: TextAlign.end,
@@ -225,6 +302,8 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                     children: [
                       Expanded(
                         child: TextFormField(
+                          enabled: !loading,
+                          controller: noExteriorCtrlr,
                           style: const TextStyle(fontWeight: FontWeight.bold),
                           textAlign: TextAlign.end,
                           textCapitalization: TextCapitalization.words,
@@ -240,6 +319,8 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                       ),
                       Expanded(
                         child: TextFormField(
+                          enabled: !loading,
+                          controller: noInteriorCtrlr,
                           style: const TextStyle(fontWeight: FontWeight.bold),
                           textAlign: TextAlign.end,
                           textCapitalization: TextCapitalization.words,
@@ -252,6 +333,8 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                   ),
                   const SizedBox(height: seperacion),
                   TextFormField(
+                    enabled: !loading,
+                    controller: cpCtrlr,
                     style: const TextStyle(fontWeight: FontWeight.bold),
                     textAlign: TextAlign.end,
                     textCapitalization: TextCapitalization.words,
@@ -264,6 +347,8 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                   ),
                   const SizedBox(height: seperacion),
                   TextFormField(
+                    enabled: !loading,
+                    controller: coloniaCtrlr,
                     style: const TextStyle(fontWeight: FontWeight.bold),
                     textAlign: TextAlign.end,
                     textCapitalization: TextCapitalization.words,
@@ -275,6 +360,8 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                   ),
                   const SizedBox(height: seperacion),
                   TextFormField(
+                    enabled: !loading,
+                    controller: delegacionCtrlr,
                     style: const TextStyle(fontWeight: FontWeight.bold),
                     textAlign: TextAlign.end,
                     textCapitalization: TextCapitalization.words,
@@ -284,6 +371,8 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                   ),
                   const SizedBox(height: seperacion),
                   TextFormField(
+                    enabled: !loading,
+                    controller: ciudadCtrlr,
                     style: const TextStyle(fontWeight: FontWeight.bold),
                     textAlign: TextAlign.end,
                     textCapitalization: TextCapitalization.words,
@@ -295,6 +384,8 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                   ),
                   const SizedBox(height: seperacion),
                   TextFormField(
+                    enabled: !loading,
+                    controller: estadoCtrlr,
                     style: const TextStyle(fontWeight: FontWeight.bold),
                     textAlign: TextAlign.end,
                     textCapitalization: TextCapitalization.words,
@@ -306,6 +397,8 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                   ),
                   const SizedBox(height: seperacion),
                   TextFormField(
+                    enabled: !loading,
+                    controller: telFijoCtrlr,
                     style: const TextStyle(fontWeight: FontWeight.bold),
                     textAlign: TextAlign.end,
                     textCapitalization: TextCapitalization.words,
@@ -317,6 +410,8 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                   ),
                   const SizedBox(height: seperacion),
                   TextFormField(
+                    enabled: !loading,
+                    controller: telCelularCtrlr,
                     style: const TextStyle(fontWeight: FontWeight.bold),
                     textAlign: TextAlign.end,
                     textCapitalization: TextCapitalization.words,
@@ -334,11 +429,13 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
                   const Divider(),
                   const SizedBox(height: 10),
                   TextFormField(
+                    enabled: !loading,
+                    controller: observacionCtrlr,
                     style: const TextStyle(fontWeight: FontWeight.bold),
                     textAlign: TextAlign.justify,
                     textCapitalization: TextCapitalization.words,
                     decoration: InputDecorations.formInputDecoration(labelText: 'Observaciones', isLabel: true, hintText: 'Opcional'),
-                    textInputAction: TextInputAction.next,
+                    textInputAction: TextInputAction.done,
                     maxLines: 4,
                     inputFormatters: [UpperCaseTextFormatter()]
                   ),
@@ -353,7 +450,7 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
         disabledColor: ColorPalette.colorTerciarioMedio,
         elevation: 0,
         color: ColorPalette.colorPrincipal,
-        onPressed: loading ? null : () => submit(),
+        onPressed: loading ? null : () => displayBottomSheet(context, size, submit),//submit(),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           child: loading ? const CircularProgressIndicator(color: ColorPalette.colorTerciario,) : const Row(
@@ -367,5 +464,54 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
         )
       ),
     );
+  }
+
+  Future displayBottomSheet(BuildContext context, Size size, submit)async{
+    Widget widget = Container(
+      decoration: BoxDecoration(
+        color: ColorPalette.colorTerciario,
+        borderRadius: BorderRadius.circular(30)
+      ),
+      child: Column(
+        children: [
+          const SizedBox(height: 10),
+          Center(child: Image(image: const AssetImage('assets/ICONO_APLICACION_SOLUCIONES_AB.png'), width: size.width * 0.15,),),
+          const SizedBox(height: 10),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10), 
+            child: Text('¿Los datos capturados son correctos?.', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), textAlign: TextAlign.justify)
+          ),
+          const SizedBox(height: 20),
+          Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 50),
+                child: CustomMaterialButton(text: 'Si, continuar', widthContainer: size.width * .5, onPressed: ()async{
+                  await Future.delayed(const Duration(milliseconds: 500));
+                  if(context.mounted){
+                    Navigator.pop(context);
+                    submit();
+                  }
+                }),
+              ),
+              const SizedBox(height: 2),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 50),
+                child: CustomMaterialButton(text: 'Revisar datos', isNegative: true, widthContainer: size.width * .5, onPressed: ()async{
+                  await Future.delayed(const Duration(milliseconds: 500));
+                  if(context.mounted){
+                    Navigator.pop(context);
+                  }
+                }),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+
+    if(context.mounted) await CustomBottomSheet.show(context: context, widget: widget, height: 300);
   }
 }

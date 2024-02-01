@@ -16,5 +16,15 @@ class ProspectoBloc extends Bloc<ProspectoEvent, ProspectoState>{
       if(state.prospecto == null) return;
       emit(ProspectoOcrSetState(state.prospecto!.copyWith(sexo: event.sexo))); 
     });
+
+    on<ChangeProspectofolioRegistro>((event, emit) {
+      if(state.prospecto == null) return;
+      emit(ProspectoOcrSetState(state.prospecto!.copyWith(folioRegistro: event.folio))); 
+    });
+    
+    on<ChangeProspectoIdCliente>((event, emit) {
+      if(state.prospecto == null) return;
+      emit(ProspectoOcrSetState(state.prospecto!.copyWith(idCliente: event.idCliente))); 
+    });
   }
 }

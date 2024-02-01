@@ -37,7 +37,7 @@ class HttpService{
       if(value.statusCode == 200){
         respuesta = value.body;
       }else{
-        respuesta = "{\"data\": null, \"error\": 1, \"resultado\": \"${value.statusCode} ${value.reasonPhrase}\"}";
+        respuesta = "{\"data\": null, \"error\": 1, \"resultado\": \"${value.statusCode} ${value.reasonPhrase} \\n ${value.body}\"}";
       }
     }).catchError((e){
       respuesta = "{\"data\": null, \"error\": 1, \"resultado\": \"${e.toString()}\"}";

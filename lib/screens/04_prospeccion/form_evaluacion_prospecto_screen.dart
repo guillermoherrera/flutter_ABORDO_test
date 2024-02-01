@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_2/helpers/helpers.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_application_2/ui/ui_files.dart';
 import 'package:flutter_application_2/widgets/widgets.dart';
+
+import '../../blocs/blocs.dart';
 
 class FormEvaluacionProspectoScreen extends StatefulWidget {
   const FormEvaluacionProspectoScreen({super.key});
@@ -31,6 +34,29 @@ class _FormEvaluacionProspectoScreenState extends State<FormEvaluacionProspectoS
   changeEdad(int index) => setState(() => selectedEdad = index);
   changeInteres(int index) => setState(() => selectedInteres = index);
   changeAfiliado(int index) => setState(() => selectedAfiliado = index);
+
+  @override
+  void initState() {
+    showSBprospecto();
+    super.initState();
+  }
+
+  showSBprospecto() async{
+    final prospectoEBloc = BlocProvider.of<ProspectoBloc>(context, listen: false);
+    await Future.delayed(const Duration(seconds: 3));
+    SnackBar snackBar =  SnackBar(
+      content: Text('Prospecto registrado con Folio ${prospectoEBloc.state.prospecto?.folioRegistro ?? ''}'.toUpperCase(),
+          style: const TextStyle(color: ColorPalette.colorPrincipal, fontWeight: FontWeight.w900, fontStyle: FontStyle.italic)),
+      backgroundColor: ColorPalette.colorTerciario,
+      //dismissDirection: DismissDirection.up,
+      behavior: SnackBarBehavior.floating,
+      margin: const EdgeInsets.only(
+        left: 10,
+        right: 10)   
+    );
+
+    if(mounted) ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -395,5 +421,22 @@ class SuccessEvalScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  showCustomSnackBar(context) {
+    final prospectoEBloc = BlocProvider.of<ProspectoBloc>(context, listen: false);
+    
+    SnackBar snackBar =  SnackBar(
+      content: Text('Prospecto registrado con Folio ${prospectoEBloc.state.prospecto?.folioRegistro ?? ''}'.toUpperCase(),
+          style: const TextStyle(color: ColorPalette.colorPrincipal, fontWeight: FontWeight.w900, fontStyle: FontStyle.italic)),
+      backgroundColor: ColorPalette.colorTerciario,
+      //dismissDirection: DismissDirection.up,
+      behavior: SnackBarBehavior.floating,
+      margin: const EdgeInsets.only(
+        left: 10,
+        right: 10)   
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

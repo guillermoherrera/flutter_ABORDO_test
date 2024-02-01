@@ -115,4 +115,30 @@ class ApiService{
     return res;
   }
 
+  Future<ProspectoRegistro> prospectoRegistro(Prospecto prospecto, int plaza, int sucursal) async{
+    final url = Uri.http(Endpoints.baseUrl, Endpoints.prospectoRegistroUrl);
+    Map<String, dynamic> object = {
+      "pId_Num_Plaza": plaza,
+      "pId_Num_Sucursal": sucursal,
+      "pNombre": prospecto.nombre,
+      "pAp_Paterno": prospecto.primerApellido,
+      "pAp_Materno": prospecto.segundoApellido,
+      "pSexo": prospecto.sexo,
+      "pFec_Nac": prospecto.fechaNacimiento,
+      "pDomicilio": prospecto.calle,
+      "pNum_Ext": prospecto.noExterior,
+      "pNum_Int": prospecto.noInterior,
+      "pCP": int.parse(prospecto.cp ?? '0'),
+      "pc_Codigo": prospecto.colonia,
+      "pTel_Fijo": prospecto.telFijo,
+      "pTel_Celular": prospecto.telCelular,
+      "pObservaciones": prospecto.observacion,
+      "colonia": prospecto.colonia,};
+    final body = jsonEncode(object);
+    String str = await _httpService.postRequest(url, body);
+    ProspectoRegistro res = prospectoRegistroFromJson(str);
+    
+    return res;
+  }
+
 }
