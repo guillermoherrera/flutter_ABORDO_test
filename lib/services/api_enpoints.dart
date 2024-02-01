@@ -13,4 +13,6 @@ abstract class Endpoints{
 
   static const prospectosObtenerListaUrl = 'api/Prospeccion/ProspectosObtenerLista';
   static const prospectoRegistroUrl = 'api/Prospeccion/ProspectoRegistro';
+
+  static const verificacionObtenerListaUrl = 'api/Verificacion/ProspectosObtenerLista';
 }

@@ -4,6 +4,8 @@ import 'package:flutter_application_2/widgets/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../blocs/blocs.dart';
+import '../../models/models.dart';
+import '../../services/api_services.dart';
 
 class DashVerificacionScreen extends StatefulWidget {
   const DashVerificacionScreen({super.key});
@@ -13,6 +15,28 @@ class DashVerificacionScreen extends StatefulWidget {
 }
 
 class _DashVerificacionScreenState extends State<DashVerificacionScreen> {
+  final _apiCV = ApiService();
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  getData() async{
+    await Future.delayed(const Duration(milliseconds: 1000));
+    await _apiCV.verificacionObtenerLista().then((ProspectosObtenerLista res)async{
+      if(res.error == 0){
+        final prospectosListaBloc = BlocProvider.of<ProspectosObtenerListaBloc>(context, listen: false);
+        prospectosListaBloc.add(NewProspectosObtenerLista(res));
+      }else{
+        DialogHelper.exit(context, res.resultado!);
+      }        
+    }).catchError((e){
+      DialogHelper.exit(context, e.toString());
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;

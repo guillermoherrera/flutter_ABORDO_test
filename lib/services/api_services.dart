@@ -123,6 +123,14 @@ class ApiService{
     return res;
   }
 
+  Future<ProspectosObtenerLista> verificacionObtenerLista() async{
+    final url = Uri.http(Endpoints.baseUrl, Endpoints.verificacionObtenerListaUrl);
+    String str = await _httpService.getRequest(url);
+    ProspectosObtenerLista res = prospectosObtenerListaFromJson(str);
+    
+    return res;
+  }
+
   Future<ProspectoRegistro> prospectoRegistro(Prospecto prospecto, int plaza, int sucursal) async{
     final url = Uri.http(Endpoints.baseUrl, Endpoints.prospectoRegistroUrl);
     Map<String, dynamic> object = {
