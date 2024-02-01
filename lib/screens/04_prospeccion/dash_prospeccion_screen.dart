@@ -70,9 +70,11 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
                     ),
                     SizedBox(
                       height: size.height * 0.3,
-                      child: ListView.builder(
+                      child: (prospectosListaBloc.state.prospectosLista?.data?.length ?? 0) == 0 
+                      ? const EmptyWidget()
+                      : ListView.builder(
                         shrinkWrap: true,
-                        itemCount: (prospectosListaBloc.state.prospectosLista?.data?.length ?? 0) >= 5 ? 5 : prospectosListaBloc.state.prospectosLista?.data?.length ,
+                        itemCount: (prospectosListaBloc.state.prospectosLista?.data?.length ?? 0) >= 5 ? 5 : prospectosListaBloc.state.prospectosLista?.data?.length ?? 0 ,
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 0),
@@ -122,7 +124,9 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
                     const Text('Visitas', style: TextStyles.tStyleNegrita16,),                      
                     SizedBox(
                       height: size.height * 0.3,
-                      child: ListView.builder(
+                      child: (prospectosListaBloc.state.prospectosLista?.data?.where((i) => i.descClienteStat == 'PROSPECTO').toList().length ?? 0) == 0 
+                      ? const EmptyWidget()
+                      : ListView.builder(
                         shrinkWrap: true,
                         itemCount: prospectosListaBloc.state.prospectosLista?.data?.where((i) => i.descClienteStat == 'PROSPECTO').toList().length,
                         itemBuilder: (context, index) {

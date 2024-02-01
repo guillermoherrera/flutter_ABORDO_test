@@ -10,3 +10,4 @@ export 'package:flutter_application_2/widgets/custom_background.dart';
 export 'package:flutter_application_2/widgets/custom_radio_button.dart';
 export 'package:flutter_application_2/widgets/custom_text_button.dart';
 export 'package:flutter_application_2/widgets/custom_dialog.dart';
+export 'package:flutter_application_2/widgets/empty.dart';

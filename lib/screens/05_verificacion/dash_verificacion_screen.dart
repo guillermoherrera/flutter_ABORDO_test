@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/ui/ui_files.dart';
 import 'package:flutter_application_2/widgets/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../blocs/blocs.dart';
 
 class DashVerificacionScreen extends StatefulWidget {
   const DashVerificacionScreen({super.key});
@@ -13,12 +16,15 @@ class _DashVerificacionScreenState extends State<DashVerificacionScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final infoBloc = context.watch<InfoUsuarioBloc>();
+    final prospectosListaBloc = context.watch<ProspectosObtenerListaBloc>();
+    
     return Scaffold(
       body: CustomBackground(
         appBarTitle: 'Verificación',
         content: Column(
           children: [
-            _header(),
+            _header(infoBloc),
             Container(
               padding: const EdgeInsets.only(top: 15),
               child: CardContainer(
@@ -30,15 +36,17 @@ class _DashVerificacionScreenState extends State<DashVerificacionScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Visitas', style: TextStyles.tStyleNegrita16,),
+                        const Text('Verificaciones', style: TextStyles.tStyleNegrita16,),
                         _verTodo()
                       ],
                     ),
                     SizedBox(
                       height: size.height * 0.6,
-                      child: ListView.builder(
+                      child: (prospectosListaBloc.state.prospectosLista?.data?.length ?? 0) == 0 
+                      ? const EmptyWidget()
+                      : ListView.builder(
                         shrinkWrap: true,
-                        itemCount: 10,
+                        itemCount: (prospectosListaBloc.state.prospectosLista?.data?.length ?? 0) >= 10 ? 10 : prospectosListaBloc.state.prospectosLista?.data?.length ?? 0 ,
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 0),
@@ -55,11 +63,11 @@ class _DashVerificacionScreenState extends State<DashVerificacionScreen> {
                                       shape: BoxShape.circle
                                     ),
                                     child: const Icon(Icons.house, color: ColorPalette.colorPrincipal,)),
-                                  title: const Text('Nombre Prospecto', style: TextStyles.tStyleTileTitle2,),
-                                  subtitle: const Column(
+                                  title: Text(prospectosListaBloc.state.prospectosLista?.data?[index].nombre ?? '', style: TextStyles.tStyleTileTitle2,),
+                                  subtitle: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text('Estatus: por verificar', style: TextStyles.tStyleTileSubtitle),
+                                      Text(prospectosListaBloc.state.prospectosLista?.data?[index].descClienteStat ?? '', style: TextStyles.tStyleTileSubtitle),
                                     ],
                                   ),
                                   trailing: const IconButton(onPressed: null, icon: Icon(Icons.arrow_forward_ios_outlined, color: ColorPalette.colorPrincipal)),
@@ -80,17 +88,17 @@ class _DashVerificacionScreenState extends State<DashVerificacionScreen> {
     );
   }
   
-  Widget _header() {
+  Widget _header(infoBloc) {
     return  Padding(
       padding: const EdgeInsets.only(top: 25,left: 20, right: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Column(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Hola Guillermo Herrera', style: TextStyles.tStyleGreyBase14,),
-              Text('Gestiona tus visitas', style: TextStyles.tStyleGreyBase18,),
+              Text('HOLA ${infoBloc.state.infoUsuario?.data?.nombre ?? 'CARGANDO'} ${infoBloc.state.infoUsuario?.data?.apPaterno ?? 'USUARIO ...'}', style: TextStyles.tStyleGreyBase14,),
+              const Text('Gestiona tus visitas', style: TextStyles.tStyleGreyBase18,),
             ],
           ),
           Container(
@@ -99,7 +107,7 @@ class _DashVerificacionScreenState extends State<DashVerificacionScreen> {
             color: ColorPalette.colorBlanco,
             shape: BoxShape.circle
           ),
-          child: const Icon(Icons.person, size: 40, color: ColorPalette.colorPrincipal))
+          child: Icon(infoBloc.state.infoUsuario?.data?.sexo ?? false == true ? Icons.person : Icons.person_2, size: 40, color: ColorPalette.colorPrincipal))
         ],
       ),
     );
@@ -110,7 +118,9 @@ class _DashVerificacionScreenState extends State<DashVerificacionScreen> {
       padding: const EdgeInsets.only(top: 0,left: 0, right: 00),
       child: Row(
         children: [
-          CustomTextButton(onPressed: () => () =>{}, text: 'Ver más', color: ColorPalette.colorNegro, decorationColor: ColorPalette.colorNegro)
+          CustomTextButton(onPressed: ()async{
+            await Future.delayed(const Duration(milliseconds: 500));
+            if(context.mounted) Navigator.pushNamed(context, 'listProspectos');}, text: 'Ver más', color: ColorPalette.colorNegro, decorationColor: ColorPalette.colorNegro)
         ],
       ),
     );

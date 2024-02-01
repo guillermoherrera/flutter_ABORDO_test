@@ -113,7 +113,9 @@ class _ListProspectosScreenState extends State<ListProspectosScreen> {
   Widget _list(){
     return Container(
       color: ColorPalette.colorTerciario,
-      child: ListView.builder(
+      child: (lista?.length ?? 0) == 0 
+      ? const EmptyWidget()
+      : ListView.builder(
         padding: EdgeInsets.zero,
         shrinkWrap: true,
         itemCount: lista?.length ?? 0,
