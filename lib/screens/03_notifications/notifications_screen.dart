@@ -17,6 +17,7 @@ class NotificationsScreen extends StatefulWidget {
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
   final _apiCV = ApiService();
+  bool loadingApi = true;
   get math => null;
   List<DatumNotificaciones>? lista = [];
 
@@ -27,6 +28,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   }
 
   getData() async{
+    setState(() => loadingApi = true);
     await Future.delayed(const Duration(milliseconds: 1000));
     await _apiCV.notificaciones().then((Notificaciones res){
       if(res.error == 0){
@@ -37,6 +39,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     }).catchError((e){
       DialogHelper.exit(context, e.toString());
     });
+    setState(() => loadingApi = false);
   }
 
   @override
@@ -54,7 +57,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           const SizedBox(width: 10,),
         ],
       ),
-      body: (lista?.length ?? 0) == 0 
+      body: loadingApi 
+      ? const Center(child: CircularProgressIndicator(color: ColorPalette.colorPrincipal))
+      : (lista?.length ?? 0) == 0 
       ? const EmptyWidget()
       : ListView.builder(
         shrinkWrap: true,

@@ -37,12 +37,14 @@ class DatumProspectos {
     String nombre;
     String descClienteStat;
     int folioRegistro;
+    String color;
 
     DatumProspectos({
       required this.fechaRegistro,
       required this.nombre,
       required this.descClienteStat,
       required this.folioRegistro,
+      required this.color,
     });
 
     factory DatumProspectos.fromJson(Map<String, dynamic> json) => DatumProspectos(
@@ -50,6 +52,7 @@ class DatumProspectos {
         nombre: json["nombre"],
         descClienteStat: json["desc_ClienteStat"],
         folioRegistro: json["folio_Registro"],
+        color: json["color"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -57,5 +60,6 @@ class DatumProspectos {
         "nombre": nombre,
         "desc_ClienteStat": descClienteStat,
         "folio_Registro": folioRegistro,
+        "color": color,
     };
 }

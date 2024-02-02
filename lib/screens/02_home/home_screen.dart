@@ -16,6 +16,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _apiCV = ApiService();
+  bool loadingApi = true;
 
   @override
   void initState() {
@@ -24,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   getData() async{
+    setState(() => loadingApi = true);
     await Future.delayed(const Duration(milliseconds: 1000));
     await _apiCV.infoUsuario().then((InfoUsuario res)async{
       if(res.error == 0){
@@ -53,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }).catchError((e){
       DialogHelper.exit(context, e.toString());
     });
+    setState(() => loadingApi = false);
   }
 
   logout()async{
@@ -150,7 +153,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     SizedBox(
                       height: size.height * 0.45,
-                      child: ListView.builder(
+                      child: loadingApi 
+                      ? const Center(child: CircularProgressIndicator(color: ColorPalette.colorPrincipal))
+                      : ListView.builder(
                         shrinkWrap: true,
                         itemCount: logBloc.state.logUsuario?.data?.length ?? 0,
                         itemBuilder: (context, index) {

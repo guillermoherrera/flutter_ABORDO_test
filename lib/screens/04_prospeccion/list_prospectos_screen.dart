@@ -133,10 +133,10 @@ class _ListProspectosScreenState extends State<ListProspectosScreen> {
                     child: Container(
                       padding: const EdgeInsets.all(0),
                       decoration: BoxDecoration(
-                        color: Color((maths.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(0.1),
+                        color: Color(int.parse('0xff${lista?[index].color.replaceAll('#', '')}')),
                         shape: BoxShape.circle
                       ),
-                      child: const Icon(Icons.person, color: ColorPalette.colorTerciarioMedio, size: 50,)),
+                      child: const Icon(Icons.person, color: ColorPalette.colorBlanco, size: 50,)),
                   ),
                   title: Text('${lista?[index].folioRegistro} - ${lista?[index].nombre}', style: TextStyles.tStyleTileTitle2,),
                   subtitle: Column(

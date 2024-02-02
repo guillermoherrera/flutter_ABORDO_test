@@ -17,6 +17,7 @@ class DashProspeccionScreen extends StatefulWidget {
 
 class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
   final _apiCV = ApiService();
+  bool loadingApi = true;
 
   @override
   void initState() {
@@ -25,6 +26,7 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
   }
 
   getData() async{
+    setState(() => loadingApi = true);
     await Future.delayed(const Duration(milliseconds: 1000));
     await _apiCV.prospectosObtenerLista().then((ProspectosObtenerLista res)async{
       if(res.error == 0){
@@ -36,6 +38,7 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
     }).catchError((e){
       DialogHelper.exit(context, e.toString());
     });
+    setState(() => loadingApi = false);
   }
 
   @override
@@ -70,7 +73,9 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
                     ),
                     SizedBox(
                       height: size.height * 0.3,
-                      child: (prospectosListaBloc.state.prospectosLista?.data?.length ?? 0) == 0 
+                      child: loadingApi 
+                      ? const Center(child: CircularProgressIndicator(color: ColorPalette.colorPrincipal))
+                      : (prospectosListaBloc.state.prospectosLista?.data?.length ?? 0) == 0 
                       ? const EmptyWidget()
                       : ListView.builder(
                         shrinkWrap: true,
@@ -86,12 +91,12 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
                                   dense: true,
                                   leading:  Container(
                                     padding: const EdgeInsets.all(0),
-                                    decoration: const BoxDecoration(
+                                    decoration: BoxDecoration(
                                       //color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
-                                      color: ColorPalette.colorTerciario,
+                                      color: Color(int.parse('0xff${prospectosListaBloc.state.prospectosLista?.data?[index].color.replaceAll('#', '')}')),
                                       shape: BoxShape.circle
                                     ),
-                                    child: const Icon(Icons.person, color: ColorPalette.colorPrincipal,)),
+                                    child: const Icon(Icons.person, color: ColorPalette.colorBlanco,)),
                                   title: Text(prospectosListaBloc.state.prospectosLista?.data?[index].nombre ?? '', style: TextStyles.tStyleTileTitle2, overflow: TextOverflow.ellipsis,),
                                   subtitle: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -141,12 +146,12 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
                                   dense: true,
                                   leading:  Container(
                                     padding: const EdgeInsets.all(0),
-                                    decoration: const BoxDecoration(
+                                    decoration: BoxDecoration(
                                       //color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
-                                      color: ColorPalette.colorTerciario,
+                                      color: Color(int.parse('0xff${prospectosListaBloc.state.prospectosLista?.data?[index].color.replaceAll('#', '')}')),
                                       shape: BoxShape.circle
                                     ),
-                                    child: const Icon(Icons.house, color: ColorPalette.colorPrincipal,)),
+                                    child: const Icon(Icons.person, color: ColorPalette.colorBlanco,)),
                                   title: Text(prospectosListaBloc.state.prospectosLista?.data?[index].nombre ?? '', style: TextStyles.tStyleTileTitle2, overflow: TextOverflow.ellipsis),
                                   subtitle:  Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
