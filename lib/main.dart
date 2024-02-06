@@ -28,6 +28,7 @@ class BlocsProviders extends StatelessWidget {
         BlocProvider(create: (context) => getIt<InfoUsuarioBloc>()),
         BlocProvider(create: (context) => getIt<LogUsuarioBloc>()),
         BlocProvider(create: (context) => getIt<ProspectosObtenerListaBloc>()),
+        BlocProvider(create: (context) => getIt<ProspectoObtenerPerfilBloc>()),
       ], 
       child: const MyApp() 
     );
@@ -60,6 +61,7 @@ class MyApp extends StatelessWidget {
         'formEvaluacionProspecto': (_)=> const FormEvaluacionProspectoScreen(),
         'dashVerificacion': (_)=> const DashVerificacionScreen(),
         'listProspectos': (_)=> const ListProspectosScreen(),
+        'perfilProspecto': (_)=> const PerfilProspectoScreen(index: ''),
       },
       theme: ThemeData.light().copyWith(scaffoldBackgroundColor:  ColorPalette.colorTerciario),
     );

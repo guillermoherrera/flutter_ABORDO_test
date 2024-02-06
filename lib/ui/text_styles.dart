@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'ui_files.dart';
 
 abstract class TextStyles{
-  static const TextStyle tStyleNormal14 = TextStyle(fontSize: 14);
+  static const TextStyle tStyleNormal12 = TextStyle(fontSize: 12, color: ColorPalette.colorNegro);
+  static const TextStyle tStyleNormal14 = TextStyle(fontSize: 14, color: ColorPalette.colorNegro);
   static const TextStyle tStyleNormal16 = TextStyle(fontSize: 16);
 
   static const TextStyle tStyleAppBar = TextStyle(fontSize: 18, color: ColorPalette.colorTerciario, fontWeight: FontWeight.bold);
@@ -17,6 +18,8 @@ abstract class TextStyles{
   static const TextStyle tStyleGrey14 = TextStyle(fontSize: 14, color: ColorPalette.colorTerciarioMedio);
   static const TextStyle tStyleGrey16 = TextStyle(fontSize: 16, color: ColorPalette.colorTerciarioMedio);
 
+  static const TextStyle tStyleBlue1Bold2 = TextStyle(fontSize: 12, color: ColorPalette.colorPrincipal, fontWeight: FontWeight.bold);
+
   static const TextStyle tStyleBlue16 = TextStyle(fontSize: 16, color: ColorPalette.colorPrincipal);
   
   static const TextStyle tStyleGreyBase12 = TextStyle(fontSize: 12, color: ColorPalette.colorTerciario, fontWeight: FontWeight.bold);
@@ -24,6 +27,8 @@ abstract class TextStyles{
   static const TextStyle tStyleGreyBase16 = TextStyle(fontSize: 16, color: ColorPalette.colorTerciario, fontWeight: FontWeight.bold);
   static const TextStyle tStyleGreyBase18 = TextStyle(fontSize: 18, color: ColorPalette.colorTerciario, fontWeight: FontWeight.bold);
 
+  static const TextStyle tStyleGreyBaseNormal12 = TextStyle(fontSize: 12, color: ColorPalette.colorTerciario);
+  
   static const TextStyle tStyleNegrita12 = TextStyle(fontSize: 12, fontWeight: FontWeight.bold);
   static const TextStyle tStyleNegrita14 = TextStyle(fontSize: 14, fontWeight: FontWeight.bold);
   static const TextStyle tStyleNegrita16 = TextStyle(fontSize: 16, fontWeight: FontWeight.bold);

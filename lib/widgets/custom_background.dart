@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_2/ui/ui_files.dart';
 
 class CustomBackground extends StatelessWidget {
-  const CustomBackground({super.key, required this.appBarTitle, required this.content});
+  const CustomBackground({super.key, required this.appBarTitle, required this.content, this.height = 0.5});
 
   final String appBarTitle;
   final Widget content;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class CustomBackground extends StatelessWidget {
               Container(
                 color: ColorPalette.colorTerciario,
                 width: double.infinity,
-                height: size.height * 0.5,
+                height: size.height * height,
               )
             ],
           ),

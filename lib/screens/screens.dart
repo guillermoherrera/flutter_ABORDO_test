@@ -10,3 +10,4 @@ export 'package:flutter_application_2/screens/04_prospeccion/ocr_solicitud_prosp
 export 'package:flutter_application_2/screens/04_prospeccion/form_evaluacion_prospecto_screen.dart';
 export 'package:flutter_application_2/screens/04_prospeccion/list_prospectos_screen.dart';
 export 'package:flutter_application_2/screens/05_verificacion/dash_verificacion_screen.dart';
+export 'package:flutter_application_2/screens/04_prospeccion/perfil_prospecto_screen.dart';

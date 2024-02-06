@@ -6,3 +6,4 @@ export './log_usuario.dart';
 export './notificaciones.dart';
 export './prospectos_lista.dart';
 export './prospecto_registro.dart';
+export './prospecto_perfil.dart';

@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 import '../../blocs/blocs.dart';
 import '../../ui/ui_files.dart';
 import '../../widgets/widgets.dart';
-import 'dart:math' as maths;
+import '../screens.dart';
 
 class ListProspectosScreen extends StatefulWidget {
   const ListProspectosScreen({super.key});
@@ -125,18 +125,41 @@ class _ListProspectosScreenState extends State<ListProspectosScreen> {
             child: Material(
               child: InkWell(
                 splashColor: ColorPalette.colorSecundario,
-                onTap: (){},
+                onTap: ()async{
+                  final perfilBloc = BlocProvider.of<ProspectoObtenerPerfilBloc>(context, listen: false);
+                  ProspectoObtenerPerfil perfil = ProspectoObtenerPerfil(
+                    data: DataProspectoObtenerPerfil(
+                      nombre: '${lista?[index].nombre}',
+                      folioRegistro: lista?[index].folioRegistro ?? 0,
+                      descClienteStat: '${lista?[index].descClienteStat}',
+                      fechaRegistro: lista?[index].fechaRegistro ?? DateTime.now(),
+                      color: lista?[index].color,
+                    )
+                  );
+                  perfilBloc.add(NewProspectoObtenerPerfil(perfil));
+                  await Future.delayed(const Duration(milliseconds: 500));
+                  if(mounted) {
+                    Navigator.push(context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => PerfilProspectoScreen(index: '$index')
+                      )
+                    );
+                  }
+                },
                 child: ListTile(
                   isThreeLine: true,
                   leading:  Padding(
                     padding: const EdgeInsets.only(left: 15),
-                    child: Container(
-                      padding: const EdgeInsets.all(0),
-                      decoration: BoxDecoration(
-                        color: Color(int.parse('0xff${lista?[index].color.replaceAll('#', '')}')),
-                        shape: BoxShape.circle
-                      ),
-                      child: const Icon(Icons.person, color: ColorPalette.colorBlanco, size: 50,)),
+                    child: Hero(
+                      tag: 'IconProspecto_$index',
+                      child: Container(
+                        padding: const EdgeInsets.all(0),
+                        decoration: BoxDecoration(
+                          color: Color(int.parse('0xff${lista?[index].color.replaceAll('#', '')}')),
+                          shape: BoxShape.circle
+                        ),
+                        child: const Icon(Icons.person, color: ColorPalette.colorBlanco, size: 50,)),
+                    ),
                   ),
                   title: Text('${lista?[index].folioRegistro} - ${lista?[index].nombre}', style: TextStyles.tStyleTileTitle2,),
                   subtitle: Column(

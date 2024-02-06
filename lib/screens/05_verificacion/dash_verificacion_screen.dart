@@ -16,6 +16,7 @@ class DashVerificacionScreen extends StatefulWidget {
 
 class _DashVerificacionScreenState extends State<DashVerificacionScreen> {
   final _apiCV = ApiService();
+  bool loadingApi = true;
 
   @override
   void initState() {
@@ -24,6 +25,7 @@ class _DashVerificacionScreenState extends State<DashVerificacionScreen> {
   }
 
   getData() async{
+    setState(() => loadingApi = true);
     await Future.delayed(const Duration(milliseconds: 1000));
     await _apiCV.verificacionObtenerLista().then((ProspectosObtenerLista res)async{
       if(res.error == 0){
@@ -35,6 +37,7 @@ class _DashVerificacionScreenState extends State<DashVerificacionScreen> {
     }).catchError((e){
       DialogHelper.exit(context, e.toString());
     });
+    setState(() => loadingApi = false);
   }
 
   @override
@@ -66,7 +69,9 @@ class _DashVerificacionScreenState extends State<DashVerificacionScreen> {
                     ),
                     SizedBox(
                       height: size.height * 0.6,
-                      child: (prospectosListaBloc.state.prospectosLista?.data?.length ?? 0) == 0 
+                      child: loadingApi 
+                      ? const Center(child: CircularProgressIndicator(color: ColorPalette.colorPrincipal))
+                      : (prospectosListaBloc.state.prospectosLista?.data?.length ?? 0) == 0 
                       ? const EmptyWidget()
                       : ListView.builder(
                         shrinkWrap: true,

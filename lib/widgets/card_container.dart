@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import '../ui/ui_files.dart';
 
 class CardContainer extends StatelessWidget {
-  const CardContainer({super.key, required this.child, this.backgroundColor = ColorPalette.colorTransparent, this.paddingHorizontal = 20, this.boxShadowColor = ColorPalette.colorTransparent});
+  const CardContainer({super.key, required this.child, this.backgroundColor = ColorPalette.colorTransparent, this.paddingHorizontal = 20, this.boxShadowColor = ColorPalette.colorTransparent, this.paddingVertical = 20});
 
   final Widget child;
   final Color? backgroundColor;
   final double? paddingHorizontal;
+  final double? paddingVertical;
   final Color? boxShadowColor;
 
   @override
@@ -16,7 +17,7 @@ class CardContainer extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 30),
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: paddingHorizontal!),
+        padding: EdgeInsets.symmetric(vertical: paddingVertical!, horizontal: paddingHorizontal!),
         decoration: _createCardShape(),
         child: child,
       ),

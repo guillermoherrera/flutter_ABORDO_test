@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 
 import '../../blocs/blocs.dart';
 import '../../services/api_services.dart';
+import '../screens.dart';
 
 class DashProspeccionScreen extends StatefulWidget {
   const DashProspeccionScreen({super.key});
@@ -86,17 +87,40 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
                             child: Material(
                               child: InkWell(
                                 splashColor: ColorPalette.colorSecundario,
-                                onTap: (){},
+                                onTap: ()async{
+                                  final perfilBloc = BlocProvider.of<ProspectoObtenerPerfilBloc>(context, listen: false);
+                                  ProspectoObtenerPerfil perfil = ProspectoObtenerPerfil(
+                                    data: DataProspectoObtenerPerfil(
+                                      nombre: '${prospectosListaBloc.state.prospectosLista?.data?[index].nombre}',
+                                      folioRegistro: prospectosListaBloc.state.prospectosLista?.data?[index].folioRegistro ?? 0,
+                                      descClienteStat: '${prospectosListaBloc.state.prospectosLista?.data?[index].descClienteStat}',
+                                      fechaRegistro: prospectosListaBloc.state.prospectosLista?.data?[index].fechaRegistro ?? DateTime.now(),
+                                      color: prospectosListaBloc.state.prospectosLista?.data?[index].color
+                                    )
+                                  );
+                                  perfilBloc.add(NewProspectoObtenerPerfil(perfil));
+                                  await Future.delayed(const Duration(milliseconds: 500));
+                                  if(mounted) {
+                                    Navigator.push(context,
+                                      MaterialPageRoute(
+                                        builder: (BuildContext context) => PerfilProspectoScreen(index: '$index')
+                                      )
+                                    );
+                                  }
+                                },
                                 child: ListTile(
                                   dense: true,
-                                  leading:  Container(
-                                    padding: const EdgeInsets.all(0),
-                                    decoration: BoxDecoration(
-                                      //color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
-                                      color: Color(int.parse('0xff${prospectosListaBloc.state.prospectosLista?.data?[index].color.replaceAll('#', '')}')),
-                                      shape: BoxShape.circle
-                                    ),
-                                    child: const Icon(Icons.person, color: ColorPalette.colorBlanco,)),
+                                  leading:  Hero(
+                                    tag: 'IconProspecto_$index',
+                                    child: Container(
+                                      padding: const EdgeInsets.all(0),
+                                      decoration: BoxDecoration(
+                                        //color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
+                                        color: Color(int.parse('0xff${prospectosListaBloc.state.prospectosLista?.data?[index].color.replaceAll('#', '')}')),
+                                        shape: BoxShape.circle
+                                      ),
+                                      child: const Icon(Icons.person, color: ColorPalette.colorBlanco,)),
+                                  ),
                                   title: Text(prospectosListaBloc.state.prospectosLista?.data?[index].nombre ?? '', style: TextStyles.tStyleTileTitle2, overflow: TextOverflow.ellipsis,),
                                   subtitle: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -141,17 +165,40 @@ class _DashProspeccionScreenState extends State<DashProspeccionScreen> {
                             child: Material(
                               child: InkWell(
                                 splashColor: ColorPalette.colorSecundario,
-                                onTap: (){},
+                                onTap: ()async{
+                                  final perfilBloc = BlocProvider.of<ProspectoObtenerPerfilBloc>(context, listen: false);
+                                  ProspectoObtenerPerfil perfil = ProspectoObtenerPerfil(
+                                    data: DataProspectoObtenerPerfil(
+                                      nombre: '${prospectosListaBloc.state.prospectosLista?.data?[index].nombre}',
+                                      folioRegistro: prospectosListaBloc.state.prospectosLista?.data?[index].folioRegistro ?? 0,
+                                      descClienteStat: '${prospectosListaBloc.state.prospectosLista?.data?[index].descClienteStat}',
+                                      fechaRegistro: prospectosListaBloc.state.prospectosLista?.data?[index].fechaRegistro ?? DateTime.now(),
+                                      color: prospectosListaBloc.state.prospectosLista?.data?[index].color,
+                                    )
+                                  );
+                                  perfilBloc.add(NewProspectoObtenerPerfil(perfil));
+                                  await Future.delayed(const Duration(milliseconds: 500));
+                                  if(mounted) {
+                                    Navigator.push(context,
+                                      MaterialPageRoute(
+                                        builder: (BuildContext context) => PerfilProspectoScreen(index: '0$index')
+                                      )
+                                    );
+                                  }
+                                },
                                 child: ListTile(
                                   dense: true,
-                                  leading:  Container(
-                                    padding: const EdgeInsets.all(0),
-                                    decoration: BoxDecoration(
-                                      //color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
-                                      color: Color(int.parse('0xff${prospectosListaBloc.state.prospectosLista?.data?[index].color.replaceAll('#', '')}')),
-                                      shape: BoxShape.circle
-                                    ),
-                                    child: const Icon(Icons.person, color: ColorPalette.colorBlanco,)),
+                                  leading:  Hero(
+                                    tag: 'IconProspecto_0$index',
+                                    child: Container(
+                                      padding: const EdgeInsets.all(0),
+                                      decoration: BoxDecoration(
+                                        //color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
+                                        color: Color(int.parse('0xff${prospectosListaBloc.state.prospectosLista?.data?[index].color.replaceAll('#', '')}')),
+                                        shape: BoxShape.circle
+                                      ),
+                                      child: const Icon(Icons.person, color: ColorPalette.colorBlanco,)),
+                                  ),
                                   title: Text(prospectosListaBloc.state.prospectosLista?.data?[index].nombre ?? '', style: TextStyles.tStyleTileTitle2, overflow: TextOverflow.ellipsis),
                                   subtitle:  Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
