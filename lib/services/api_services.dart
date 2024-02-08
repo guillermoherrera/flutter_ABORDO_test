@@ -157,4 +157,15 @@ class ApiService{
     return res;
   }
 
+  Future<ProspectoObtenerPerfil> prospectoObtenerPerfil(int folio) async{
+    final queryParameters = {
+      'Folio_Registro': '$folio',
+    };
+    final url = Uri.http(Endpoints.baseUrl, Endpoints.prospectosObtenerPerfil, queryParameters);
+    String str = await _httpService.getRequest(url);
+    ProspectoObtenerPerfil res = prospectoObtenerPerfilFromJson(str);
+    
+    return res;
+  }
+
 }

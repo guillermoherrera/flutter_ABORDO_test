@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import '../../models/models.dart';
+import '../../services/api_services.dart';
 import '../../ui/ui_files.dart';
 import '../../blocs/blocs.dart';
 import '../../widgets/widgets.dart';
@@ -14,15 +17,27 @@ class PerfilProspectoScreen extends StatefulWidget {
 }
 
 class _PerfilProspectoScreenState extends State<PerfilProspectoScreen> {
-
+  final _apiCV = ApiService();
+  
   @override
   void initState() {
+    getData();
     super.initState();
   }
   
   getData() async{
-
-    await Future.delayed(const Duration(milliseconds: 500));
+    final prospectoEBloc = BlocProvider.of<ProspectoObtenerPerfilBloc>(context, listen: false);
+    await _apiCV.prospectoObtenerPerfil(prospectoEBloc.state.prospectoPerfil?.data?.folioRegistro ?? 0).then((ProspectoObtenerPerfil res)async{
+      if(res.error == 0){
+        res.data?.color = prospectoEBloc.state.prospectoPerfil?.data?.color ?? '#000000';
+        final prospectoPerfilBloc = BlocProvider.of<ProspectoObtenerPerfilBloc>(context, listen: false);
+        prospectoPerfilBloc.add(NewProspectoObtenerPerfil(res));
+      }else{
+        DialogHelper.exit(context, res.resultado!);
+      }        
+    }).catchError((e){
+      DialogHelper.exit(context, e.toString());
+    });
   }
 
   @override
@@ -31,40 +46,41 @@ class _PerfilProspectoScreenState extends State<PerfilProspectoScreen> {
     final prospectoBloc = context.watch<ProspectoObtenerPerfilBloc>();
     
     return Scaffold(
-      body: CustomBackground(
-        height: 0.5,
-        appBarTitle: '', 
-        content: RefreshIndicator(
-          onRefresh: () => getData(),
-          child: SingleChildScrollView(
+      body: RefreshIndicator(
+        onRefresh: () => getData(),
+        child: CustomBackground(
+          height: 0.5,
+          appBarTitle: '', 
+          content: SingleChildScrollView(
             child: Column(
               children: [
                 _header(size, prospectoBloc),
                 const SizedBox(height: 25),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Table(
-                    columnWidths: const <int, TableColumnWidth>{
-                      0: IntrinsicColumnWidth(),
-                      1: FlexColumnWidth(),
-                      2: IntrinsicColumnWidth(),
-                      3: FlexColumnWidth(),
-                    },
-                    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                  child: Column(
                     children: [
-                      _generales('PLAZA: ', 'NOMBRE PLAZA', ' SUCURSAL: ', 'NOMBRE SUCURSAL'),
-                      _generales('SEXO: ', 'MUJER', ' F. DE NAC.: ', '17/07/1989'),
-                      _generales('TEL. FIJO: ', '8711223344', ' CELULAR: ', '8711221122'),
-                    ],
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('OBSERVACIONES: ', style: TextStyles.tStyleGreyBase12, overflow: TextOverflow.ellipsis),
-                      Flexible(child: Text('OBSERVACIONES SOBRE EL PROSPECTO A DISTRIBUIDORAS', style: TextStyles.tStyleGreyBaseNormal12)),
+                      Table(
+                        columnWidths: const <int, TableColumnWidth>{
+                          0: IntrinsicColumnWidth(),
+                          1: FlexColumnWidth(),
+                          2: IntrinsicColumnWidth(),
+                          3: FlexColumnWidth(),
+                        },
+                        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                        children: [
+                          _generales('PLAZA: ', '${prospectoBloc.state.prospectoPerfil?.data?.descPlaza}', ' SUCURSAL: ', '${prospectoBloc.state.prospectoPerfil?.data?.nomSucursal}'),
+                          _generales('SEXO: ', '${prospectoBloc.state.prospectoPerfil?.data?.sexo}', ' F. DE NAC.: ', DateFormat('dd/MM/yyyy').format(prospectoBloc.state.prospectoPerfil?.data?.fecNac ?? DateTime.now())),
+                          _generales('TEL. FIJO: ', '${prospectoBloc.state.prospectoPerfil?.data?.telFijo}', ' CELULAR: ', '${prospectoBloc.state.prospectoPerfil?.data?.telCelular}'),
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('OBSERVACIONES: ', style: TextStyles.tStyleGreyBase12, overflow: TextOverflow.ellipsis),
+                          Flexible(child: Text('${prospectoBloc.state.prospectoPerfil?.data?.observaciones}', style: TextStyles.tStyleGreyBaseNormal12)),
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -119,8 +135,8 @@ class _PerfilProspectoScreenState extends State<PerfilProspectoScreen> {
                 // )
               ],
             ),
-          )
-        )),
+          )),
+      ),
     );
   }
 
@@ -149,15 +165,15 @@ class _PerfilProspectoScreenState extends State<PerfilProspectoScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: Text('${prospectoBloc.state.prospectoPerfil?.data?.descClienteStat} - 00001', style: TextStyles.tStyleGreyBaseNormal12),
+                  child: Text('${prospectoBloc.state.prospectoPerfil?.data?.descClienteStat} - ${prospectoBloc.state.prospectoPerfil?.data?.folioRegistro}', style: TextStyles.tStyleGreyBaseNormal12),
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 0),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 0),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(Icons.location_on_outlined, color: ColorPalette.colorTerciarioMedio,),
-                      Flexible(child: Text('CALLE PRIMERA #0001 COLONIA CENTRO CP 27000 TORREÓN, COAHUILA.', style: TextStyles.tStyleGrey12)),
+                      const Icon(Icons.location_on_outlined, color: ColorPalette.colorTerciarioMedio,),
+                      Flexible(child: Text(prospectoBloc.state.prospectoPerfil?.data?.direccion ?? '', style: TextStyles.tStyleGrey12)),
                     ],
                   ),
                 ),
@@ -411,8 +427,8 @@ class _PerfilProspectoScreenState extends State<PerfilProspectoScreen> {
           Text('18 años, 0 meses', style: TextStyles.tStyleNormal12,)
         ]),
         TableRow(children: [
-          Text('* ACTIVIDAD ', style: TextStyles.tStyleBlue1Bold2, overflow: TextOverflow.ellipsis, textAlign: TextAlign.end,),
-          Text(' LABORAL', style: TextStyles.tStyleBlue1Bold2,)
+          Text('ACTIVIDAD LABO', style: TextStyles.tStyleBlue1Bold2, overflow: TextOverflow.ellipsis, textAlign: TextAlign.end,),
+          Text('RAL', style: TextStyles.tStyleBlue1Bold2,)
         ]),
         TableRow(children: [
           Text('Empresa: ', style: TextStyles.tStyleNegrita12, overflow: TextOverflow.ellipsis),
@@ -503,8 +519,8 @@ class _PerfilProspectoScreenState extends State<PerfilProspectoScreen> {
           Text('\$8,000.00', style: TextStyles.tStyleNormal12,)
         ]),
         TableRow(children: [
-          Text('* INFO. ', style: TextStyles.tStyleBlue1Bold2, overflow: TextOverflow.ellipsis, textAlign: TextAlign.end,),
-          Text(' CONYUGUE', style: TextStyles.tStyleBlue1Bold2,)
+          Text('INF0RMACI0N C0', style: TextStyles.tStyleBlue1Bold2, overflow: TextOverflow.ellipsis, textAlign: TextAlign.end,),
+          Text('NYUGUE', style: TextStyles.tStyleBlue1Bold2,)
         ]),
         TableRow(children: [
           Text('A. Paterno: ', style: TextStyles.tStyleNegrita12, overflow: TextOverflow.ellipsis),
@@ -610,31 +626,31 @@ class _PerfilProspectoScreenState extends State<PerfilProspectoScreen> {
         0: FixedColumnWidth(1),},
       children: const [
         TableRow(children: [
-          Text('* REFERENCIAS PERSONALES', style: TextStyles.tStyleBlue1Bold2, overflow: TextOverflow.ellipsis),
+          Text('REFERENCIAS PERSONALES', style: TextStyles.tStyleBlue1Bold2, overflow: TextOverflow.ellipsis),
         ]),
         TableRow(children: [
-          Text('  BRENDA ESPINOZA ORDAZ.', style: TextStyles.tStyleNormal12),
+          Text('BRENDA ESPINOZA ORDAZ.', style: TextStyles.tStyleNormal12, overflow: TextOverflow.ellipsis),
         ]),
         TableRow(children: [
-          Text('  JUANA MARIA ESPINOZA ORDAZ.', style: TextStyles.tStyleNormal12),
+          Text('JUANA MARIA ESPINOZA ORDAZ.', style: TextStyles.tStyleNormal12, overflow: TextOverflow.ellipsis),
         ]),
         TableRow(children: [
-          Text('  CECILIA QUIÑONES LOPEZ.', style: TextStyles.tStyleNormal12),
+          Text('CECILIA QUIÑONES LOPEZ.', style: TextStyles.tStyleNormal12, overflow: TextOverflow.ellipsis),
         ]),
         TableRow(children: [
-          Text('  LUCERO AMADOR ESPINOZA.', style: TextStyles.tStyleNormal12),
+          Text('LUCERO AMADOR ESPINOZA.', style: TextStyles.tStyleNormal12, overflow: TextOverflow.ellipsis),
         ]),
         TableRow(children: [
-          Text('* REFERENCIAS CREDITICIAS', style: TextStyles.tStyleBlue1Bold2, overflow: TextOverflow.ellipsis),
+          Text('REFERENCIAS CREDITICIAS', style: TextStyles.tStyleBlue1Bold2, overflow: TextOverflow.ellipsis),
         ]),
         TableRow(children: [
-          Text('  BHERMANOS DISTRIBUIDORA DE VALES.', style: TextStyles.tStyleNormal12, overflow: TextOverflow.ellipsis),
+          Text('BHERMANOS DISTRIBUIDORA DE VALES.', style: TextStyles.tStyleNormal12, overflow: TextOverflow.ellipsis),
         ]),
         TableRow(children: [
-          Text('* GARANTIAS BIENES RAICES DEL SOLICITANTE', style: TextStyles.tStyleBlue1Bold2, overflow: TextOverflow.ellipsis),
+          Text('GARANTIAS BIENES RAICES DEL SOLICITANTE', style: TextStyles.tStyleBlue1Bold2, overflow: TextOverflow.ellipsis),
         ]),
         TableRow(children: [
-          Text('  PRENDARIA. VALOR \$20,000.00.', style: TextStyles.tStyleNormal12),
+          Text('PRENDARIA. VALOR \$20,000.00.', style: TextStyles.tStyleNormal12, overflow: TextOverflow.ellipsis),
         ]),
         TableRow(children: [
           Text('Observaciones: ', style: TextStyles.tStyleNegrita12, overflow: TextOverflow.ellipsis),

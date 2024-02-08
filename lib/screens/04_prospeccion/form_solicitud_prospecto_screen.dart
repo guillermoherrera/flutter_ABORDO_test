@@ -148,8 +148,8 @@ class _FormSolicitudProspectoScreenState extends State<FormSolicitudProspectoScr
         delegacion: delegacionCtrlr.text,
         ciudad: ciudadCtrlr.text,
         estado: estadoCtrlr.text,
-        telFijo: telFijoCtrlr.text,
-        telCelular: telCelularCtrlr.text,
+        telFijo: telFijoCtrlr.text.replaceAll(RegExp('[^0-9]'), ''),
+        telCelular: telCelularCtrlr.text.replaceAll(RegExp('[^0-9]'), ''),
         observacion: observacionCtrlr.text
       );
 

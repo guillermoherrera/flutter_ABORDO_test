@@ -38,6 +38,16 @@ class DataProspectoObtenerPerfil {
     String descClienteStat;
     int folioRegistro;
     String? color;
+    String? direccion;
+    int? idNumSucursal;
+    String? nomSucursal;
+    int? idNumPlaza;
+    String? descPlaza;
+    String? sexo;
+    DateTime? fecNac;
+    String? telFijo;
+    String? telCelular;
+    String? observaciones;
 
     DataProspectoObtenerPerfil({
       required this.fechaRegistro,
@@ -45,6 +55,16 @@ class DataProspectoObtenerPerfil {
       required this.descClienteStat,
       required this.folioRegistro,
       this.color,
+      this.direccion,
+      this.idNumSucursal,
+      this.nomSucursal,
+      this.idNumPlaza,
+      this.descPlaza,
+      this.sexo,
+      this.fecNac,
+      this.telFijo,
+      this.telCelular,
+      this.observaciones,
     });
 
     factory DataProspectoObtenerPerfil.fromJson(Map<String, dynamic> json) => DataProspectoObtenerPerfil(
@@ -53,6 +73,16 @@ class DataProspectoObtenerPerfil {
         descClienteStat: json["desc_ClienteStat"],
         folioRegistro: json["folio_Registro"],
         color: json["color"],
+        direccion: json["direccion"],
+        idNumSucursal: json["id_Num_Sucursal"],
+        nomSucursal: json["nom_Sucursal"],
+        idNumPlaza: json["id_Num_Plaza"],
+        descPlaza: json["desc_Plaza"],
+        sexo: json["sexo"],
+        fecNac: DateTime.parse(json["fec_Nac"]),
+        telFijo: json["tel_Fijo"],
+        telCelular: json["tel_Celular"],
+        observaciones: json["observaciones"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -60,5 +90,15 @@ class DataProspectoObtenerPerfil {
         "nombre": nombre,
         "desc_ClienteStat": descClienteStat,
         "color": color,
+        "direccion": direccion,
+        "idNumSucursal": idNumSucursal,
+        "nomSucursal": nomSucursal,
+        "idNumPlaza": idNumPlaza,
+        "descPlaza": descPlaza,
+        "sexo": sexo,
+        "fecNac": fecNac,
+        "telFijo": telFijo,
+        "telCelular": telCelular,
+        "observaciones": observaciones,
     };
 }
