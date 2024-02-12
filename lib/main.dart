@@ -6,6 +6,7 @@ import 'package:mask_for_camera_view/mask_for_camera_view.dart';
 import 'package:flutter_application_2/screens/screens.dart';
 import 'package:flutter_application_2/blocs/blocs.dart';
 import '../../ui/ui_files.dart';
+import '../../widgets/message.dart';
 
 void main() {
   serviceLocatorInit();
@@ -54,6 +55,7 @@ class MyApp extends StatelessWidget {
         'activar': (_)=> const ActivarScreen(),
         'contrasena': (_)=> const ContrasenaScreen(),
         'home': (_)=> const HomeScreen(),
+        'message': (_)=> const MessageWidget(),
         'notificaciones': (_)=> const NotificationsScreen(),
         'dashProspeccion': (_)=> const DashProspeccionScreen(),
         'ocrSolicitudProspecto': (_)=> const OcrSolicitudProspectoScreen(),

@@ -12,3 +12,4 @@ export 'package:flutter_application_2/widgets/custom_text_button.dart';
 export 'package:flutter_application_2/widgets/custom_dialog.dart';
 export 'package:flutter_application_2/widgets/empty.dart';
 export 'package:flutter_application_2/widgets/button_square.dart';
+export 'package:flutter_application_2/widgets/message.dart';
