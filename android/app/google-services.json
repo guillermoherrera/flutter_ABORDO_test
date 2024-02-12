@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "208119986203",
+    "project_id": "solucionesab-d4bf8",
+    "storage_bucket": "solucionesab-d4bf8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:208119986203:android:675fd0191c6fa9f67920be",
+        "android_client_info": {
+          "package_name": "com.grupoab.solucionesab"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7p4ptl34Ox0E5qDvE7RzcgxutgTKJgpE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
