@@ -15,6 +15,7 @@ void main(){
   WidgetsFlutterBinding.ensureInitialized();
   MaskForCameraView.initialize();
   PushNotificationService.initializeApp();
+  PushNotificationService().initNotification();
   runApp(const BlocsProviders());
 }
 class BlocsProviders extends StatelessWidget {
@@ -51,8 +52,8 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-    PushNotificationService.messagetram.listen((message) {
-      print('MyAPP: $message');
+    PushNotificationService.messagetram.listen((List<String> message) {
+      PushNotificationService().showNotification(title: message[0], body: message[1]);
     });
   }
 
